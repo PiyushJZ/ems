@@ -12,6 +12,6 @@
 * ExpressJs
 * ReactJs
 * NodeJs
-* Tailwindcss
+* MUI
 * Redux
 * JWT

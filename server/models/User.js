@@ -17,11 +17,13 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Please enter your password'],
     },
-  },
-  {
-    timestamps: true,
   }
 );
 
 const User = mongoose.model('User', userSchema);
+const testUsers = await User.create([
+  {
+    
+  }
+])
 export default User;
