@@ -1,15 +1,18 @@
-import React from 'react'
+import Task from "./Task";
 
 function TaskList() {
   return (
     <div>
-      <li>List Item</li>
-      <li>List Item</li>
-      <li>List Item</li>
-      <li>List Item</li>
-      <li>List Item</li>
+      <Task />
+      <Task />
+      <Task />
+      <Task />
+      <Task />
+      <Task />
+      <Task />
+      <Task />
     </div>
-  )
+  );
 }
 
-export default TaskList
+export default TaskList;
