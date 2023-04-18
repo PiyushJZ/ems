@@ -1,22 +1,23 @@
-import { useState } from "react";
-import AddIcon from "@mui/icons-material/Add";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Grid from "@mui/material/Grid";
-import Snackbar from "@mui/material/Snackbar";
-import  IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close"
-import axios from "axios";
+import { useState } from 'react';
+import AddIcon from '@mui/icons-material/Add';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Grid from '@mui/material/Grid';
+import Snackbar from '@mui/material/Snackbar';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import Alert from '@mui/material/Alert';
+import axios from 'axios';
 
 function CreateTask() {
   const [creation, setCreation] = useState(false);
-  const [description, setDescription] = useState("Hello");
+  const [description, setDescription] = useState('Hello');
   const [success, setSuccess] = useState(false);
   const [failure, setFailure] = useState(false);
 
   const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
+    if (reason === 'clickaway') {
       return;
     }
     setSuccess(false);
@@ -25,18 +26,18 @@ function CreateTask() {
 
   const action = (
     <IconButton
-      size="small"
-      aria-label="close"
-      color="inherit"
+      size='small'
+      aria-label='close'
+      color='inherit'
       onClick={handleClose}
     >
-      <CloseIcon fontSize="small" />
+      <CloseIcon fontSize='small' />
     </IconButton>
   );
 
   const createTask = () => {
     axios
-      .post("http://localhost:3001/api/tasks", {
+      .post('http://localhost:3001/api/tasks', {
         description,
       })
       .then((response) => {
@@ -56,41 +57,63 @@ function CreateTask() {
       return (
         <Grid
           container
-          direction="column"
-          justifyContent="space-between"
-          alignItems="center"
+          direction='column'
+          justifyContent='space-between'
+          alignItems='center'
+          sx={{ m: 4 }}
         >
           <TextField
-            label="Description"
+            label='Description'
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            type="search"
+            type='search'
+            sx={{ m: 1 }}
           />
-          <Button variant="contained" onClick={createTask}>
+          <Button
+            variant='contained'
+            onClick={createTask}
+            sx={{ m: 1 }}
+          >
             <Typography>Add Task</Typography>
           </Button>
           <Snackbar
             open={success}
-            severity="success"
-            autoHideDuration={6000}
+            autoHideDuration={4000}
             onClose={handleClose}
-            message="Task Created Successfully"
             action={action}
-          />
+          >
+            <Alert
+              severity='success'
+              onClose={handleClose}
+              sx={{ width: '100%' }}
+            >
+              Task Created Successfully
+            </Alert>
+          </Snackbar>
           <Snackbar
             open={failure}
-            severity="error"
-            autoHideDuration={6000}
+            autoHideDuration={4000}
             onClose={handleClose}
-            message="Task Creation Failed"
             action={action}
-          />
+          >
+            <Alert
+              severity='error'
+              onClose={handleClose}
+              sx={{ width: '100%' }}
+            >
+              Task Creation Failed
+            </Alert>
+          </Snackbar>
         </Grid>
       );
     } else {
       return (
-        <Button variant="contained" onClick={() => setCreation(true)}>
-          <Typography variant="h6">Create Task</Typography>
+        <Button
+          variant='contained'
+          onClick={() => setCreation(true)}
+          sx={{ m: 4 }}
+        >
+          <Typography variant='h6'>Create Task</Typography>
           <AddIcon />
         </Button>
       );
