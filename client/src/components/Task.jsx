@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from '@mui/icons-material/Edit';
+import EditIcon from "@mui/icons-material/Edit";
 
 function Task() {
   const description =
@@ -20,7 +20,7 @@ function Task() {
           aria-label="outlined primary button group"
         >
           <Button>
-            <EditIcon/>
+            <EditIcon />
           </Button>
           <Button>
             <DeleteIcon />

@@ -5,12 +5,6 @@ function TaskList() {
     <div>
       <Task />
       <Task />
-      <Task />
-      <Task />
-      <Task />
-      <Task />
-      <Task />
-      <Task />
     </div>
   );
 }
