@@ -1,11 +1,11 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   tasks: [],
 };
 
 export const taskListSlice = createSlice({
-  name: 'taskList',
+  name: "taskList",
   initialState,
   reducers: {
     updateList: (state, action) => {
@@ -18,6 +18,6 @@ export const taskListSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { updateList, clearList } = counterSlice.actions;
+export const { updateList, clearList } = taskListSlice.actions;
 
 export default taskListSlice.reducer;

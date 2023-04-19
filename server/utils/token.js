@@ -1,6 +1,5 @@
-import jwt from 'jsonwebtoken';
-const { ACCESS_TOKEN_SECRET } = process.env;
+import jwt from "jsonwebtoken";
 
 export const createAccessToken = (payload) => {
-  return jwt.sign(payload, ACCESS_TOKEN_SECRET);
+  return jwt.sign(payload, process.env.JWT_SECRET);
 };
