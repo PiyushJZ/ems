@@ -1,25 +1,28 @@
-import { useState } from "react";
-import AddIcon from "@mui/icons-material/Add";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Grid from "@mui/material/Grid";
-import Snackbar from "@mui/material/Snackbar";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
-import Alert from "@mui/material/Alert";
-import axios from "axios";
-import { useSelector } from "react-redux";
+import { useState } from 'react';
+import AddIcon from '@mui/icons-material/Add';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Grid from '@mui/material/Grid';
+import Snackbar from '@mui/material/Snackbar';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import Alert from '@mui/material/Alert';
+import axios from 'axios';
+import { useSelector, useDispatch } from 'react-redux';
+import { updateList } from '../redux/taskListSlice';
 
 function CreateTask() {
   const [creation, setCreation] = useState(false);
-  const [description, setDescription] = useState("Hello");
+  const [description, setDescription] = useState('');
   const [success, setSuccess] = useState(false);
   const [failure, setFailure] = useState(false);
   const user = useSelector((state) => state.auth.user);
+  const tasks = useSelector((state) => state.taskList.tasks);
+  const dispatch = useDispatch();
 
   const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
+    if (reason === 'clickaway') {
       return;
     }
     setSuccess(false);
@@ -28,12 +31,12 @@ function CreateTask() {
 
   const action = (
     <IconButton
-      size="small"
-      aria-label="close"
-      color="inherit"
+      size='small'
+      aria-label='close'
+      color='inherit'
       onClick={handleClose}
     >
-      <CloseIcon fontSize="small" />
+      <CloseIcon fontSize='small' />
     </IconButton>
   );
 
@@ -43,18 +46,24 @@ function CreateTask() {
       description,
     };
     axios
-      .post("http://localhost:3001/api/tasks", data, {
+      .post('http://localhost:3001/api/tasks', data, {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
       })
       .then((response) => {
-        console.log(response);
+        const newTask = {
+          description: response.data.task.description,
+          status: 'pending',
+        };
+        dispatch(updateList([...tasks, newTask]));
+        setDescription('');
         setSuccess(true);
         setCreation(false);
       })
       .catch((err) => {
         console.log(err);
+        setDescription('');
         setFailure(true);
         setCreation(false);
       });
@@ -65,19 +74,24 @@ function CreateTask() {
       return (
         <Grid
           container
-          direction="column"
-          justifyContent="space-between"
-          alignItems="center"
+          direction='column'
+          justifyContent='space-between'
+          alignItems='center'
           sx={{ m: 4 }}
         >
           <TextField
-            label="Description"
+            label='Task Description'
+            required
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            type="search"
+            type='search'
             sx={{ m: 1 }}
           />
-          <Button variant="contained" onClick={createTask} sx={{ m: 1 }}>
+          <Button
+            variant='contained'
+            onClick={createTask}
+            sx={{ m: 1 }}
+          >
             <Typography>Add Task</Typography>
           </Button>
           <Snackbar
@@ -87,9 +101,9 @@ function CreateTask() {
             action={action}
           >
             <Alert
-              severity="success"
+              severity='success'
               onClose={handleClose}
-              sx={{ width: "100%" }}
+              sx={{ width: '100%' }}
             >
               Task Created Successfully
             </Alert>
@@ -101,9 +115,9 @@ function CreateTask() {
             action={action}
           >
             <Alert
-              severity="error"
+              severity='error'
               onClose={handleClose}
-              sx={{ width: "100%" }}
+              sx={{ width: '100%' }}
             >
               Task Creation Failed
             </Alert>
@@ -113,11 +127,11 @@ function CreateTask() {
     } else {
       return (
         <Button
-          variant="contained"
+          variant='contained'
           onClick={() => setCreation(true)}
           sx={{ m: 4 }}
         >
-          <Typography variant="h6">Create Task</Typography>
+          <Typography variant='h6'>Create Task</Typography>
           <AddIcon />
         </Button>
       );

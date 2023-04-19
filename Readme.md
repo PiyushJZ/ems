@@ -15,3 +15,20 @@
 * MUI
 * Redux
 * JWT
+
+## Startup
+### Server
+```
+  cd server/
+```
+```
+  pnpm nodemon
+```
+
+### Client
+```
+  cd client/
+```
+```
+  pnpm dev
+```
