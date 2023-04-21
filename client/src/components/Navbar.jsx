@@ -5,6 +5,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { useDispatch, useSelector } from "react-redux";
+import Tooltip from "@mui/material/Tooltip";
 import { logout } from "../redux/authSlice";
 import { clearList } from "../redux/taskListSlice";
 
@@ -25,9 +26,11 @@ export default function ButtonAppBar() {
             Tasks
           </Typography>
           {isLoggedIn ? (
-            <Button onClick={handleClick} color="inherit">
-              Logout
-            </Button>
+            <Tooltip title="Logout" arrow>
+              <Button onClick={handleClick} color="inherit">
+                Logout
+              </Button>
+            </Tooltip>
           ) : (
             ""
           )}

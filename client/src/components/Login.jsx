@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
+import Tooltip from "@mui/material/Tooltip";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { login } from "../redux/authSlice";
@@ -79,9 +80,11 @@ function Login() {
             />
           </Grid>
           <Grid item sx={{ m: 1 }}>
-            <Button onClick={handleLogin} variant="contained">
-              Login
-            </Button>
+            <Tooltip title="Login">
+              <Button onClick={handleLogin} variant="contained">
+                Login
+              </Button>
+            </Tooltip>
           </Grid>
         </Grid>
       </Box>

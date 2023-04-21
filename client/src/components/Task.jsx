@@ -6,6 +6,7 @@ import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import TextField from "@mui/material/TextField";
+import Tooltip from "@mui/material/Tooltip";
 import { useSelector, useDispatch } from "react-redux";
 import { updateList } from "../redux/taskListSlice";
 import axios from "axios";
@@ -17,6 +18,7 @@ function Task({ description, status, id }) {
   const user = useSelector((state) => state.auth.user);
   const tasks = useSelector((state) => state.taskList.tasks);
   const dispatch = useDispatch();
+
   async function editTask() {
     const data = {
       description: desc,
@@ -124,8 +126,12 @@ function Task({ description, status, id }) {
           aria-label="outlined primary button group"
           sx={{ m: 1 }}
         >
-          <Button onClick={startTask}>Start</Button>
-          <Button onClick={endTask}>Stop</Button>
+          <Tooltip title="Start Task" arrow placement="left">
+            <Button onClick={startTask}>Start</Button>
+          </Tooltip>
+          <Tooltip title="Stop Task" arrow placement="right">
+            <Button onClick={endTask}>Stop</Button>
+          </Tooltip>
         </ButtonGroup>
       );
     } else if (status === "running") {
@@ -135,8 +141,12 @@ function Task({ description, status, id }) {
           aria-label="outlined primary button group"
           sx={{ m: 1 }}
         >
-          <Button disabled>Start</Button>
-          <Button onClick={endTask}>Stop</Button>
+          <Tooltip title="Start Task" arrow placement="left">
+            <Button disabled>Start</Button>
+          </Tooltip>
+          <Tooltip title="Stop Task" arrow placement="right">
+            <Button onClick={endTask}>Stop</Button>
+          </Tooltip>
         </ButtonGroup>
       );
     } else {
@@ -177,12 +187,16 @@ function Task({ description, status, id }) {
           aria-label="outlined primary button group"
           sx={{ m: 1 }}
         >
-          <Button onClick={() => setIsEdit(true)}>
-            <EditIcon />
-          </Button>
-          <Button onClick={deleteTask}>
-            <DeleteIcon />
-          </Button>
+          <Tooltip title="Edit" arrow placement="left">
+            <Button onClick={() => setIsEdit(true)}>
+              <EditIcon />
+            </Button>
+          </Tooltip>
+          <Tooltip title="Delete" arrow placement="right">
+            <Button onClick={deleteTask}>
+              <DeleteIcon />
+            </Button>
+          </Tooltip>
         </ButtonGroup>
         {renderControls()}
       </Box>
