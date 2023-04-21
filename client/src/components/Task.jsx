@@ -156,7 +156,12 @@ function Task({ description, status, id }) {
 
   function renderDescription() {
     if (!isEdit) {
-      return <Typography sx={{ m: 0.5 }}>{desc}</Typography>;
+      return (
+        <Typography sx={{ m: 0.5 }}>
+          {desc}
+          {status === "complete" ? ": Complete" : ""}
+        </Typography>
+      );
     }
     return (
       <>

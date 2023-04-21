@@ -15,8 +15,8 @@ import { updateList } from "../redux/taskListSlice";
 function CreateTask() {
   const [creation, setCreation] = useState(false);
   const [description, setDescription] = useState("");
-  // const [success, setSuccess] = useState(false);
-  // const [failure, setFailure] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [failure, setFailure] = useState(false);
   const user = useSelector((state) => state.auth.user);
   const tasks = useSelector((state) => state.taskList.tasks);
   const dispatch = useDispatch();
@@ -25,20 +25,20 @@ function CreateTask() {
     if (reason === "clickaway") {
       return;
     }
-    // setSuccess(false);
-    // setFailure(false);
+    setSuccess(false);
+    setFailure(false);
   };
 
-  // const action = (
-  //   <IconButton
-  //     size="small"
-  //     aria-label="close"
-  //     color="inherit"
-  //     onClick={handleClose}
-  //   >
-  //     <CloseIcon fontSize="small" />
-  //   </IconButton>
-  // );
+  const action = (
+    <IconButton
+      size="small"
+      aria-label="close"
+      color="inherit"
+      onClick={handleClose}
+    >
+      <CloseIcon fontSize="small" />
+    </IconButton>
+  );
 
   const createTask = () => {
     const data = {
@@ -59,13 +59,13 @@ function CreateTask() {
         };
         dispatch(updateList([...tasks, newTask]));
         setDescription("");
-        // setSuccess(true);
+        setSuccess(true);
         setCreation(false);
       })
       .catch((err) => {
         console.log(err);
         setDescription("");
-        // setFailure(true);
+        setFailure(true);
         setCreation(false);
       });
   };
@@ -91,34 +91,6 @@ function CreateTask() {
           <Button variant="contained" onClick={createTask} sx={{ m: 1 }}>
             <Typography>Add Task</Typography>
           </Button>
-          {/* <Snackbar
-            open={success}
-            autoHideDuration={4000}
-            onClose={handleClose}
-            action={action}
-          >
-            <Alert
-              severity="success"
-              onClose={handleClose}
-              sx={{ width: "100%" }}
-            >
-              Task Created Successfully
-            </Alert>
-          </Snackbar>
-          <Snackbar
-            open={failure}
-            autoHideDuration={4000}
-            onClose={handleClose}
-            action={action}
-          >
-            <Alert
-              severity="error"
-              onClose={handleClose}
-              sx={{ width: "100%" }}
-            >
-              Task Creation Failed
-            </Alert>
-          </Snackbar> */}
         </Grid>
       );
     } else {
@@ -135,7 +107,31 @@ function CreateTask() {
       );
     }
   };
-  return <>{renderCreation()}</>;
+  return (
+    <>
+      {renderCreation()}
+      <Snackbar
+        open={success}
+        autoHideDuration={4000}
+        onClose={handleClose}
+        action={action}
+      >
+        <Alert severity="success" onClose={handleClose} sx={{ width: "100%" }}>
+          Task Created Successfully
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        open={failure}
+        autoHideDuration={4000}
+        onClose={handleClose}
+        action={action}
+      >
+        <Alert severity="error" onClose={handleClose} sx={{ width: "100%" }}>
+          Task Creation Failed
+        </Alert>
+      </Snackbar>
+    </>
+  );
 }
 
 export default CreateTask;
