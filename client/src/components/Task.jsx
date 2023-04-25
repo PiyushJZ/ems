@@ -10,7 +10,6 @@ import Tooltip from "@mui/material/Tooltip";
 import { useSelector, useDispatch } from "react-redux";
 import { updateList } from "../redux/taskListSlice";
 import axios from "axios";
-import "./Task.css";
 
 function Task({ description, status, id }) {
   const [isEdit, setIsEdit] = useState(false);

@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
-import { Grid, Typography } from '@mui/material';
-import { useSelector, useDispatch } from 'react-redux';
-import { updateList } from '../redux/taskListSlice';
-import axios, { all } from 'axios';
-import Task from './Task';
+import React, { useEffect } from "react";
+import { Grid, Typography } from "@mui/material";
+import { useSelector, useDispatch } from "react-redux";
+import { updateList } from "../redux/taskListSlice";
+import axios, { all } from "axios";
+import Task from "./Task";
 
 function TaskList() {
   const tasks = useSelector((state) => state.taskList.tasks);
@@ -12,7 +12,7 @@ function TaskList() {
 
   useEffect(() => {
     async function fetchTasks() {
-      const response = await axios.get('http://localhost:3001/api/tasks', {
+      const response = await axios.get("http://localhost:3001/api/tasks", {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
@@ -23,21 +23,21 @@ function TaskList() {
           const newTask = {
             id: task._id,
             description: task.description,
-            status: 'complete',
+            status: "complete",
           };
           allTasks = [...allTasks, newTask];
         } else if (task.start && !task.end) {
           const newTask = {
             id: task._id,
             description: task.description,
-            status: 'running',
+            status: "running",
           };
           allTasks = [...allTasks, newTask];
         } else if (!task.start && !task.end) {
           const newTask = {
             id: task._id,
             description: task.description,
-            status: 'pending',
+            status: "pending",
           };
           allTasks = [...allTasks, newTask];
         }
@@ -54,26 +54,17 @@ function TaskList() {
     if (tasks.length === 0) {
       if (isLoggedIn) {
         return (
-          <Typography
-            variant='h6'
-            align='center'
-          >
+          <Typography variant="h6" align="center">
             No Tasks Created Yet
           </Typography>
         );
       } else {
         return (
           <div>
-            <Typography
-              variant='h6'
-              align='center'
-            >
+            <Typography variant="h6" align="center">
               No Tasks Created Yet
             </Typography>
-            <Typography
-              variant='h6'
-              align='center'
-            >
+            <Typography variant="h6" align="center">
               Log in to create
             </Typography>
           </div>
@@ -81,10 +72,7 @@ function TaskList() {
       }
     } else {
       return (
-        <Typography
-          variant='h6'
-          align='center'
-        >
+        <Typography variant="h6" align="center">
           Tasks
         </Typography>
       );
@@ -93,9 +81,9 @@ function TaskList() {
 
   return (
     <Grid
-      display='flex'
-      flexDirection={'column'}
-      alignItems={'center'}
+      display="flex"
+      flexDirection={"column"}
+      alignItems={"center"}
       sx={{ mt: 6 }}
     >
       {renderHeader()}
