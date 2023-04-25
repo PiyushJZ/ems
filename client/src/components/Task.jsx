@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -10,8 +10,9 @@ import Tooltip from "@mui/material/Tooltip";
 import { useSelector, useDispatch } from "react-redux";
 import { updateList } from "../redux/taskListSlice";
 import axios from "axios";
+import Timer from "./Timer";
 
-function Task({ description, status, id }) {
+function Task({ description, status, id, start, end }) {
   const [isEdit, setIsEdit] = useState(false);
   const [desc, setDesc] = useState(description);
   const user = useSelector((state) => state.auth.user);
@@ -82,6 +83,7 @@ function Task({ description, status, id }) {
         description,
         id,
         status: "running",
+        start: response.data.task.start,
       };
       const temp = tasks.filter((task) => {
         return task.id !== id;
@@ -109,6 +111,8 @@ function Task({ description, status, id }) {
         description,
         id,
         status: "complete",
+        start: response.data.task.start,
+        end: response.data.task.end,
       };
       const temp = tasks.filter((task) => {
         return task.id !== id;
@@ -140,9 +144,7 @@ function Task({ description, status, id }) {
           aria-label="outlined primary button group"
           sx={{ m: 1 }}
         >
-          <Tooltip title="Start Task" arrow placement="left">
-            <Button disabled>Start</Button>
-          </Tooltip>
+          <Button disabled>Start</Button>
           <Tooltip title="Stop Task" arrow placement="right">
             <Button onClick={endTask}>Stop</Button>
           </Tooltip>
@@ -179,31 +181,44 @@ function Task({ description, status, id }) {
     );
   }
 
+  const renderTimer = () => {
+    if (status === "running") {
+      return <Timer start={start} end={end} />;
+    }
+    return;
+  };
+
   return (
     <>
-      <Box
-        sx={{ bgcolor: "#e4e4f0", m: 2, p: 1, width: "300%" }}
-        className="box"
+      <Grid
+        container
+        flexDirection={"column"}
+        justifyContent={"space-evenly"}
+        alignItems={"center"}
+        sx={{ bgcolor: "#e4e4f0", m: 1, p: 1.5 }}
       >
-        {renderDescription()}
-        <ButtonGroup
-          variant="contained"
-          aria-label="outlined primary button group"
-          sx={{ m: 1 }}
-        >
-          <Tooltip title="Edit" arrow placement="left">
-            <Button onClick={() => setIsEdit(true)}>
-              <EditIcon />
-            </Button>
-          </Tooltip>
-          <Tooltip title="Delete" arrow placement="right">
-            <Button onClick={deleteTask}>
-              <DeleteIcon />
-            </Button>
-          </Tooltip>
-        </ButtonGroup>
-        {renderControls()}
-      </Box>
+        <Grid item>{renderDescription()}</Grid>
+        <Grid item>{renderTimer()}</Grid>
+        <Grid item>
+          <ButtonGroup
+            variant="contained"
+            aria-label="outlined primary button group"
+            sx={{ m: 1 }}
+          >
+            <Tooltip title="Edit" arrow placement="left">
+              <Button onClick={() => setIsEdit(true)}>
+                <EditIcon />
+              </Button>
+            </Tooltip>
+            <Tooltip title="Delete" arrow placement="right">
+              <Button onClick={deleteTask}>
+                <DeleteIcon />
+              </Button>
+            </Tooltip>
+          </ButtonGroup>
+        </Grid>
+        <Grid item>{renderControls()}</Grid>
+      </Grid>
     </>
   );
 }
