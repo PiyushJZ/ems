@@ -157,12 +157,7 @@ function Task({ description, status, id, start, end }) {
 
   function renderDescription() {
     if (!isEdit) {
-      return (
-        <Typography sx={{ m: 0.5 }}>
-          {desc}
-          {status === "complete" ? ": Complete" : ""}
-        </Typography>
-      );
+      return <Typography sx={{ m: 0.5 }}>{desc}</Typography>;
     }
     return (
       <>
@@ -182,7 +177,7 @@ function Task({ description, status, id, start, end }) {
   }
 
   const renderTimer = () => {
-    if (status === "running") {
+    if (status !== "pending") {
       return <Timer start={start} end={end} />;
     }
     return;

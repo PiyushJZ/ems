@@ -31,10 +31,13 @@ function Login() {
       const userData = {
         email: response.data.user.email,
         token: response.data.token,
+        accessType: response.data.user.accessType,
       };
       console.log("LOGIN FORM DATA: ", userData);
       dispatch(login(userData));
-      navigate("/all-tasks");
+      userData.accessType === "employee"
+        ? navigate("/task-list")
+        : navigate("/admin-page");
     } catch (err) {
       console.log(err);
     }
