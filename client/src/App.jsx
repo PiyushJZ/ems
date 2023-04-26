@@ -10,6 +10,8 @@ import { PATHS } from "./router/paths";
 import Task from "./components/Task";
 import { isAuthenticated } from "./utils/auth";
 import ProtectedRoute from "./router/ProtectedRoute";
+import Navbar from "./components/navbar/Navbar";
+import Del from "./components/table/Del";
 const App = () => {
   const { isLoggedIn, user } = useSelector((state) => state.auth);
 

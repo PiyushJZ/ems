@@ -1,8 +1,5 @@
 import { useState } from "react";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Grid from "@mui/material/Grid";
 import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
@@ -11,6 +8,7 @@ import Alert from "@mui/material/Alert";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { updateList } from "../redux/taskListSlice";
+import Navbar from "./navbar/Navbar";
 
 function CreateTask() {
   const [creation, setCreation] = useState(false);
@@ -20,7 +18,7 @@ function CreateTask() {
   const user = useSelector((state) => state.auth.user);
   const tasks = useSelector((state) => state.taskList.tasks);
   const dispatch = useDispatch();
-
+  console.log("AUTH USER:  ", user);
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -42,13 +40,13 @@ function CreateTask() {
 
   const createTask = () => {
     const data = {
-      user: user.email,
+      user: user?.email,
       description,
     };
     axios
       .post("http://localhost:3001/api/tasks", data, {
         headers: {
-          Authorization: `Bearer ${user.token}`,
+          Authorization: `Bearer ${user?.token}`,
         },
       })
       .then((response) => {
@@ -70,47 +68,35 @@ function CreateTask() {
       });
   };
 
-  const renderCreation = () => {
-    if (creation) {
-      return (
-        <Grid
-          container
-          direction="column"
-          justifyContent="space-between"
-          alignItems="center"
-          sx={{ m: 4 }}
-        >
-          <TextField
-            label="Task Description"
-            required
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            type="search"
-            sx={{ m: 1 }}
-          />
-          <Button variant="contained" onClick={createTask} sx={{ m: 1 }}>
-            <Typography>Add Task</Typography>
-          </Button>
-        </Grid>
-      );
-    } else {
-      return (
-        <Tooltip title="Create New Task">
-          <Button
-            variant="contained"
-            onClick={() => setCreation(true)}
-            sx={{ m: 4 }}
-          >
-            <Typography variant="h6">Create Task</Typography>
-          </Button>
-        </Tooltip>
-      );
-    }
-  };
-  
+  // const renderCreation = () => {
+  //   if (creation) {
+  //     return (
+  //       <div>
+  //         <Navbar />
+  //         <input
+  //           label="Task Description"
+  //           required
+  //           value={description}
+  //           onChange={(e) => setDescription(e.target.value)}
+  //         />
+  //         <button onClick={createTask}>
+  //           <Typography>Add Task</Typography>
+  //         </button>
+  //       </div>
+  //     );
+  //   } else {
+  //     return (
+  //       <button onClick={() => setCreation(true)}>
+  //         <h6>Create Task</h6>
+  //       </button>
+  //     );
+  //   }
+  // };
+
   return (
     <>
-      {renderCreation()}
+      {/* {renderCreation()} */}
+      <Navbar />
       <Snackbar
         open={success}
         autoHideDuration={4000}

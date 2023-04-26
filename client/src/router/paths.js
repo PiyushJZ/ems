@@ -4,4 +4,5 @@ export const PATHS = {
   taskList: "/task-list",
   createTasks: "/create-task",
   adminPage: "/admin-page",
+  todo: "/todo",
 };

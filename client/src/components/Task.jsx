@@ -124,31 +124,26 @@ function Task({ description, status, id, start, end }) {
   const renderControls = () => {
     if (status === "pending") {
       return (
-        <ButtonGroup
+        <div
           variant="contained"
           aria-label="outlined primary button group"
           sx={{ m: 1 }}
         >
-          <Tooltip title="Start Task" arrow placement="left">
-            <Button onClick={startTask}>Start</Button>
-          </Tooltip>
-          <Tooltip title="Stop Task" arrow placement="right">
-            <Button onClick={endTask}>Stop</Button>
-          </Tooltip>
-        </ButtonGroup>
+          <button onClick={startTask}>Start</button>
+
+          <button onClick={endTask}>Stop</button>
+        </div>
       );
     } else if (status === "running") {
       return (
-        <ButtonGroup
+        <div
           variant="contained"
           aria-label="outlined primary button group"
           sx={{ m: 1 }}
         >
-          <Button disabled>Start</Button>
-          <Tooltip title="Stop Task" arrow placement="right">
-            <Button onClick={endTask}>Stop</Button>
-          </Tooltip>
-        </ButtonGroup>
+          <button disabled>Start</button>
+          <button onClick={endTask}>Stop</button>
+        </div>
       );
     } else {
       return;
@@ -157,21 +152,19 @@ function Task({ description, status, id, start, end }) {
 
   function renderDescription() {
     if (!isEdit) {
-      return <Typography sx={{ m: 0.5 }}>{desc}</Typography>;
+      return <h2>{desc}</h2>;
     }
     return (
       <>
-        <TextField
+        <input
           label="Task Description"
           required
           value={desc}
           onChange={(e) => setDesc(e.target.value)}
-          type="search"
-          sx={{ m: 1 }}
         />
-        <Button variant="contained" onClick={editTask} sx={{ m: 1 }}>
-          <Typography>Edit Task</Typography>
-        </Button>
+        <button onClick={editTask}>
+          <h2>Edit Task</h2>
+        </button>
       </>
     );
   }
@@ -185,35 +178,32 @@ function Task({ description, status, id, start, end }) {
 
   return (
     <>
-      <Grid
+      <div
         container
         flexDirection={"column"}
         justifyContent={"space-evenly"}
         alignItems={"center"}
         sx={{ bgcolor: "#e4e4f0", m: 1, p: 1.5 }}
       >
-        <Grid item>{renderDescription()}</Grid>
-        <Grid item>{renderTimer()}</Grid>
-        <Grid item>
-          <ButtonGroup
+        <div item>{renderDescription()}</div>
+        <div item>{renderTimer()}</div>
+        <div item>
+          <div
             variant="contained"
             aria-label="outlined primary button group"
             sx={{ m: 1 }}
           >
-            <Tooltip title="Edit" arrow placement="left">
-              <Button onClick={() => setIsEdit(true)}>
-                <EditIcon />
-              </Button>
-            </Tooltip>
-            <Tooltip title="Delete" arrow placement="right">
-              <Button onClick={deleteTask}>
-                <DeleteIcon />
-              </Button>
-            </Tooltip>
-          </ButtonGroup>
-        </Grid>
-        <Grid item>{renderControls()}</Grid>
-      </Grid>
+            <button onClick={() => setIsEdit(true)}>
+              <EditIcon />
+            </button>
+
+            <button onClick={deleteTask}>
+              <DeleteIcon />
+            </button>
+          </div>
+        </div>
+        <div item>{renderControls()}</div>
+      </div>
     </>
   );
 }

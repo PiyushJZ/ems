@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
+import { PATHS } from "../router/paths";
 function Login() {
   const navigate = useNavigate();
   const schema = yup.object({
@@ -34,6 +35,7 @@ function Login() {
         accessType: response.data.user.accessType,
       };
       console.log("LOGIN FORM DATA: ", userData);
+      localStorage.setItem("auth", userData.token);
       dispatch(login(userData));
       userData.accessType === "employee"
         ? navigate("/task-list")
