@@ -10,6 +10,7 @@ import Task from "./components/Task";
 import { isAuthenticated } from "./utils/auth";
 import ProtectedRoute from "./router/ProtectedRoute";
 import Navbar from "./components/navbar/Navbar";
+import Del from "./components/table/Del";
 const App = () => {
   const { isLoggedIn, user } = useSelector((state) => state.auth);
 
@@ -18,6 +19,7 @@ const App = () => {
       <Route path={PATHS.root} element={<Login />} />
       <Route path={PATHS.taskList} element={<TaskList />} />
       <Route path={PATHS.createTasks} element={<CreateTask />} />
+      <Route path="/del" element={<Del />} />
     </Routes>
   );
 };

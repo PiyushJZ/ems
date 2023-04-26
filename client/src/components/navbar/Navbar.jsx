@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
-import { RxHamburgerMenu } from "react-icons/rx";
-import { SlLogin, SlLogout } from "react-icons/sl";
-import { useSelector } from "react-redux";
-import { NavLink } from "react-router-dom";
-import { PATHS } from "../../router/paths";
+import React from "react";
+// import { RxHamburgerMenu } from "react-icons/rx";
+// import { SlLogin, SlLogout } from "react-icons/sl";
+// import { useSelector } from "react-redux";
+// import { NavLink } from "react-router-dom";
+// import { PATHS } from "../../router/paths";
 const Navbar = () => {
   <div className="navbar bg-base-100">
     <div className="navbar-start">
