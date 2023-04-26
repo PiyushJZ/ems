@@ -8,7 +8,10 @@ function Timer({ start, end }) {
   const [timer, setTimer] = useState(currentTimer);
 
   useEffect(() => {
-    setTimeout(() => setTimer(timer + 1), 1000);
+    const timeout = setTimeout(() => setTimer(timer + 1), 1000);
+    if (end) {
+      clearTimeout(timeout);
+    }
   }, [timer]);
 
   const renderTimer = () => {
@@ -29,10 +32,11 @@ function Timer({ start, end }) {
         </div>
       );
     }
-    const timeTaken = (new Date(end) - new Date(end)) / 1000;
+    const timeTaken = (new Date(end) - new Date(start)) / 1000;
+    console.log(timeTaken);
     const result = `Time Taken: ${parseInt(timeTaken / 60 / 60)} hrs-${
       parseInt(timeTaken / 60) % 60
-    } mins-${parseInt(timeTaken) % 60}`;
+    } mins-${parseInt(timeTaken) % 60} secs`;
     return <div>{result}</div>;
   };
 

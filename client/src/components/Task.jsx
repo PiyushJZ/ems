@@ -155,7 +155,6 @@ function Task({ description, status, id, start, end }) {
       return (
         <h2>
           {desc}
-          {status === "complete" ? ": Complete" : ""}
         </h2>
       );
     }
@@ -175,7 +174,7 @@ function Task({ description, status, id, start, end }) {
   }
 
   const renderTimer = () => {
-    if (status === "running") {
+    if (status !== "pending") {
       return <Timer start={start} end={end} />;
     }
     return;
