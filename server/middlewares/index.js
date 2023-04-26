@@ -28,3 +28,5 @@ export const verifyAccessToken = async (req, res, next) => {
       .json({ status: false, msg: 'Internal Server Error' });
   }
 };
+
+export const verifyAccessType = async (req, res, next) => {};

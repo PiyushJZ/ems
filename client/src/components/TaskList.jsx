@@ -24,6 +24,8 @@ function TaskList() {
             id: task._id,
             description: task.description,
             status: "complete",
+            start: task.start,
+            end: task.end,
           };
           allTasks = [...allTasks, newTask];
         } else if (task.start && !task.end) {
@@ -31,6 +33,7 @@ function TaskList() {
             id: task._id,
             description: task.description,
             status: "running",
+            start: task.start,
           };
           allTasks = [...allTasks, newTask];
         } else if (!task.start && !task.end) {
@@ -80,12 +83,7 @@ function TaskList() {
   };
 
   return (
-    <Grid
-      display="flex"
-      flexDirection={"column"}
-      alignItems={"center"}
-      sx={{ mt: 6 }}
-    >
+    <Grid flexDirection={"column"} alignItems={"center"} sx={{ mt: 6 }}>
       {renderHeader()}
       {tasks.map((task) => {
         return (
@@ -94,6 +92,8 @@ function TaskList() {
               description={task.description}
               status={task.status}
               id={task.id}
+              start={task?.start}
+              end={task?.end}
             />
           </React.Fragment>
         );
