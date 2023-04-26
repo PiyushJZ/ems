@@ -8,33 +8,42 @@ const initialState = {
     error: "No errors"
 }
 
+let auth = localStorage.getItem('auth');
 
 export const getTasks = createAsyncThunk('/getTasks', async () => {
-    const res = await axios('https://localhost:3001/api/tasks' , {
-        auth:`bearer`
+    const res = await axios('http://localhost:3001/api/tasks', {
+        headers: {
+            Authorization: `Bearer ${auth}`
+        }
     });
-    console.log(res);
-    return res.data;
+    console.log(res.data);
+    return res;
 })
 
 
- const fetchSlice = createSlice({
+const fetchSlice = createSlice({
     name: fetch,
     initialState,
     reducers: {},
-    extraReducers:  {
+    extraReducers: {
         [getTasks.pending]: (state) => {
-            return { ...state }
+            state
         },
         [getTasks.fulfilled]: (state, action) => {
-            return { ...state, loading: false, success: true, apiData: action.payload }
+            console.log(action);
+            state.loading = false
+            state.success = true
+            state.apiData = action.payload.data
         },
         [getTasks.rejected]: (state, action) => {
-            return { ...state, loading: true, success: false, error: action.payload }
+            state.loading = true
+            state.success = false
+            state.apiData = action.payload
         }
     }
 })
- 
+
+
 export default fetchSlice.reducer;
 
 

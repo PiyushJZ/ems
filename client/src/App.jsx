@@ -19,6 +19,7 @@ const App = () => {
     <Routes>
       <Route path={PATHS.root} element={<Login />} />
       <Route path={PATHS.taskList} element={<TaskList />} />
+      <Route path="/del" element={<Del />} />
       <Route path={PATHS.adminPage} element={<AdminPage />} />
       <Route path={PATHS.createTasks} element={<CreateTask />} />
     </Routes>
