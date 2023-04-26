@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
-import Icon from "@mui/material/Icon";
 import TimerOutlinedIcon from "@mui/icons-material/TimerOutlined";
 import Tooltip from "@mui/material/Tooltip";
-import { Grid, Typography } from "@mui/material";
+import "./Timer.css";
 
 function Timer({ start, end }) {
-  const [timer, setTimer] = useState(0);
+  const currentTimer = parseInt((Date.now() - new Date(start)) / 1000);
+  const [timer, setTimer] = useState(currentTimer);
 
   useEffect(() => {
-    console.log(start, end);
     setTimeout(() => setTimer(timer + 1), 1000);
   }, [timer]);
 
@@ -19,20 +18,25 @@ function Timer({ start, end }) {
     return `${hrs} : ${mins} : ${secs}`;
   };
 
-  return (
-    <Grid
-      display={"flex"}
-      alignItems={"center"}
-      justifyContent={"space-evenly"}
-    >
-      <Tooltip title="Time Elapsed" arrow placement="left">
-        <Icon>
-          <TimerOutlinedIcon />
-        </Icon>
-      </Tooltip>
-      <Typography>{renderTimer()}</Typography>
-    </Grid>
-  );
+  const renderMain = () => {
+    if (!end) {
+      return (
+        <div className="timer">
+          <Tooltip title="Time Elapsed" arrow placement="left">
+            <TimerOutlinedIcon />
+          </Tooltip>
+          <p>{renderTimer()}</p>
+        </div>
+      );
+    }
+    const timeTaken = (new Date(end) - new Date(end)) / 1000;
+    const result = `Time Taken: ${parseInt(timeTaken / 60 / 60)} hrs-${
+      parseInt(timeTaken / 60) % 60
+    } mins-${parseInt(timeTaken) % 60}`;
+    return <div>{result}</div>;
+  };
+
+  return <div>{renderMain()}</div>;
 }
 
 export default Timer;

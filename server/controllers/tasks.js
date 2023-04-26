@@ -3,10 +3,18 @@ import { validateObjectId } from "../utils/validation.js";
 
 export const getTasks = async (req, res) => {
   try {
-    const tasks = await Task.find({ user: req.user.email });
-    res
-      .status(200)
-      .json({ tasks, status: true, msg: "Tasks found successfully.." });
+    if (req.accessType === "employee") {
+      const tasks = await Task.find({ user: req.user.email });
+      res
+        .status(200)
+        .json({ tasks, status: true, msg: "Tasks found successfully..." });
+    }
+    if (req.accessType === "admin") {
+      const tasks = await Task.find();
+      res
+        .status(200)
+        .json({ tasks, status: true, msg: "Tasks of all users found..." });
+    }
   } catch (err) {
     console.error(err);
     return res
