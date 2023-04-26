@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
+import { PATHS } from "../router/paths";
 function Login() {
   const navigate = useNavigate();
   const schema = yup.object({
@@ -33,8 +34,9 @@ function Login() {
         token: response.data.token,
       };
       console.log("LOGIN FORM DATA: ", userData);
+      localStorage.setItem("auth", userData.token);
       dispatch(login(userData));
-      navigate("/all-tasks");
+      navigate(PATHS.createTasks);
     } catch (err) {
       console.log(err);
     }
