@@ -44,4 +44,12 @@ function CreateTask() {
   );
 }
 
-export default CreateTask;
+// export default CreateTask;
+
+import React from "react";
+
+const CreateTasksPage = () => {
+  return <div>CreateTasksPage</div>;
+};
+
+export default CreateTasksPage;
