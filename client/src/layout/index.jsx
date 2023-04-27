@@ -7,25 +7,27 @@ import { PATHS } from "../router/paths";
 
 const AppLayout = () => {
   return (
-    <Routes>
-      {/* login route */}
-      <Route element={<ReverseAuthRoute />}>
-        <Route path={PATHS.login} element={<LoginPage />} />
-      </Route>
-      <Route path={PATHS.root} element={<Navigate to={PATHS.login} />} />
-      {/* ____________________________________________________*/}
+    <div className="z-50">
+      <Routes>
+        {/* login route */}
+        <Route element={<ReverseAuthRoute />}>
+          <Route path={PATHS.login} element={<LoginPage />} />
+        </Route>
+        <Route path={PATHS.root} element={<Navigate to={PATHS.login} />} />
+        {/* ____________________________________________________*/}
 
-      <Route element={<ProtectedRoute />}>
-        <Route path={PATHS.taskList} element={<TaskListPage />} />
-      </Route>
+        <Route element={<ProtectedRoute />}>
+          <Route path={PATHS.taskList} element={<TaskListPage />} />
+        </Route>
 
-      <Route element={<ProtectedRoute />}>
-        <Route path={PATHS.createTasks} element={<CreateTasksPage />} />
-      </Route>
+        <Route element={<ProtectedRoute />}>
+          <Route path={PATHS.createTasks} element={<CreateTasksPage />} />
+        </Route>
 
-      {/* default route */}
-      <Route path="/*" element={<ErrorPage />} />
-    </Routes>
+        {/* default route */}
+        <Route path="/*" element={<ErrorPage />} />
+      </Routes>
+    </div>
   );
 };
 
