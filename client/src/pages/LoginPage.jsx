@@ -37,7 +37,7 @@ function Login() {
       localStorage.setItem("authToken", userData.token);
       dispatch(login(userData));
       if (userData.accessType === "admin") navigate(PATHS.adminPage);
-      else navigate(PATHS.taskList);
+      else navigate(PATHS.createTasks);
     } catch (err) {
       console.log(err);
     }
