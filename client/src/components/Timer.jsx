@@ -24,19 +24,18 @@ function Timer({ start, end }) {
   const renderMain = () => {
     if (!end) {
       return (
-        <div className="timer">
+        <>
           <Tooltip title="Time Elapsed" arrow placement="left">
             <TimerOutlinedIcon />
           </Tooltip>
           <p>{renderTimer()}</p>
-        </div>
+        </>
       );
     }
     const timeTaken = (new Date(end) - new Date(start)) / 1000;
     console.log(timeTaken);
-    const result = `Time Taken: ${parseInt(timeTaken / 60 / 60)} hrs-${
-      parseInt(timeTaken / 60) % 60
-    } mins-${parseInt(timeTaken) % 60} secs`;
+    const result = `Time Taken: ${parseInt(timeTaken / 60 / 60)} hrs-${parseInt(timeTaken / 60) % 60
+      } mins-${parseInt(timeTaken) % 60} secs`;
     return <div>{result}</div>;
   };
 

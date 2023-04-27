@@ -82,13 +82,16 @@ function TaskList() {
     }
   };
 
+  console.log(tasks);
+
   return (
     <Grid flexDirection={"column"} alignItems={"center"} sx={{ mt: 6 }}>
       {renderHeader()}
-      {tasks.map((task) => {
+      {tasks.map((task, index) => {
         return (
           <React.Fragment key={task.id}>
             <Task
+              index={index}
               description={task.description}
               status={task.status}
               id={task.id}
