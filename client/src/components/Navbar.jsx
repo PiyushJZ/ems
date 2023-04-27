@@ -17,9 +17,8 @@ const Navbar = () => {
     if (token) {
       localStorage.removeItem("authToken");
       navigate(PATHS.root);
-    } else {
-      setToggleLogout((prevoiusToggleState) => !prevoiusToggleState);
     }
+    setToggleLogout((prevoiusToggleState) => !prevoiusToggleState);
   };
 
   return (
@@ -27,12 +26,14 @@ const Navbar = () => {
       <div className="max-w-full mx-auto flex justify-between">
         <h1>Tasks Logger</h1>
 
-        <div
-          onClick={() => handleToggle()}
-          className="cursor-pointer flex justify-center items-center"
-        >
-          <BsThreeDotsVertical size={24} />
-        </div>
+        {localStorage.getItem("authToken") && (
+          <div
+            onClick={() => handleToggle()}
+            className="cursor-pointer flex justify-center items-center"
+          >
+            <BsThreeDotsVertical size={24} />
+          </div>
+        )}
       </div>
       {/* toggle menu */}
       {toggleLogout && (
