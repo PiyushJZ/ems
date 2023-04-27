@@ -5,4 +5,5 @@ export const PATHS = {
   taskList: "/task-list",
   createTasks: "/create-task",
   todo: "/todo",
+  adminPage: "/admin-page",
 };

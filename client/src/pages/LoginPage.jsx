@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { login } from "../redux/authSlice";
 import { useForm } from "react-hook-form";
@@ -7,6 +6,7 @@ import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { PATHS } from "../router/paths";
 import { FETCH_WRAPPER } from "../api";
+
 function Login() {
   const navigate = useNavigate();
   const schema = yup.object({
@@ -24,17 +24,20 @@ function Login() {
   } = useForm({
     resolver: yupResolver(schema),
   });
+
   const onSubmit = async (data) => {
     try {
       const response = await FETCH_WRAPPER.post("auth/login", data);
       const userData = {
         email: response.data.user.email,
         token: response.data.token,
+        accessType: response.data.user.accessType,
       };
       console.log("LOGIN FORM DATA: ", userData);
-      localStorage.setItem("token", userData.token);
+      localStorage.setItem("authToken", userData.token);
       dispatch(login(userData));
-      navigate(PATHS.taskList);
+      if (userData.accessType === "admin") navigate(PATHS.adminPage);
+      else navigate(PATHS.taskList);
     } catch (err) {
       console.log(err);
     }
