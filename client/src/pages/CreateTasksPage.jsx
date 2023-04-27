@@ -1,8 +1,9 @@
+import React from "react";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { FETCH_WRAPPER } from "../api";
+import { FETCH_WRAPPER } from "../api/index";
 
-function CreateTask() {
+const CreateTasksPage = () => {
   const [description, setDescription] = useState("");
   const user = useSelector((state) => state.auth.user);
   const tasks = useSelector((state) => state.fetch.tasks);
@@ -11,45 +12,34 @@ function CreateTask() {
   console.log("AUTH USER:  ", user);
 
   const taskCreation = async (e) => {
-  //   e.preventDefault();
-  //   console.log("hi");
-  //   const data = {
-  //     user: user?.email,
-  //     description,
-  //   };
-
-  //   try {
-  //     const response = await FETCH_WRAPPER.post('/tasks' , data);
-  //     console.log(response);
-  //     // if(response){
-  //     //   dispatch(updateList([]))
-  //     // }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
+    e.preventDefault();
+    const data = {
+      user: user?.email,
+      description,
+    };
+    try {
+      const response = await FETCH_WRAPPER.post("/tasks", data);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
     <>
-      <div className="flex align-center justify-center">
-        <h2 >create task page</h2>
-        <div className="bg-gray-300">
-          <form>
-            <input type="text" onChange={(e)=>setDescription(e.target.value)} />
-            <input type="submit" value="Submit" onClick={taskCreation} />
-          </form>
-        </div>
+      <h2>create task page</h2>
+      <div className="bg-gray-300 mt-20 relative z-10 ">
+        <form onSubmit={taskCreation}>
+          <input
+            type="text"
+            className="border-4"
+            onChange={(e) => setDescription(e.target.value)}
+          />
+          <input type="submit" value="Submit" />
+        </form>
       </div>
     </>
   );
-}
-
-// export default CreateTask;
-
-import React from "react";
-
-const CreateTasksPage = () => {
-  return <div>CreateTasksPage</div>;
 };
 
 export default CreateTasksPage;
