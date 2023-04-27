@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import TimerOutlinedIcon from "@mui/icons-material/TimerOutlined";
-import Tooltip from "@mui/material/Tooltip";
 
 function Timer({ start, end }) {
   const currentTimer = parseInt((Date.now() - new Date(start)) / 1000);
@@ -20,25 +18,21 @@ function Timer({ start, end }) {
     return `${hrs} : ${mins} : ${secs}`;
   };
 
-  const renderMain = () => {
-    if (!end) {
-      return (
-        <>
-          <Tooltip title="Time Elapsed" arrow placement="left">
-            <TimerOutlinedIcon />
-          </Tooltip>
-          <p>{renderTimer()}</p>
-        </>
-      );
-    }
+  const renderTimeTaken = () => {
     const timeTaken = (new Date(end) - new Date(start)) / 1000;
     const result = `Time Taken: ${parseInt(timeTaken / 60 / 60)} hrs-${
       parseInt(timeTaken / 60) % 60
     } mins-${parseInt(timeTaken) % 60} secs`;
-    return <div>{result}</div>;
+    return result;
   };
 
-  return <div>{renderMain()}</div>;
+  return (
+    <>
+      {!end && !start ? "Not Yet Started" : ""}
+      {!end && start ? <>{renderTimer()}</> : ""}
+      {start && end ? <>{renderTimeTaken()}</> : ""}
+    </>
+  );
 }
 
 export default Timer;

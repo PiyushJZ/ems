@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
-// import { GrHomeRounded } from "react-icons/gr";
+import { GrHomeRounded } from "react-icons/gr";
 import { PATHS } from "../router/paths";
 import { getRandomColor } from "../utils";
 import { useEffect } from "react";
