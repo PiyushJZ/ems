@@ -59,21 +59,19 @@ const TaskList = () => {
   };
 
   return (
-    <div>
+    <div className="z-10">
       {/* {renderHeader()} */}
       {tasks.map((task, index) => {
         return (
-          <React.Fragment>
-            <Task
-              key={task.id}
-              index={index}
-              description={task.description}
-              status={task.status}
-              id={task.id}
-              start={task?.start}
-              end={task?.end}
-            />
-          </React.Fragment>
+          <Task
+            key={task.id}
+            index={index}
+            description={task.description}
+            status={task.status}
+            id={task.id}
+            start={task?.start}
+            end={task?.end}
+          />
         );
       })}
     </div>
