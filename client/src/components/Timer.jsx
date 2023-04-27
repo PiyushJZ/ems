@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 
 function Timer({ start, end }) {
-  const currentTimer = parseInt((Date.now() - new Date(start)) / 1000);
+  const currentTimer = parseInt(
+    (Date.now() - new Date(start).valueOf()) / 1000
+  );
   const [timer, setTimer] = useState(currentTimer);
 
   useEffect(() => {
@@ -28,8 +30,8 @@ function Timer({ start, end }) {
 
   return (
     <>
-      {!end && !start ? "Not Yet Started" : ""}
-      {!end && start ? <>{renderTimer()}</> : ""}
+      {!start && !end ? "Not Yet Started" : ""}
+      {start && !end ? <>{renderTimer()}</> : ""}
       {start && end ? <>{renderTimeTaken()}</> : ""}
     </>
   );
