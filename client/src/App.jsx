@@ -21,6 +21,10 @@ const App = () => {
         <Route path={PATHS.taskList} element={<TaskListPage />} />
       </Route>
 
+      <Route element={<ProtectedRoute />}>
+        <Route path={PATHS.createTasks} element={<CreateTasksPage />} />
+      </Route>
+
       {/* default route */}
       <Route path="/*" element={<ErrorPage />} />
     </Routes>

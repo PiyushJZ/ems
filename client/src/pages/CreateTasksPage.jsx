@@ -94,7 +94,8 @@ function CreateTask() {
 
   return (
     <>
-      {/* {renderCreation()} */}
+      <h2>create task page</h2>
+      {/* {renderCreation()}
       <Navbar />
       <Snackbar
         open={success}
@@ -115,7 +116,7 @@ function CreateTask() {
         <Alert severity="error" onClose={handleClose} sx={{ width: "100%" }}>
           Task Creation Failed
         </Alert>
-      </Snackbar>
+      </Snackbar> */}
     </>
   );
 }
