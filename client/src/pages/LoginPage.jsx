@@ -35,6 +35,7 @@ function Login() {
       };
       console.log("LOGIN FORM DATA: ", userData);
       localStorage.setItem("authToken", userData.token);
+      localStorage.setItem("email", userData.email);
       dispatch(login(userData));
       if (userData.accessType === "admin") navigate(PATHS.adminPage);
       else navigate(PATHS.createTasks);
