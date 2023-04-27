@@ -49,10 +49,10 @@ function Login() {
 
   return (
     <>
-      <div className="w-screen h-screen flex justify-center items-center bg-base-50">
-        <div className="w-1/3 h-auto bg-base-200 rounded-lg p-4 shadow-md">
+      <div className="w-screen h-[90vh] flex justify-center items-center bg-base-50">
+        <div className="w-1/3 h-auto bg-base-200 rounded-lg p-4 shadow-md hover:shadow-2xl hover:shadow-info shadow-info transition-all ease-out duration-800">
           <h1 className="text-4xl text-center py-4 text-info font-semibold">
-            TASKS LOGIN
+            TASK LOGS LOGIN
           </h1>
           <div className="w-full flex flex-col gap-4 p-4">
             <form
@@ -81,7 +81,9 @@ function Login() {
               <p className="text-rose-600 font-semibold">
                 {errors.password?.message}
               </p>
-              <button className="btn btn-info">Login</button>
+              <button className="btn btn-info hover:text-3xl transition-all ease-in-out duration-800">
+                LOGIN
+              </button>
             </form>
           </div>
         </div>
