@@ -61,7 +61,7 @@ const TaskList = () => {
   };
 
   return (
-    <div>
+    <div className="z-10">
       {/* {renderHeader()} */}
       <div className="overflow-x-auto">
         <table className="table table-zebra w-full">

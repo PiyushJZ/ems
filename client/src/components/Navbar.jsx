@@ -2,11 +2,8 @@ import React, { useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { PATHS } from "../router/paths";
-import { useSelector } from "react-redux";
 const Navbar = () => {
   const navigate = useNavigate();
-  const { auth } = useSelector((x) => x.auth);
-  console.log("AUTH: ", auth);
   const [toggleLogout, setToggleLogout] = useState(false);
   const handleToggle = () => {
     setToggleLogout((previousToggle) => !previousToggle);
@@ -21,8 +18,22 @@ const Navbar = () => {
     setToggleLogout((prevoiusToggleState) => !prevoiusToggleState);
   };
 
+  const handlePageChange = (path) => {
+    setToggleLogout(false);
+    // other routes will be added incrementally
+    switch (path) {
+      case PATHS.taskList:
+        return navigate(PATHS.taskList);
+      case PATHS.createTasks:
+        return navigate(PATHS.createTasks);
+
+      default:
+        setToggleLogout(false);
+    }
+  };
+
   return (
-    <nav className="fixed w-screen py-6 bg-base-300 px-4 md:px-6 lg:px-8 border-b-[1px] border-base-100 transition duration-150">
+    <nav className="relative w-screen py-6 bg-base-300 px-4 md:px-6 lg:px-8 border-b-[1px] border-base-100 transition duration-150">
       <div className="max-w-full mx-auto flex justify-between">
         <h1>Tasks Logger</h1>
 
@@ -37,11 +48,23 @@ const Navbar = () => {
       </div>
       {/* toggle menu */}
       {toggleLogout && (
-        <aside className="absolute top-20 rounded-lg right-10 w-[10rem] h-auto bg-neutral-content">
-          <div className="w-full">
+        <aside className="absolute z-50 top-20 rounded-lg right-10 w-[10rem] h-auto p-2 bg-base-300">
+          <div className="w-full flex flex-col gap-2">
+            <button
+              className="btn btn-primary hover:scale-95 transition duration-200 ease-in-out w-full"
+              onClick={() => handlePageChange(PATHS.createTasks)}
+            >
+              Create Tasks
+            </button>
+            <button
+              onClick={() => handlePageChange(PATHS.taskList)}
+              className="btn btn-primary hover:scale-95 transition duration-200 ease-in-out w-full"
+            >
+              Task List
+            </button>
             <button
               onClick={() => handleLogout()}
-              className="btn btn-primary w-full"
+              className="btn btn-error hover:scale-95 transition duration-200 ease-in-out w-full"
             >
               Logout
             </button>
