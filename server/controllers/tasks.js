@@ -4,16 +4,26 @@ import { validateObjectId } from "../utils/validation.js";
 export const getTasks = async (req, res) => {
   try {
     if (req.accessType === "employee") {
-      const tasks = await Task.find({ user: req.user.email });
+      const tasks = await Task.find({ email: req.user.email });
       res
         .status(200)
         .json({ tasks, status: true, msg: "Tasks found successfully..." });
     }
     if (req.accessType === "admin") {
       const tasks = await Task.find();
-      res
-        .status(200)
-        .json({ tasks, status: true, msg: "Tasks of all users found..." });
+      const tasksByUserEmail = {};
+      tasks.forEach((task) => {
+        if (!(task.email in tasksByUserEmail)) {
+          tasksByUserEmail[task.email] = [task];
+          return;
+        }
+        tasksByUserEmail[task.email] = [...tasksByUserEmail[task.email], task];
+      });
+      res.status(200).json({
+        tasks: tasksByUserEmail,
+        status: true,
+        msg: "Tasks of all users found...",
+      });
     }
   } catch (err) {
     console.error(err);
@@ -25,13 +35,13 @@ export const getTasks = async (req, res) => {
 
 export const postTask = async (req, res) => {
   try {
-    const { description, user } = req.body;
+    const { description, email } = req.body;
     if (!description) {
       return res
         .status(400)
         .json({ status: false, msg: "Description of task not found" });
     }
-    const task = await Task.create({ user, description });
+    const task = await Task.create({ email, description });
     res
       .status(200)
       .json({ task, status: true, msg: "Task created successfully.." });
@@ -39,7 +49,7 @@ export const postTask = async (req, res) => {
     console.error(err);
     return res
       .status(500)
-      .json({ status: false, msg: "Internal Server Error" });
+      .json({ status: false, msg: "Internal Server Error", errBody: err });
   }
 };
 
@@ -64,7 +74,7 @@ export const putTask = async (req, res) => {
         .json({ status: false, msg: "Task with given id not found" });
     }
 
-    if (task.user != req.user.email) {
+    if (task.email != req.user.email) {
       return res
         .status(403)
         .json({ status: false, msg: "You can't update task of another user" });
@@ -99,7 +109,7 @@ export const deleteTask = async (req, res) => {
         .json({ status: false, msg: "Task with given id not found" });
     }
 
-    if (task.user != req.user.email) {
+    if (task.email != req.user.email) {
       return res
         .status(403)
         .json({ status: false, msg: "You can't delete task of another user" });

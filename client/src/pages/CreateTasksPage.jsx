@@ -1,13 +1,9 @@
 import { useState } from "react";
-import Typography from "@mui/material/Typography";
-import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import Tooltip from "@mui/material/Tooltip";
-import Alert from "@mui/material/Alert";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
-import { updateList } from "../redux/taskListSlice";
+import { updateList } from "../redux/fetchSlice";
 
 function CreateTask() {
   const [creation, setCreation] = useState(false);

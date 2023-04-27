@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const taskSchema = new mongoose.Schema({
-  user: {
+  email: {
     type: String,
     required: true,
   },

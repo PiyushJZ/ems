@@ -24,17 +24,20 @@ function Login() {
   } = useForm({
     resolver: yupResolver(schema),
   });
+
   const onSubmit = async (data) => {
     try {
       const response = await FETCH_WRAPPER.post("auth/login", data);
       const userData = {
         email: response.data.user.email,
         token: response.data.token,
+        accessType: response.data.user.accessType,
       };
       console.log("LOGIN FORM DATA: ", userData);
-      localStorage.setItem("token", userData.token);
+      localStorage.setItem("authToken", userData.token);
       dispatch(login(userData));
-      navigate(PATHS.taskList);
+      if (userData.accessType === "admin") navigate(PATHS.adminPage);
+      else navigate(PATHS.taskList);
     } catch (err) {
       console.log(err);
     }

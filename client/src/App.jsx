@@ -1,4 +1,3 @@
-import { useSelector } from "react-redux";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { PATHS } from "./router/paths";
 import { CreateTasksPage, LoginPage, ErrorPage, TaskListPage } from "./pages";

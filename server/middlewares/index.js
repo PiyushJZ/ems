@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 
 export const verifyAccessToken = async (req, res, next) => {
-  const token = req.header("Authorization").split(" ")[1];
+  const token = req.header("Authorization")?.split(" ")[1];
   if (!token)
     return res.status(400).json({ status: false, msg: "Token not found" });
   let user;

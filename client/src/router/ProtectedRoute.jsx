@@ -2,7 +2,7 @@ import { Outlet, Navigate } from "react-router-dom";
 import { PATHS } from "../router/paths";
 import { decodeToken } from "react-jwt";
 const PrivateRoute = () => {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("authToken");
   let auth = { token };
   console.log("AUTH TOKEN: ", auth);
   const decodedToken = auth.token && decodeToken(auth.token);
