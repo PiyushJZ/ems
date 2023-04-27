@@ -40,7 +40,7 @@ const TaskList = () => {
       }
     });
     dispatch(updateList(allTasks));
-    console.log(allTasks);
+    console.log(tasks);
   }, []);
 
   const renderHeader = () => {
