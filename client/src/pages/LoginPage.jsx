@@ -6,6 +6,7 @@ import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { PATHS } from "../router/paths";
 import { FETCH_WRAPPER } from "../api";
+
 function Login() {
   const navigate = useNavigate();
   const schema = yup.object({
