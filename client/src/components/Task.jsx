@@ -6,13 +6,14 @@ import { updateList } from "../redux/fetchSlice";
 import axios from "axios";
 import Timer from "./Timer";
 
-function Task({ description, status, id, start, end }) {
+function Task({ description, status, id, start, end, index }) {
   const [isEdit, setIsEdit] = useState(false);
   const [desc, setDesc] = useState(description);
   const user = useSelector((state) => state.auth.user);
   const { tasks } = useSelector((state) => state.fetch);
   const dispatch = useDispatch();
 
+  // Edit the task
   async function editTask() {
     const data = {
       description: desc,
@@ -28,20 +29,14 @@ function Task({ description, status, id, start, end }) {
     );
     if (response.data.status === true) {
       const temp = tasks.filter((task) => {
-        return task.id !== id;
+        return task.id === id ? { ...task, description: desc } : task;
       });
-      const temp2 = tasks.filter((task) => {
-        return task.id === id;
-      });
-      const updatedTask = {
-        desc,
-        id,
-        status: temp2[0].status,
-      };
-      dispatch(updateList([...temp, updatedTask]));
-      setIsEdit(false);
+      dispatch(updateList([...temp]));
+      setIsEdit(!isEdit);
     }
   }
+
+  // delete the task
   async function deleteTask() {
     const response = await axios.delete(
       `http://localhost:3001/api/tasks/${id}`,
@@ -58,6 +53,8 @@ function Task({ description, status, id, start, end }) {
       dispatch(updateList(updatedList));
     }
   }
+
+  // start the task
   async function startTask() {
     const start = Date.now();
     const data = {
@@ -73,18 +70,14 @@ function Task({ description, status, id, start, end }) {
       }
     );
     if (response.data.status === true) {
-      const updatedTask = {
-        description,
-        id,
-        status: "running",
-        start: response.data.task.start,
-      };
       const temp = tasks.filter((task) => {
-        return task.id !== id;
+        return task.id === id ? { ...task, status: 'running', start: response.data.task.start } : task;
       });
-      dispatch(updateList([...temp, updatedTask]));
+      dispatch(updateList([...temp]));
     }
   }
+
+  // End the task
   async function endTask() {
     const end = Date.now();
     const data = {
@@ -101,40 +94,28 @@ function Task({ description, status, id, start, end }) {
     );
 
     if (response.data.status === true) {
-      const updatedTask = {
-        description,
-        id,
-        status: "complete",
-        start: response.data.task.start,
-        end: response.data.task.end,
-      };
       const temp = tasks.filter((task) => {
-        return task.id !== id;
+        return task.id === id ? {
+          ...task, status: "complete",
+          end: response.data.task.end
+        } : task;
       });
-      dispatch(updateList([...temp, updatedTask]));
+      dispatch(updateList([...temp]));
     }
   }
 
+  // render buttons
   const renderControls = () => {
     if (status === "pending") {
       return (
-        <div
-          variant="contained"
-          aria-label="outlined primary button group"
-          sx={{ m: 1 }}
-        >
-          <button onClick={startTask}>Start</button>
-
-          <button onClick={endTask}>Stop</button>
+        <div className="flex" >
+          <button className="mx-3 bg-blue-300 px-4 py-1 rounded-md " onClick={startTask}>Start</button>
+          <button className="mx-3 bg-blue-300 px-4 py-1 rounded-md" onClick={endTask}>Stop</button>
         </div>
       );
     } else if (status === "running") {
       return (
-        <div
-          variant="contained"
-          aria-label="outlined primary button group"
-          sx={{ m: 1 }}
-        >
+        <div>
           <button disabled>Start</button>
           <button onClick={endTask}>Stop</button>
         </div>
@@ -144,25 +125,24 @@ function Task({ description, status, id, start, end }) {
     }
   };
 
-  function renderDescription() {
-    if (!isEdit) {
-      return <h2>{desc}</h2>;
-    }
+  // open the modal to edit description
+  function changeDescription() {
     return (
       <>
-        <input
+        {isEdit && <>  <input
           label="Task Description"
           required
           value={desc}
           onChange={(e) => setDesc(e.target.value)}
         />
-        <button onClick={editTask}>
-          <h2>Edit Task</h2>
-        </button>
+          <button onClick={editTask}>
+            <h2>Edit Task</h2>
+          </button> </>}
       </>
     );
   }
 
+  // time render component
   const renderTimer = () => {
     if (status !== "pending") {
       return <Timer start={start} end={end} />;
@@ -172,31 +152,29 @@ function Task({ description, status, id, start, end }) {
 
   return (
     <>
-      <div
-        container
-        flexDirection={"column"}
-        justifyContent={"space-evenly"}
-        alignItems={"center"}
-        sx={{ bgcolor: "#e4e4f0", m: 1, p: 1.5 }}
-      >
-        <div item>{renderDescription()}</div>
-        <div item>{renderTimer()}</div>
-        <div item>
-          <div
-            variant="contained"
-            aria-label="outlined primary button group"
-            sx={{ m: 1 }}
-          >
-            <button onClick={() => setIsEdit(true)}>
-              <EditIcon />
-            </button>
 
-            <button onClick={deleteTask}>
-              <DeleteIcon />
-            </button>
-          </div>
-        </div>
-        <div item>{renderControls()}</div>
+      <div className="overflow-x-auto">
+
+        {changeDescription()}
+
+        <table className="table w-full">
+          <tbody>
+            <tr>
+              <th className="w-2" >{index + 1}</th>
+              <td className="w-10"  >{desc}</td>
+              <td className="w-20"  >{renderTimer()}</td>
+              <td className="w-10"  >{renderControls()}</td>
+              <td className="w-10"  >
+                <button onClick={() => setIsEdit(true)}>
+                  <EditIcon />
+                </button>
+                <button onClick={deleteTask}>
+                  <DeleteIcon />
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </>
   );

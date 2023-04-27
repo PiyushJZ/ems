@@ -24,12 +24,12 @@ function Timer({ start, end }) {
   const renderMain = () => {
     if (!end) {
       return (
-        <div className="timer">
+        <>
           <Tooltip title="Time Elapsed" arrow placement="left">
             <TimerOutlinedIcon />
           </Tooltip>
           <p>{renderTimer()}</p>
-        </div>
+        </>
       );
     }
     const timeTaken = (new Date(end) - new Date(start)) / 1000;

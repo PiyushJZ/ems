@@ -33,9 +33,6 @@ const TaskTable = () => {
   };
 
   const renderTable = () => {
-    if (!tasks || tasks === {}) {
-      return <h3>No Tasks Present</h3>;
-    }
     return (
       <div className="overflow-x-auto">
         <table className="table table-zebra w-full">

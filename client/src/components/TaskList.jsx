@@ -38,6 +38,7 @@ const TaskList = () => {
         allTasks = [...allTasks, newTask];
       }
     });
+    console.log(allTasks);
     dispatch(updateList(allTasks));
   }, []);
 
@@ -58,30 +59,24 @@ const TaskList = () => {
     }
   };
 
-  const renderTable = () => {
-    return tasks.map((task) => {
-      return (
-        <React.Fragment>
-          <Task
-            key={task.id}
-            description={task.description}
-            status={task.status}
-            id={task.id}
-            start={task?.start}
-            end={task?.end}
-          />
-        </React.Fragment>
-      );
-    });
-
-    return "";
-  };
-
   return (
     <div>
       {/* {renderHeader()} */}
-      {renderTable()}
-      Tasks
+      {tasks.map((task, index) => {
+        return (
+          <React.Fragment>
+            <Task
+              key={task.id}
+              index={index}
+              description={task.description}
+              status={task.status}
+              id={task.id}
+              start={task?.start}
+              end={task?.end}
+            />
+          </React.Fragment>
+        );
+      })}
     </div>
   );
 };
