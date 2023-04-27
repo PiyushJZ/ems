@@ -6,6 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { PATHS } from "../router/paths";
+import { FETCH_WRAPPER } from "../api";
 function Login() {
   const navigate = useNavigate();
   const schema = yup.object({
@@ -25,18 +26,15 @@ function Login() {
   });
   const onSubmit = async (data) => {
     try {
-      const response = await axios.post(
-        "http://localhost:3001/api/auth/login",
-        data
-      );
+      const response = await FETCH_WRAPPER.post("auth/login", data);
       const userData = {
         email: response.data.user.email,
         token: response.data.token,
       };
       console.log("LOGIN FORM DATA: ", userData);
-      localStorage.setItem("auth", userData.token);
+      localStorage.setItem("token", userData.token);
       dispatch(login(userData));
-      navigate(PATHS.createTasks);
+      navigate(PATHS.taskList);
     } catch (err) {
       console.log(err);
     }

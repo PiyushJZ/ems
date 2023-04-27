@@ -8,7 +8,6 @@ import Alert from "@mui/material/Alert";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { updateList } from "../redux/taskListSlice";
-import Navbar from "./navbar/Navbar";
 
 function CreateTask() {
   const [creation, setCreation] = useState(false);
