@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getTasks, updateList } from "../redux/fetchSlice";
+import { clearList, getTasks, updateList } from "../redux/fetchSlice";
 import Task from "../components/Task";
 
 const TaskList = () => {
@@ -10,35 +10,6 @@ const TaskList = () => {
 
   useEffect(() => {
     dispatch(getTasks());
-    let allTasks = [];
-    tasks.forEach((task) => {
-      if (task.start && task.end) {
-        const newTask = {
-          id: task._id,
-          description: task.description,
-          status: "complete",
-          start: task.start,
-          end: task.end,
-        };
-        allTasks = [...allTasks, newTask];
-      } else if (task.start && !task.end) {
-        const newTask = {
-          id: task._id,
-          description: task.description,
-          status: "running",
-          start: task.start,
-        };
-        allTasks = [...allTasks, newTask];
-      } else if (!task.start && !task.end) {
-        const newTask = {
-          id: task._id,
-          description: task.description,
-          status: "pending",
-        };
-        allTasks = [...allTasks, newTask];
-      }
-    });
-    dispatch(updateList(allTasks));
   }, []);
 
   const renderHeader = () => {
@@ -77,11 +48,11 @@ const TaskList = () => {
             {tasks.map((task, index) => {
               return (
                 <Task
-                  key={task.id}
+                  key={task._id}
                   index={index}
                   description={task.description}
                   status={task.status}
-                  id={task.id}
+                  id={task._id}
                   start={task?.start}
                   end={task?.end}
                 />

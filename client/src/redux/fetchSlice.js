@@ -30,10 +30,10 @@ const fetchSlice = createSlice({
       state.loading = false;
       state.success = true;
       state.error = "No error";
-      state.tasks = action.payload;
+      state["tasks"] = action.payload;
     },
     clearList: (state) => {
-      state.tasks = [];
+      state["tasks"] = [];
     },
   },
   extraReducers: (builder) => {
