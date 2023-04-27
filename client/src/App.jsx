@@ -1,23 +1,32 @@
-import Login from "./components/Login";
-import NavBar from "./components/Navbar";
-import TaskList from "./components/TaskList";
-import CreateTask from "./components/CreateTask";
 import { useSelector } from "react-redux";
-import "./App.css";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { PATHS } from "./router/paths";
-import Task from "./components/Task";
-import { isAuthenticated } from "./utils/auth";
+import { CreateTasksPage, LoginPage, ErrorPage, TaskListPage } from "./pages";
+import ReverseAuthRoute from "./router/ReverseAuth";
 import ProtectedRoute from "./router/ProtectedRoute";
-import Navbar from "./components/navbar/Navbar";
+
 const App = () => {
-  const { isLoggedIn, user } = useSelector((state) => state.auth);
+  // const { isLoggedIn, user } = useSelector((state) => state.auth);
 
   return (
     <Routes>
-      <Route path={PATHS.root} element={<Login />} />
-      <Route path={PATHS.taskList} element={<TaskList />} />
-      <Route path={PATHS.createTasks} element={<CreateTask />} />
+      {/* login route */}
+      <Route element={<ReverseAuthRoute />}>
+        <Route path={PATHS.login} element={<LoginPage />} />
+      </Route>
+      <Route path={PATHS.root} element={<Navigate to={PATHS.login} />} />
+      {/* _______________________________________________________ */}
+
+      <Route element={<ProtectedRoute />}>
+        <Route path={PATHS.taskList} element={<TaskListPage />} />
+      </Route>
+
+      <Route element={<ProtectedRoute />}>
+        <Route path={PATHS.createTasks} element={<CreateTasksPage />} />
+      </Route>
+
+      {/* default route */}
+      <Route path="/*" element={<ErrorPage />} />
     </Routes>
   );
 };
