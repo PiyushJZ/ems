@@ -7,7 +7,7 @@ import Button from "@mui/material/Button";
 import { useDispatch, useSelector } from "react-redux";
 import Tooltip from "@mui/material/Tooltip";
 import { logout } from "../redux/authSlice";
-import { clearList } from "../redux/taskListSlice";
+import { clearList } from "../redux/fetchSlice";
 
 export default function ButtonAppBar() {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);

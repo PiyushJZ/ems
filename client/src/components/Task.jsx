@@ -1,14 +1,8 @@
 import { useState } from "react";
-import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid";
-import ButtonGroup from "@mui/material/ButtonGroup";
-import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import TextField from "@mui/material/TextField";
-import Tooltip from "@mui/material/Tooltip";
 import { useSelector, useDispatch } from "react-redux";
-import { updateList } from "../redux/taskListSlice";
+import { updateList } from "../redux/fetchSlice";
 import axios from "axios";
 import Timer from "./Timer";
 
@@ -16,7 +10,7 @@ function Task({ description, status, id, start, end }) {
   const [isEdit, setIsEdit] = useState(false);
   const [desc, setDesc] = useState(description);
   const user = useSelector((state) => state.auth.user);
-  const tasks = useSelector((state) => state.taskList.tasks);
+  const { tasks } = useSelector((state) => state.fetch);
   const dispatch = useDispatch();
 
   async function editTask() {

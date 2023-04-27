@@ -7,7 +7,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Alert from "@mui/material/Alert";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
-import { updateList } from "../redux/taskListSlice";
+import { updateList } from "../redux/fetchSlice";
 import Navbar from "./navbar/Navbar";
 
 function CreateTask() {

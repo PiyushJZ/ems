@@ -1,10 +1,10 @@
-import React from 'react';
-import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { getTasks } from '../../redux/fetchSlice';
+import React from "react";
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { getTasks } from "../../redux/fetchSlice";
 
 const TaskTable = () => {
-  const { tasks } = useSelector((state) => state.fetch.apiData);
+  const { tasks } = useSelector((state) => state.fetch);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -37,8 +37,8 @@ const TaskTable = () => {
       return <h3>No Tasks Present</h3>;
     }
     return (
-      <div className='overflow-x-auto'>
-        <table className='table table-zebra w-full'>
+      <div className="overflow-x-auto">
+        <table className="table table-zebra w-full">
           {/* head */}
           <thead>
             <tr>
@@ -54,32 +54,26 @@ const TaskTable = () => {
                   <td>{userEmail}</td>
                   <td>
                     <select
-                      defaultValue={'select'}
-                      className='select select-bordered w-full max-w-xs'
+                      defaultValue={"select"}
+                      className="select select-bordered w-full max-w-xs"
                     >
-                      <option
-                        value={'select'}
-                        disabled
-                      >
+                      <option value={"select"} disabled>
                         Select a task
                       </option>
                       {tasks[userEmail].map((task) => {
                         return (
-                          <option
-                            key={task._id}
-                            value={task.description}
-                          >
+                          <option key={task._id} value={task.description}>
+                            {/* <React.Fragment> */}
+                            <React.Fragment>{task.description}</React.Fragment>
+                            &emsp;
                             <React.Fragment>
-                              <p>{task.description}</p>
-                              &emsp;
-                              <p>
-                                {renderTime(
-                                  parseInt(
-                                    new Date(task.end) - new Date(task.start)
-                                  ) / 1000
-                                )}
-                              </p>
+                              {renderTime(
+                                parseInt(
+                                  new Date(task.end) - new Date(task.start)
+                                ) / 1000
+                              )}
                             </React.Fragment>
+                            {/* </React.Fragment> */}
                           </option>
                         );
                       })}

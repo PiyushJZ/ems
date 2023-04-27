@@ -33,7 +33,6 @@ function Timer({ start, end }) {
       );
     }
     const timeTaken = (new Date(end) - new Date(start)) / 1000;
-    console.log(timeTaken);
     const result = `Time Taken: ${parseInt(timeTaken / 60 / 60)} hrs-${
       parseInt(timeTaken / 60) % 60
     } mins-${parseInt(timeTaken) % 60} secs`;

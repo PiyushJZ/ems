@@ -1,105 +1,89 @@
-import React, { useEffect } from "react";
-import { Grid, Typography } from "@mui/material";
+import React from "react";
+import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { updateList } from "../redux/taskListSlice";
-import axios, { all } from "axios";
+import { getTasks, updateList } from "../redux/fetchSlice";
 import Task from "./Task";
 
-function TaskList() {
-  const tasks = useSelector((state) => state.taskList.tasks);
-  const { isLoggedIn, user } = useSelector((state) => state.auth);
+const TaskList = () => {
+  const { tasks } = useSelector((state) => state.fetch);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    async function fetchTasks() {
-      const response = await axios.get("http://localhost:3001/api/tasks", {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      });
-      let allTasks = [];
-      response.data.tasks.forEach((task) => {
-        if (task.start && task.end) {
-          const newTask = {
-            id: task._id,
-            description: task.description,
-            status: "complete",
-            start: task.start,
-            end: task.end,
-          };
-          allTasks = [...allTasks, newTask];
-        } else if (task.start && !task.end) {
-          const newTask = {
-            id: task._id,
-            description: task.description,
-            status: "running",
-            start: task.start,
-          };
-          allTasks = [...allTasks, newTask];
-        } else if (!task.start && !task.end) {
-          const newTask = {
-            id: task._id,
-            description: task.description,
-            status: "pending",
-          };
-          allTasks = [...allTasks, newTask];
-        }
-      });
-      dispatch(updateList(allTasks));
-    }
-
-    if (isLoggedIn) {
-      fetchTasks();
-    }
-  }, [isLoggedIn]);
+    dispatch(getTasks());
+    let allTasks = [];
+    tasks.forEach((task) => {
+      if (task.start && task.end) {
+        const newTask = {
+          id: task._id,
+          description: task.description,
+          status: "complete",
+          start: task.start,
+          end: task.end,
+        };
+        allTasks = [...allTasks, newTask];
+      } else if (task.start && !task.end) {
+        const newTask = {
+          id: task._id,
+          description: task.description,
+          status: "running",
+          start: task.start,
+        };
+        allTasks = [...allTasks, newTask];
+      } else if (!task.start && !task.end) {
+        const newTask = {
+          id: task._id,
+          description: task.description,
+          status: "pending",
+        };
+        allTasks = [...allTasks, newTask];
+      }
+    });
+    dispatch(updateList(allTasks));
+  }, []);
 
   const renderHeader = () => {
     if (tasks.length === 0) {
       if (isLoggedIn) {
-        return (
-          <Typography variant="h6" align="center">
-            No Tasks Created Yet
-          </Typography>
-        );
+        return <h6>No Tasks Created Yet</h6>;
       } else {
         return (
           <div>
-            <Typography variant="h6" align="center">
-              No Tasks Created Yet
-            </Typography>
-            <Typography variant="h6" align="center">
-              Log in to create
-            </Typography>
+            <h6>No Tasks Created Yet</h6>
+            <h6>Log in to create</h6>
           </div>
         );
       }
     } else {
-      return (
-        <Typography variant="h6" align="center">
-          Tasks
-        </Typography>
-      );
+      return <h6>Tasks</h6>;
     }
   };
 
+  const renderTable = () => {
+    return tasks.map((task) => {
+      return (
+        <React.Fragment>
+          <Task
+            key={task.id}
+            description={task.description}
+            status={task.status}
+            id={task.id}
+            start={task?.start}
+            end={task?.end}
+          />
+        </React.Fragment>
+      );
+    });
+
+    return "";
+  };
+
   return (
-    <Grid flexDirection={"column"} alignItems={"center"} sx={{ mt: 6 }}>
-      {renderHeader()}
-      {tasks.map((task) => {
-        return (
-          <React.Fragment key={task.id}>
-            <Task
-              description={task.description}
-              status={task.status}
-              id={task.id}
-              start={task?.start}
-              end={task?.end}
-            />
-          </React.Fragment>
-        );
-      })}
-    </Grid>
+    <div>
+      {/* {renderHeader()} */}
+      {renderTable()}
+      Tasks
+    </div>
   );
-}
+};
 
 export default TaskList;
