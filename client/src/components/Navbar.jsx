@@ -20,6 +20,7 @@ const Navbar = () => {
 
   const handlePageChange = (path) => {
     setToggleLogout(false);
+    // other routes will be added incrementally
     switch (path) {
       case PATHS.taskList:
         return navigate(PATHS.taskList);
@@ -27,7 +28,7 @@ const Navbar = () => {
         return navigate(PATHS.createTasks);
 
       default:
-        break;
+        setToggleLogout(false);
     }
   };
 
@@ -47,23 +48,23 @@ const Navbar = () => {
       </div>
       {/* toggle menu */}
       {toggleLogout && (
-        <aside className="absolute z-50 top-20 rounded-lg right-10 w-[10rem] h-auto">
-          <div className="w-full flex flex-col gap-5">
+        <aside className="absolute z-50 top-20 rounded-lg right-10 w-[10rem] h-auto p-2 bg-base-300">
+          <div className="w-full flex flex-col gap-2">
             <button
-              className="btn btn-primary w-full"
+              className="btn btn-primary hover:scale-95 transition duration-200 ease-in-out w-full"
               onClick={() => handlePageChange(PATHS.createTasks)}
             >
               Create Tasks
             </button>
             <button
               onClick={() => handlePageChange(PATHS.taskList)}
-              className="btn btn-primary w-full"
+              className="btn btn-primary hover:scale-95 transition duration-200 ease-in-out w-full"
             >
               Task List
             </button>
             <button
               onClick={() => handleLogout()}
-              className="btn btn-error w-full"
+              className="btn btn-error hover:scale-95 transition duration-200 ease-in-out w-full"
             >
               Logout
             </button>
