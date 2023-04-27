@@ -7,21 +7,22 @@ const CreateTasksPage = () => {
 
   const taskCreation = async (e) => {
     e.preventDefault();
-
+    
     if (!/[a-zA-Z0-9]/.test(description)) {
       alert("please enter some text");
       return;
     }
-
+    
     const email = localStorage.getItem("email");
-
+    
     const data = {
       email,
       description,
     };
-
+    
     try {
-      const response = await FETCH_WRAPPER.post("/tasks", data);
+      const response = await FETCH_WRAPPER.post("tasks", data);
+      console.log(response);
       if (response) {
         alert("Task created successfully");
       }
