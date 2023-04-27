@@ -1,6 +1,5 @@
 import { useState } from "react";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
+import { GrEdit, GrTrash } from "react-icons/gr";
 import { useSelector, useDispatch } from "react-redux";
 import { updateList } from "../redux/fetchSlice";
 import axios from "axios";
@@ -71,7 +70,9 @@ function Task({ description, status, id, start, end, index }) {
     );
     if (response.data.status === true) {
       const temp = tasks.filter((task) => {
-        return task.id === id ? { ...task, status: 'running', start: response.data.task.start } : task;
+        return task.id === id
+          ? { ...task, status: "running", start: response.data.task.start }
+          : task;
       });
       dispatch(updateList([...temp]));
     }
@@ -95,10 +96,13 @@ function Task({ description, status, id, start, end, index }) {
 
     if (response.data.status === true) {
       const temp = tasks.filter((task) => {
-        return task.id === id ? {
-          ...task, status: "complete",
-          end: response.data.task.end
-        } : task;
+        return task.id === id
+          ? {
+              ...task,
+              status: "complete",
+              end: response.data.task.end,
+            }
+          : task;
       });
       dispatch(updateList([...temp]));
     }
@@ -108,9 +112,19 @@ function Task({ description, status, id, start, end, index }) {
   const renderControls = () => {
     if (status === "pending") {
       return (
-        <div className="flex" >
-          <button className="mx-3 bg-blue-300 px-4 py-1 rounded-md " onClick={startTask}>Start</button>
-          <button className="mx-3 bg-blue-300 px-4 py-1 rounded-md" onClick={endTask}>Stop</button>
+        <div className="flex">
+          <button
+            className="mx-3 bg-blue-300 px-4 py-1 rounded-md "
+            onClick={startTask}
+          >
+            Start
+          </button>
+          <button
+            className="mx-3 bg-blue-300 px-4 py-1 rounded-md"
+            onClick={endTask}
+          >
+            Stop
+          </button>
         </div>
       );
     } else if (status === "running") {
@@ -129,54 +143,41 @@ function Task({ description, status, id, start, end, index }) {
   function changeDescription() {
     return (
       <>
-        {isEdit && <>  <input
-          label="Task Description"
-          required
-          value={desc}
-          onChange={(e) => setDesc(e.target.value)}
-        />
-          <button onClick={editTask}>
-            <h2>Edit Task</h2>
-          </button> </>}
+        {isEdit && (
+          <>
+            {" "}
+            <input
+              label="Task Description"
+              required
+              value={desc}
+              onChange={(e) => setDesc(e.target.value)}
+            />
+            <button onClick={editTask}>
+              <h2>Edit Task</h2>
+            </button>{" "}
+          </>
+        )}
       </>
     );
   }
 
-  // time render component
-  const renderTimer = () => {
-    if (status !== "pending") {
-      return <Timer start={start} end={end} />;
-    }
-    return;
-  };
-
   return (
-    <>
-
-      <div className="overflow-x-auto">
-
-        {changeDescription()}
-
-        <table className="table w-full">
-          <tbody>
-            <tr>
-              <th className="w-2" >{index + 1}</th>
-              <td className="w-10"  >{desc}</td>
-              <td className="w-20"  >{renderTimer()}</td>
-              <td className="w-10"  >{renderControls()}</td>
-              <td className="w-10"  >
-                <button onClick={() => setIsEdit(true)}>
-                  <EditIcon />
-                </button>
-                <button onClick={deleteTask}>
-                  <DeleteIcon />
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </>
+    <tr>
+      <th className="w-2">{index + 1}</th>
+      <td className="w-10">{desc}</td>
+      <td className="w-20">
+        <Timer start={start} end={end} />
+      </td>
+      <td className="w-10">{status === "complete" ? "Complete" : "Pending"}</td>
+      <td className="w-10">
+        <button className="btn btn-info btn-sm" onClick={() => setIsEdit(true)}>
+          <GrEdit />
+        </button>
+        <button className="btn btn-error btn-sm" onClick={deleteTask}>
+          <GrTrash />
+        </button>
+      </td>
+    </tr>
   );
 }
 

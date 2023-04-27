@@ -9,6 +9,7 @@ const TaskList = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    console.log(tasks);
     dispatch(getTasks());
     let allTasks = [];
     tasks.forEach((task) => {
@@ -39,6 +40,7 @@ const TaskList = () => {
       }
     });
     dispatch(updateList(allTasks));
+    console.log(allTasks);
   }, []);
 
   const renderHeader = () => {
@@ -61,21 +63,35 @@ const TaskList = () => {
   return (
     <div>
       {/* {renderHeader()} */}
-      {tasks.map((task, index) => {
-        return (
-          <React.Fragment>
-            <Task
-              key={task.id}
-              index={index}
-              description={task.description}
-              status={task.status}
-              id={task.id}
-              start={task?.start}
-              end={task?.end}
-            />
-          </React.Fragment>
-        );
-      })}
+      <div className="overflow-x-auto">
+        <table className="table table-zebra w-full">
+          {/* head */}
+          <thead>
+            <tr>
+              <th>Sr. No.</th>
+              <th>task description</th>
+              <th>status</th>
+              <th>controls</th>
+              <th>options</th>
+            </tr>
+          </thead>
+          <tbody>
+            {tasks.map((task, index) => {
+              return (
+                <Task
+                  key={task.id}
+                  index={index}
+                  description={task.description}
+                  status={task.status}
+                  id={task.id}
+                  start={task?.start}
+                  end={task?.end}
+                />
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
