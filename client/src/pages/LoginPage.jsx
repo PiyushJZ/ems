@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { login } from "../redux/authSlice";
 import { useForm } from "react-hook-form";

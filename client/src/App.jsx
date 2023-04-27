@@ -4,6 +4,7 @@ import { PATHS } from "./router/paths";
 import { CreateTasksPage, LoginPage, ErrorPage, TaskListPage } from "./pages";
 import ReverseAuthRoute from "./router/ReverseAuth";
 import ProtectedRoute from "./router/ProtectedRoute";
+import { Navbar } from "./components";
 
 const App = () => {
   // const { isLoggedIn, user } = useSelector((state) => state.auth);
