@@ -1,14 +1,9 @@
 import { useState } from "react";
-import Typography from "@mui/material/Typography";
-import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import Tooltip from "@mui/material/Tooltip";
-import Alert from "@mui/material/Alert";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
-import { updateList } from "../redux/fetchSlice";
-import Navbar from "./navbar/Navbar";
+import { updateList } from "../redux/taskListSlice";
 
 function CreateTask() {
   const [creation, setCreation] = useState(false);
@@ -95,7 +90,8 @@ function CreateTask() {
 
   return (
     <>
-      {/* {renderCreation()} */}
+      <h2>create task page</h2>
+      {/* {renderCreation()}
       <Navbar />
       <Snackbar
         open={success}
@@ -116,7 +112,7 @@ function CreateTask() {
         <Alert severity="error" onClose={handleClose} sx={{ width: "100%" }}>
           Task Creation Failed
         </Alert>
-      </Snackbar>
+      </Snackbar> */}
     </>
   );
 }

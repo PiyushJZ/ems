@@ -1,13 +1,13 @@
-import { Outlet, Navigate } from 'react-router-dom';
-import { PATHS } from '../router/paths';
-
+import { Outlet, Navigate } from "react-router-dom";
+import { PATHS } from "../router/paths";
+import { decodeToken } from "react-jwt";
 const PrivateRoute = () => {
-  const token = localStorage.getItem('authToken');
+  const token = localStorage.getItem("authToken");
   let auth = { token };
+  console.log("AUTH TOKEN: ", auth);
   const decodedToken = auth.token && decodeToken(auth.token);
-  console.log(decodedToken);
 
-  return auth.token ? <Outlet /> : <Navigate to={PATHS.ROOT} />;
+  return auth.token ? <Outlet /> : <Navigate to={PATHS.root} />;
 };
 
 export default PrivateRoute;

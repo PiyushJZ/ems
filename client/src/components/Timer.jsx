@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import TimerOutlinedIcon from "@mui/icons-material/TimerOutlined";
 import Tooltip from "@mui/material/Tooltip";
-import "./Timer.css";
 
 function Timer({ start, end }) {
   const currentTimer = parseInt((Date.now() - new Date(start)) / 1000);
