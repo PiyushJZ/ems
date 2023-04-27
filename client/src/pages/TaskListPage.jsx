@@ -9,7 +9,6 @@ const TaskList = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log(tasks);
     dispatch(getTasks());
     let allTasks = [];
     tasks.forEach((task) => {
@@ -40,7 +39,6 @@ const TaskList = () => {
       }
     });
     dispatch(updateList(allTasks));
-    console.log(tasks);
   }, []);
 
   const renderHeader = () => {

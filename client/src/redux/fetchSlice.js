@@ -27,6 +27,9 @@ const fetchSlice = createSlice({
   initialState,
   reducers: {
     updateList: (state, action) => {
+      state.loading = false;
+      state.success = true;
+      state.error = "No error";
       state.tasks = action.payload;
     },
     clearList: (state) => {
