@@ -5,6 +5,6 @@ export const FETCH_WRAPPER = axios.create({
   timeout: 5000,
   headers: {
     Accept: "application/json",
-    token: `${localStorage.getItem("token")}`,
+    token: `${localStorage.getItem("authToken")}`,
   },
 });

@@ -2,7 +2,7 @@ import React from "react";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getTasks, updateList } from "../redux/fetchSlice";
-import Task from "./Task";
+import Task from "../components/Task";
 
 const TaskList = () => {
   const { tasks } = useSelector((state) => state.fetch);
@@ -38,7 +38,6 @@ const TaskList = () => {
         allTasks = [...allTasks, newTask];
       }
     });
-    console.log(allTasks);
     dispatch(updateList(allTasks));
   }, []);
 
