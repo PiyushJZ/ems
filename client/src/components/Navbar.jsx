@@ -6,6 +6,8 @@ import { MdOutlineDarkMode } from 'react-icons/md';
 import { CiSun } from 'react-icons/ci';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleDarkMode } from '../redux/appSlice';
+import { logout } from '../redux/authSlice';
+import { clearList } from '../redux/fetchSlice';
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -20,8 +22,9 @@ const Navbar = () => {
   const handleLogout = () => {
     const token = localStorage.getItem('authToken');
     if (token) {
-      localStorage.removeItem('authToken');
+      dispatch(clearList());
       localStorage.clear();
+      dispatch(logout());
       navigate(PATHS.root);
     }
     setToggleLogout((prevoiusToggleState) => !prevoiusToggleState);

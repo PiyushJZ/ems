@@ -1,17 +1,17 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { FETCH_WRAPPER } from '../api';
 
 const initialState = {
   tasks: [],
   loading: true,
   success: false,
-  error: "No error",
+  error: 'No error',
 };
 
-export const getTasks = createAsyncThunk("/getTasks", async () => {
+export const getTasks = createAsyncThunk('/getTasks', async () => {
   try {
-    const token = localStorage.getItem("authToken");
-    const response = await axios.get("http://localhost:3001/api/tasks", {
+    const token = localStorage.getItem('authToken');
+    const response = await FETCH_WRAPPER.get('tasks', {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -23,29 +23,29 @@ export const getTasks = createAsyncThunk("/getTasks", async () => {
 });
 
 const fetchSlice = createSlice({
-  name: "fetch",
+  name: 'fetch',
   initialState,
   reducers: {
     updateList: (state, action) => {
       state.loading = false;
       state.success = true;
-      state.error = "No error";
-      state["tasks"] = action.payload;
+      state.error = 'No error';
+      state['tasks'] = action.payload;
     },
     clearList: (state) => {
-      state["tasks"] = [];
+      state = initialState;
     },
   },
   extraReducers: (builder) => {
     builder.addCase(getTasks.pending, (state) => {
       state.loading = true;
       state.success = false;
-      state.error = "No error";
+      state.error = 'No error';
     });
     builder.addCase(getTasks.fulfilled, (state, action) => {
       state.loading = false;
       state.success = true;
-      state.error = "No error";
+      state.error = 'No error';
       state.tasks = action.payload;
     });
     builder.addCase(getTasks.rejected, (state, action) => {
