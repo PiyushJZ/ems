@@ -53,7 +53,7 @@ const CreateTasksPage = () => {
 
   return (
     <>
-      <div className="w-screen h-[92.8vh] flex justify-center items-center py-4">
+      <div className="max-w-screen h-[92.8vh] flex justify-center items-center py-4">
         <form onSubmit={taskCreation} className="flex flex-col gap-4">
           <input
             type="text"
