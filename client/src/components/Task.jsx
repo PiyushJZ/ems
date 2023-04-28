@@ -93,7 +93,10 @@ function Task({ description, id, start, end, index }) {
               value={desc}
               onChange={(e) => setDesc(e.target.value)}
             />
-            <button onClick={editTask} className="btn border-2 btn-info btn-sm absolute">
+            <button
+              onClick={editTask}
+              className="btn border-2 btn-info btn-sm absolute"
+            >
               Change Description
             </button>
           </td>
