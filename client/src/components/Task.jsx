@@ -12,8 +12,6 @@ function Task({ description, id, start, end, index }) {
   const accessType = localStorage.getItem('accessType');
   const dispatch = useDispatch();
 
-  console.log(new Date(end));
-
   // Edit the task
   async function editTask() {
     const data = {
@@ -122,6 +120,12 @@ function Task({ description, id, start, end, index }) {
           ''
         )}
       </td>
+      {/* new Date column added */}
+      <td className='w-20'>
+        {!end ? 'Task not Completed' : ''}
+        {start ? <Timer end={end} /> : ''}
+      </td>
+      {/* new Date column ended */}
       {accessType === 'employee' ? (
         <td className='w-10'>
           {start && end ? 'Task Completed' : ''}

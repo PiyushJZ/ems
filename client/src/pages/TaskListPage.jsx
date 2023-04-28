@@ -45,8 +45,8 @@ const TaskList = () => {
               <th>Sr. No.</th>
               <th>task description</th>
               <th>status</th>
+              <th>date of completion</th>
               {accessType === 'employee' ? <th>controls</th> : ''}
-
               <th>options</th>
             </tr>
           </thead>
