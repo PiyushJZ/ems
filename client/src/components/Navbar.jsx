@@ -20,8 +20,6 @@ const Navbar = () => {
     setToggleLogout((previousToggle) => !previousToggle);
   };
 
-  
-
   const handleLogout = () => {
     const token = localStorage.getItem("authToken");
     if (token) {
@@ -29,9 +27,12 @@ const Navbar = () => {
       localStorage.clear();
       dispatch(logout());
       navigate(PATHS.root);
+      Swal.fire({
+        icon: "success",
+        title: "Logout successfully",
+      });
     }
     setToggleLogout((prevoiusToggleState) => !prevoiusToggleState);
-   
   };
 
   const handlePageChange = (path) => {
@@ -78,10 +79,10 @@ const Navbar = () => {
 
       <div>
         {toggleLogout && (
-          <aside className="absolute z-50 top-20 rounded-3xl right-10 w-[10rem] h-auto p-2 bg-base-300">
+          <aside className="absolute z-50 top-20 rounded-lg right-10 w-[10rem] h-auto p-2 bg-base-300">
             <div className="w-full flex flex-col gap-2">
               <button
-                className="btn btn-circle btn-outline hover:scale-95 transition duration-200 ease-in-out w-full"
+                className="btn btn-info hover:scale-95 transition duration-200 ease-in-out w-full"
                 onClick={() => handlePageChange(PATHS.createTasks)}
                 disabled={localStorage.getItem("accessType") === "admin"}
               >
@@ -95,13 +96,13 @@ const Navbar = () => {
                       : PATHS.adminPage
                   )
                 }
-                className="btn btn-circle btn-outline hover:scale-95 transition duration-200 ease-in-out w-full"
+                className="btn btn-info hover:scale-95 transition duration-200 ease-in-out w-full"
               >
                 Task List
               </button>
               <button
                 onClick={() => handleLogout()}
-                className="btn btn-circle btn-error hover:scale-95 transition duration-200 ease-in-out w-full"
+                className="btn btn-error hover:scale-95 transition duration-200 ease-in-out w-full"
               >
                 Logout
               </button>
