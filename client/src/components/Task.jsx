@@ -23,10 +23,6 @@ function Task({ description, id, start, end, index }) {
     });
     if (response.data.status === true) {
       setIsEdit(!isEdit);
-      Swal.fire({
-        icon: "success",
-        title: "Task edited successfully",
-      });
     } else {
       alert("Task description not changed");
     }
@@ -43,8 +39,9 @@ function Task({ description, id, start, end, index }) {
       dispatch(getTasks());
       Swal.fire({
         icon: "success",
-        title: "Task deleted successfully",
+        title: "task deleted successfully",
       });
+      alert("Task deleted Successfully");
     }
   }
 
