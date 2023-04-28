@@ -1,13 +1,13 @@
-import React, { useRef } from "react";
-import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { getTasks } from "../redux/fetchSlice";
+import React from 'react';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getTasks } from '../redux/fetchSlice';
 
 const AdminPage = () => {
   const { tasks } = useSelector((state) => state.fetch);
   const dispatch = useDispatch();
   const ref = useRef(null);
-  console.log("TASKS: ", tasks);
+  console.log('TASKS: ', tasks);
 
   useEffect(() => {
     if (ref.current) {
@@ -38,8 +38,8 @@ const AdminPage = () => {
 
   const renderTable = () => {
     return (
-      <div ref={ref} className="overflow-x-auto">
-        <table className="table table-zebra w-full">
+      <div className='overflow-x-auto'>
+        <table className='table table-zebra w-full'>
           {/* head */}
           <thead>
             <tr>
@@ -55,15 +55,21 @@ const AdminPage = () => {
                   <td>{userEmail}</td>
                   <td>
                     <select
-                      defaultValue={"select"}
-                      className="select select-bordered w-full max-w-xs"
+                      defaultValue={'select'}
+                      className='select select-bordered w-full max-w-xs'
                     >
-                      <option value={"select"} disabled>
+                      <option
+                        value={'select'}
+                        disabled
+                      >
                         Select a task
                       </option>
                       {tasks[userEmail].map((task) => {
                         return (
-                          <option key={task._id} value={task.description}>
+                          <option
+                            key={task._id}
+                            value={task.description}
+                          >
                             {/* <React.Fragment> */}
                             <React.Fragment>{task.description}</React.Fragment>
                             &emsp;
