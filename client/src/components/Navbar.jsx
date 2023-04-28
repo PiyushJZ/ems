@@ -27,10 +27,6 @@ const Navbar = () => {
       localStorage.clear();
       dispatch(logout());
       navigate(PATHS.root);
-      Swal.fire({
-        icon: "success",
-        title: "Logout successfully",
-      });
     }
     setToggleLogout((prevoiusToggleState) => !prevoiusToggleState);
    

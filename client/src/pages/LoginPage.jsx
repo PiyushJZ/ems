@@ -6,11 +6,15 @@ import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { PATHS } from "../router/paths";
 import { FETCH_WRAPPER } from "../api";
+import { useEffect, useState } from "react";
 
 function Login() {
+
+const [loginerror, setLoginError] = useState("");
+
   const navigate = useNavigate();
   const schema = yup.object({
-    email: yup.string().required("email is required"),
+    email: yup.string().email().required("email is required"),
     password: yup
       .string()
       .min(4, "minimum characters should be 4")
@@ -24,6 +28,7 @@ function Login() {
   } = useForm({
     resolver: yupResolver(schema),
   });
+
 
   const onSubmit = async (data) => {
     try {
@@ -41,9 +46,11 @@ function Login() {
       if (userData.accessType === "admin") navigate(PATHS.adminPage);
       else navigate(PATHS.createTasks);
     } catch (err) {
-      console.log(err);
+      setLoginError(err.response.data.msg)
     }
   };
+
+  console.log(loginerror);
 
   const dispatch = useDispatch();
   const { isLoggedIn, user } = useSelector((state) => state.auth);
@@ -70,7 +77,7 @@ function Login() {
                 className="input-info input w-full"
               />
               <p className="text-rose-600 font-semibold">
-                {errors.email?.message}
+                {errors.email?.message} 
               </p>
               <label htmlFor="password">Password</label>
               <input
@@ -80,7 +87,10 @@ function Login() {
                 className="input-info input w-full"
               />
               <p className="text-rose-600 font-semibold">
-                {errors.password?.message}
+               {errors.password?.message}
+              </p>
+              <p className="text-rose-600 font-semibold">
+              {loginerror}
               </p>
               <button className="btn btn-info hover:text-3xl transition-all ease-in-out duration-800">
                 LOGIN
