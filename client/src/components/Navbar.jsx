@@ -47,7 +47,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className='relative w-screen py-6 bg-base-300 px-4 md:px-6 lg:px-8 border-b-[1px] border-b-info shadow-base-100 transition duration-150'>
+    <nav className='relative max-w-screen py-6 bg-base-300 px-4 md:px-6 lg:px-8 border-b-[1px] border-b-info shadow-base-100 transition duration-150'>
       <div className='max-w-full mx-auto flex justify-between'>
         <h1>Tasks Logger</h1>
         <div className='flex justify-between items-center gap-4 cursor-pointer'>

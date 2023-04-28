@@ -50,7 +50,7 @@ function Login() {
 
   return (
     <>
-      <div className='w-screen h-[90vh] flex justify-center items-center bg-base-50'>
+      <div className='max-w-screen h-[90vh] flex justify-center items-center bg-base-50'>
         <div className='w-1/3 h-auto bg-base-200 rounded-lg p-4 shadow-md hover:shadow-2xl hover:shadow-info shadow-info transition-all ease-out duration-800'>
           <h1 className='text-4xl text-center py-4 text-info font-semibold'>
             TASK LOGS LOGIN
