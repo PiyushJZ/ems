@@ -1,14 +1,15 @@
-import { useState } from "react";
-import { GrEdit, GrTrash } from "react-icons/gr";
-import { useDispatch } from "react-redux";
-import { getTasks } from "../redux/fetchSlice";
-import { FETCH_WRAPPER } from "../api";
-import Timer from "./Timer";
-import Swal from "sweetalert2";
+import { useState } from 'react';
+import { GrEdit, GrTrash } from 'react-icons/gr';
+import { useDispatch } from 'react-redux';
+import { getTasks } from '../redux/fetchSlice';
+import { FETCH_WRAPPER } from '../api';
+import Timer from './Timer';
+import Swal from 'sweetalert2';
 
 function Task({ description, id, start, end, index }) {
   const [isEdit, setIsEdit] = useState(false);
   const [desc, setDesc] = useState(description);
+  const accessType = localStorage.getItem('accessType');
   const dispatch = useDispatch();
 
   // Edit the task
@@ -18,13 +19,13 @@ function Task({ description, id, start, end, index }) {
     };
     const response = await FETCH_WRAPPER.put(`tasks/${id}`, data, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        Authorization: `Bearer ${localStorage.getItem('authToken')}`,
       },
     });
     if (response.data.status === true) {
       setIsEdit(!isEdit);
     } else {
-      alert("Task description not changed");
+      alert('Task description not changed');
     }
   }
 
@@ -32,14 +33,14 @@ function Task({ description, id, start, end, index }) {
   async function deleteTask() {
     const response = await FETCH_WRAPPER.delete(`tasks/${id}`, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        Authorization: `Bearer ${localStorage.getItem('authToken')}`,
       },
     });
     if (response.status === 200) {
       dispatch(getTasks());
       Swal.fire({
-        icon: "success",
-        title: "task deleted successfully",
+        icon: 'success',
+        title: 'task deleted successfully',
       });
     }
   }
@@ -52,7 +53,7 @@ function Task({ description, id, start, end, index }) {
     };
     const response = await FETCH_WRAPPER.put(`tasks/${id}`, data, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        Authorization: `Bearer ${localStorage.getItem('authToken')}`,
       },
     });
     if (response.data.status === true) {
@@ -63,7 +64,7 @@ function Task({ description, id, start, end, index }) {
   // End the task
   async function endTask() {
     if (!start) {
-      alert("NOT ALLOWED");
+      alert('NOT ALLOWED');
       return;
     }
     const end = Date.now();
@@ -72,7 +73,7 @@ function Task({ description, id, start, end, index }) {
     };
     const response = await FETCH_WRAPPER.put(`tasks/${id}`, data, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        Authorization: `Bearer ${localStorage.getItem('authToken')}`,
       },
     });
 
@@ -83,19 +84,19 @@ function Task({ description, id, start, end, index }) {
 
   return (
     <tr>
-      <th className="w-2">{index + 1}</th>
+      <th className='w-2'>{index + 1}</th>
       {isEdit ? (
         <>
-          <td className="w-10">
+          <td className='w-10'>
             <input
-              className="input relative input-bordered input-sm w-full max-w-xs"
-              type="text"
+              className='input relative input-bordered input-sm w-full max-w-xs'
+              type='text'
               value={desc}
               onChange={(e) => setDesc(e.target.value)}
             />
             <button
               onClick={editTask}
-              className="btn border-2 btn-info btn-sm absolute mx-2"
+              className='btn border-2 btn-info btn-sm absolute mx-2'
             >
               Change Description
             </button>
@@ -103,50 +104,77 @@ function Task({ description, id, start, end, index }) {
         </>
       ) : (
         <>
-          <td className="w-10 max-w-[200px] relative overflow-auto whitespace-nowrap">
+          <td className='w-10 max-w-[200px] relative overflow-auto whitespace-nowrap'>
             {desc}
           </td>
         </>
       )}
-      <td className="w-20">
-        {!start && !end ? "Not Yet Started" : ""}
-        {start ? <Timer start={start} end={end} /> : ""}
-      </td>
-      <td className="w-10">
-        {start && end ? "Task Completed" : ""}
-        {start && !end ? (
-          <div className="flex gap-4">
-            <button disabled className="btn btn-info btn-sm">
-              Start
-            </button>
-            <button className="btn btn-error btn-sm" onClick={endTask}>
-              Stop
-            </button>
-          </div>
+      <td className='w-20'>
+        {!start && !end ? 'Not Yet Started' : ''}
+        {start ? (
+          <Timer
+            start={start}
+            end={end}
+          />
         ) : (
-          ""
-        )}
-        {!start && !end ? (
-          <div className="flex gap-4">
-            <button className="btn btn-success btn-sm" onClick={startTask}>
-              Start
-            </button>
-            <button className="btn btn-warning btn-sm" onClick={endTask}>
-              Stop
-            </button>
-          </div>
-        ) : (
-          ""
+          ''
         )}
       </td>
-      <td className="w-10">
+      {accessType === 'employee' ? (
+        <td className='w-10'>
+          {start && end ? 'Task Completed' : ''}
+          {start && !end ? (
+            <div className='flex gap-4'>
+              <button
+                disabled
+                className='btn btn-info btn-sm'
+              >
+                Start
+              </button>
+              <button
+                className='btn btn-error btn-sm'
+                onClick={endTask}
+              >
+                Stop
+              </button>
+            </div>
+          ) : (
+            ''
+          )}
+          {!start && !end ? (
+            <div className='flex gap-4'>
+              <button
+                className='btn btn-success btn-sm'
+                onClick={startTask}
+              >
+                Start
+              </button>
+              <button
+                className='btn btn-warning btn-sm'
+                onClick={endTask}
+              >
+                Stop
+              </button>
+            </div>
+          ) : (
+            ''
+          )}
+        </td>
+      ) : (
+        ''
+      )}
+
+      <td className='w-10'>
         <button
-          className="btn btn-info btn-sm"
+          className='btn btn-info btn-sm'
           onClick={() => setIsEdit(!isEdit)}
         >
           <GrEdit />
         </button>
-        <button className="btn btn-error ml-4 btn-sm" onClick={deleteTask}>
+        <button
+          className='btn btn-error ml-4 btn-sm'
+          onClick={deleteTask}
+        >
           <GrTrash />
         </button>
       </td>

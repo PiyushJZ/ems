@@ -1,15 +1,20 @@
-import React from "react";
-import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { clearList, getTasks, updateList } from "../redux/fetchSlice";
-import Task from "../components/Task";
+import React from 'react';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useLocation } from 'react-router-dom';
+import { getTasks } from '../redux/fetchSlice';
+import Task from '../components/Task';
 
 const TaskList = () => {
   const { tasks } = useSelector((state) => state.fetch);
+  const accessType = localStorage.getItem('accessType');
   const dispatch = useDispatch();
+  const location = useLocation();
 
   useEffect(() => {
-    dispatch(getTasks());
+    if (location.pathname !== '/admin-page/task-list') {
+      dispatch(getTasks());
+    }
   }, []);
 
   const renderHeader = () => {
@@ -30,17 +35,18 @@ const TaskList = () => {
   };
 
   return (
-    <div className="z-10">
+    <div className='z-10'>
       {/* {renderHeader()} */}
-      <div className="overflow-x-auto">
-        <table className="table table-zebra w-full">
+      <div className='overflow-x-auto'>
+        <table className='table table-zebra w-full'>
           {/* head */}
           <thead>
             <tr>
               <th>Sr. No.</th>
               <th>task description</th>
               <th>status</th>
-              <th>controls</th>
+              {accessType === 'employee' ? <th>controls</th> : ''}
+
               <th>options</th>
             </tr>
           </thead>
