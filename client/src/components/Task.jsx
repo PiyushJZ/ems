@@ -1,9 +1,10 @@
-import { useState } from 'react';
-import { GrEdit, GrTrash } from 'react-icons/gr';
-import { useDispatch } from 'react-redux';
-import { getTasks } from '../redux/fetchSlice';
-import { FETCH_WRAPPER } from '../api';
-import Timer from './Timer';
+import { useState } from "react";
+import { GrEdit, GrTrash } from "react-icons/gr";
+import { useDispatch } from "react-redux";
+import { getTasks } from "../redux/fetchSlice";
+import { FETCH_WRAPPER } from "../api";
+import Timer from "./Timer";
+import Swal from "sweetalert2";
 
 function Task({ description, id, start, end, index }) {
   const [isEdit, setIsEdit] = useState(false);
@@ -17,13 +18,13 @@ function Task({ description, id, start, end, index }) {
     };
     const response = await FETCH_WRAPPER.put(`tasks/${id}`, data, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
       },
     });
     if (response.data.status === true) {
       setIsEdit(!isEdit);
     } else {
-      alert('Task description not changed');
+      alert("Task description not changed");
     }
   }
 
@@ -31,12 +32,16 @@ function Task({ description, id, start, end, index }) {
   async function deleteTask() {
     const response = await FETCH_WRAPPER.delete(`tasks/${id}`, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
       },
     });
     if (response.status === 200) {
       dispatch(getTasks());
-      alert('Task deleted Successfully');
+      Swal.fire({
+        icon: "success",
+        title: "task deleted successfully",
+      });
+      alert("Task deleted Successfully");
     }
   }
 
@@ -48,7 +53,7 @@ function Task({ description, id, start, end, index }) {
     };
     const response = await FETCH_WRAPPER.put(`tasks/${id}`, data, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
       },
     });
     if (response.data.status === true) {
@@ -59,7 +64,7 @@ function Task({ description, id, start, end, index }) {
   // End the task
   async function endTask() {
     if (!start) {
-      alert('NOT ALLOWED');
+      alert("NOT ALLOWED");
       return;
     }
     const end = Date.now();
@@ -68,7 +73,7 @@ function Task({ description, id, start, end, index }) {
     };
     const response = await FETCH_WRAPPER.put(`tasks/${id}`, data, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
       },
     });
 
@@ -79,20 +84,17 @@ function Task({ description, id, start, end, index }) {
 
   return (
     <tr>
-      <th className='w-2'>{index + 1}</th>
-      <td className='w-10'>
+      <th className="w-2">{index + 1}</th>
+      <td className="w-10">
         {isEdit ? (
           <>
             <input
-              className='input input-bordered input-sm w-full max-w-xs'
-              type='text'
+              className="input input-bordered input-sm w-full max-w-xs"
+              type="text"
               value={desc}
               onChange={(e) => setDesc(e.target.value)}
             />
-            <button
-              onClick={editTask}
-              className='btn border-2 btn-info btn-sm'
-            >
+            <button onClick={editTask} className="btn border-2 btn-info btn-sm">
               Change Description
             </button>
           </>
@@ -100,67 +102,45 @@ function Task({ description, id, start, end, index }) {
           <>{desc}</>
         )}
       </td>
-      <td className='w-20'>
-        {!start && !end ? 'Not Yet Started' : ''}
-        {start ? (
-          <Timer
-            start={start}
-            end={end}
-          />
-        ) : (
-          ''
-        )}
+      <td className="w-20">
+        {!start && !end ? "Not Yet Started" : ""}
+        {start ? <Timer start={start} end={end} /> : ""}
       </td>
-      <td className='w-10'>
-        {start && end ? 'Task Completed' : ''}
+      <td className="w-10">
+        {start && end ? "Task Completed" : ""}
         {start && !end ? (
-          <>
-            <button
-              disabled
-              className='btn btn-info btn-sm'
-            >
+          <div className="flex gap-4">
+            <button disabled className="btn btn-info btn-sm">
               Start
             </button>
-            <button
-              className='btn btn-error btn-sm'
-              onClick={endTask}
-            >
+            <button className="btn btn-error btn-sm" onClick={endTask}>
               Stop
             </button>
-          </>
+          </div>
         ) : (
-          ''
+          ""
         )}
         {!start && !end ? (
-          <>
-            <button
-              className='btn btn-info btn-sm'
-              onClick={startTask}
-            >
+          <div className="flex gap-4">
+            <button className="btn btn-info btn-sm" onClick={startTask}>
               Start
             </button>
-            <button
-              className='btn btn-error btn-sm'
-              onClick={endTask}
-            >
+            <button className="btn btn-error btn-sm" onClick={endTask}>
               Stop
             </button>
-          </>
+          </div>
         ) : (
-          ''
+          ""
         )}
       </td>
-      <td className='w-10'>
+      <td className="w-10">
         <button
-          className='btn btn-info btn-sm'
+          className="btn btn-info btn-sm"
           onClick={() => setIsEdit(!isEdit)}
         >
           <GrEdit />
         </button>
-        <button
-          className='btn btn-error btn-sm'
-          onClick={deleteTask}
-        >
+        <button className="btn btn-error ml-4 btn-sm" onClick={deleteTask}>
           <GrTrash />
         </button>
       </td>

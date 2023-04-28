@@ -1,15 +1,22 @@
-import React from 'react';
-import { useState } from 'react';
-import { FETCH_WRAPPER } from '../api/index';
-
+import React from "react";
+import { useState } from "react";
+import { FETCH_WRAPPER } from "../api/index";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import { PATHS } from "../router/paths";
 const CreateTasksPage = () => {
-  const [description, setDescription] = useState('');
+  const [description, setDescription] = useState("");
+  const navigate = useNavigate();
 
   const taskCreation = async (e) => {
     e.preventDefault();
 
     if (!/[a-zA-Z0-9]/.test(description)) {
-      alert('please enter some text');
+      // alert("please enter some text");
+      Swal.fire({
+        icon: "info",
+        title: "Task should not be an empty field",
+      });
       return;
     }
 
@@ -21,39 +28,40 @@ const CreateTasksPage = () => {
     };
 
     try {
-      const response = await FETCH_WRAPPER.post('tasks', data, {
+      const response = await FETCH_WRAPPER.post("tasks", data, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
         },
       });
       console.log(response);
       if (response) {
-        alert('Task created successfully');
+        Swal.fire({
+          icon: "success",
+          title: "Task created successfully",
+        }).then(() => {
+          navigate(PATHS.taskList);
+        });
       }
     } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: error.message,
+      });
       console.log(error);
     }
   };
-  
 
   return (
     <>
-      <div className='bg-gray-300 h-60 w-80 m-auto rounded-lg mt-10'>
-        <form
-          onSubmit={taskCreation}
-          className='flex flex-col justify-around items-center h-full'
-        >
-          <textarea
-            type='text'
-            className='flex rounded-sm resize-none w-56 h-20 outline-none p-1 '
-            defaultValue={description}
+      <div className="w-screen h-[92.8vh] flex justify-center items-center py-4">
+        <form onSubmit={taskCreation} className="flex flex-col gap-4">
+          <input
+            type="text"
+            className="input input-info input-lg text-center"
+            defaultValue={"enter task details"}
             onChange={(e) => setDescription(e.target.value)}
           />
-          <input
-            type='submit'
-            value='Create Task'
-            className='btn'
-          />
+          <input type="submit" value="Create Task" className="btn btn-info" />
         </form>
       </div>
     </>
