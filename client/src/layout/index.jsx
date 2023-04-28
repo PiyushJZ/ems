@@ -7,7 +7,7 @@ import { PATHS } from "../router/paths";
 
 const AppLayout = () => {
   return (
-    <div className="z-50">
+    <>
       <Routes>
         {/* login route */}
         <Route element={<ReverseAuthRoute />}>
@@ -27,7 +27,7 @@ const AppLayout = () => {
         {/* default route */}
         <Route path="/*" element={<ErrorPage />} />
       </Routes>
-    </div>
+    </>
   );
 };
 

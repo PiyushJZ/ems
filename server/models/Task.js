@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const taskSchema = new mongoose.Schema({
   email: {
     type: String,
-    required: true,
+    // required: true,
   },
   description: {
     type: String,

@@ -7,19 +7,19 @@ const CreateTasksPage = () => {
 
   const taskCreation = async (e) => {
     e.preventDefault();
-    
+
     if (!/[a-zA-Z0-9]/.test(description)) {
       alert("please enter some text");
       return;
     }
-    
+
     const email = localStorage.getItem("email");
-    
+
     const data = {
       email,
       description,
     };
-    
+
     try {
       const response = await FETCH_WRAPPER.post("tasks", data);
       console.log(response);
@@ -33,14 +33,12 @@ const CreateTasksPage = () => {
 
   return (
     <>
-      <div className="bg-gray-300 h-60 w-80 m-auto rounded-lg mt-10">
-        <form
-          onSubmit={taskCreation}
-          className="flex flex-col justify-around items-center h-full"
-        >
-          <textarea
+      <div className="w-screen h-[92.5vh] mx-auto flex flex-col justify-start items-center py-20">
+        <h1 className="text-center text-6xl mb-10 ">Create Task</h1>
+        <form onSubmit={taskCreation} className="flex flex-col gap-4">
+          <input
             type="text"
-            className="flex rounded-sm resize-none w-56 h-20 outline-none p-1 "
+            className="input input-info"
             defaultValue={description}
             onChange={(e) => setDescription(e.target.value)}
           />
