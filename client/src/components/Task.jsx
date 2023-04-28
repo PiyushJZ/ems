@@ -100,9 +100,11 @@ function Task({ description, id, start, end, index }) {
           </td>
         </>
       ) : (
-        <td className="max-w-[100px] overflow-auto whitespace-nowrap">
-          <>{desc}</>
-        </td>
+        <>
+          <td className="w-10 max-w-[200px] relative overflow-auto whitespace-nowrap">
+            {desc}
+          </td>
+        </>
       )}
       <td className="w-20">
         {!start && !end ? "Not Yet Started" : ""}
