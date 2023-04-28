@@ -6,13 +6,10 @@ import { getTasks } from '../redux/fetchSlice';
 const AdminPage = () => {
   const { tasks } = useSelector((state) => state.fetch);
   const dispatch = useDispatch();
-  const ref = useRef(null);
   console.log('TASKS: ', tasks);
 
   useEffect(() => {
-    if (ref.current) {
-      dispatch(getTasks());
-    }
+    dispatch(getTasks());
   }, []);
 
   const renderTime = (time) => {
