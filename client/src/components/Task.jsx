@@ -11,6 +11,8 @@ function Task({ description, id, start, end, index }) {
   const [desc, setDesc] = useState(description);
   const dispatch = useDispatch();
 
+  console.log(new Date(end));
+
   // Edit the task
   async function editTask() {
     const data = {
@@ -118,6 +120,10 @@ function Task({ description, id, start, end, index }) {
         {start ? <Timer end={end} /> : ""}
       </td>
       {/* new Date column ended */}
+      <td className="w-20">
+        {!start && !end ? "Not Yet Started" : ""}
+        {start ? <Timer end={end} /> : ""}
+      </td>
       <td className="w-10">
         {start && end ? "Task Completed" : ""}
         {start && !end ? (
