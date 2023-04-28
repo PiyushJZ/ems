@@ -41,7 +41,6 @@ function Task({ description, id, start, end, index }) {
         icon: "success",
         title: "task deleted successfully",
       });
-      alert("Task deleted Successfully");
     }
   }
 
