@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { GrEdit, GrTrash } from 'react-icons/gr';
-import { useDispatch } from 'react-redux';
-import { getTasks } from '../redux/fetchSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { getTasks, updateList } from '../redux/fetchSlice';
 import { FETCH_WRAPPER } from '../api';
 import Timer from './Timer';
 import Swal from 'sweetalert2';
 
 function Task({ description, id, start, end, index }) {
+  const { tasks } = useSelector((state) => state.fetch);
   const [isEdit, setIsEdit] = useState(false);
   const [desc, setDesc] = useState(description);
   const accessType = localStorage.getItem('accessType');
@@ -37,7 +38,11 @@ function Task({ description, id, start, end, index }) {
       },
     });
     if (response.status === 200) {
-      dispatch(getTasks());
+      if (accessType === 'admin') {
+        dispatch(updateList(tasks.filter((task) => task._id !== id)));
+      } else {
+        dispatch(getTasks());
+      }
       Swal.fire({
         icon: 'success',
         title: 'task deleted successfully',
