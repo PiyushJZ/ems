@@ -18,6 +18,10 @@ function Timer({ start, end }) {
     } mins-${parseInt(timeTaken) % 60} secs`;
   };
 
+  const renderDate = () =>{
+    return new Date(end).toLocaleDateString();
+  }
+
   return (
     <>
       {start && !end
@@ -25,6 +29,9 @@ function Timer({ start, end }) {
             timer % 60
           }`
         : ''}
+      {!start && end
+        ? renderDate()
+        : ""}
       {start && end ? <>{renderTimeTaken()}</> : ''}
     </>
   );

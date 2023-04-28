@@ -112,6 +112,12 @@ function Task({ description, id, start, end, index }) {
         {!start && !end ? "Not Yet Started" : ""}
         {start ? <Timer start={start} end={end} /> : ""}
       </td>
+      {/* new Date column added */}
+      <td className="w-20">
+        {!end ? "Task not Completed" : ""}
+        {start ? <Timer end={end} /> : ""}
+      </td>
+      {/* new Date column ended */}
       <td className="w-10">
         {start && end ? "Task Completed" : ""}
         {start && !end ? (
