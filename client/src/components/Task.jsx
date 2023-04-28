@@ -95,7 +95,7 @@ function Task({ description, id, start, end, index }) {
             />
             <button
               onClick={editTask}
-              className="btn border-2 btn-info btn-sm absolute"
+              className="btn border-2 btn-info btn-sm absolute mx-2"
             >
               Change Description
             </button>

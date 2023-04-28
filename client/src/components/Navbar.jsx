@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toggleDarkMode } from '../redux/appSlice';
 import { logout } from '../redux/authSlice';
 import { clearList } from '../redux/fetchSlice';
+import Swal from 'sweetalert2';
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -27,8 +28,13 @@ const Navbar = () => {
       localStorage.clear();
       dispatch(logout());
       navigate(PATHS.root);
+      Swal.fire({
+        icon: "success",
+        title: "Logout successfully",
+      });
     }
     setToggleLogout((prevoiusToggleState) => !prevoiusToggleState);
+   
   };
 
   const handlePageChange = (path) => {
