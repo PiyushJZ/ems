@@ -1,11 +1,15 @@
 import React from 'react';
 import { useEffect } from 'react';
+import { ImListNumbered } from 'react-icons/im';
 import { useSelector, useDispatch } from 'react-redux';
-import { getTasks } from '../redux/fetchSlice';
+import { getTasks, updateList } from '../redux/fetchSlice';
+import { PATHS } from '../router/paths';
+import { useNavigate } from 'react-router-dom';
 
 const AdminPage = () => {
   const { tasks } = useSelector((state) => state.fetch);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   console.log('TASKS: ', tasks);
 
   useEffect(() => {
@@ -40,6 +44,7 @@ const AdminPage = () => {
           {/* head */}
           <thead>
             <tr>
+              <th></th>
               <th>employee email</th>
               <th>tasks</th>
               <th>time taken</th>
@@ -49,41 +54,21 @@ const AdminPage = () => {
             {Object.keys(tasks).map((userEmail, index) => {
               return (
                 <tr key={index}>
+                  <td>{index + 1}</td>
                   <td>{userEmail}</td>
                   <td>
-                    <select
-                      defaultValue={'select'}
-                      className='select select-bordered w-full max-w-xs'
+                    <button
+                      onClick={() => {
+                        dispatch(updateList(tasks[userEmail]));
+                        return navigate(PATHS.adminPage + PATHS.taskList);
+                      }}
+                      className='btn btn-accent btn-sm'
                     >
-                      <option
-                        value={'select'}
-                        disabled
-                      >
-                        Select a task
-                      </option>
-                      {tasks[userEmail].map((task) => {
-                        return (
-                          <option
-                            key={task._id}
-                            value={task.description}
-                          >
-                            {/* <React.Fragment> */}
-                            <React.Fragment>{task.description}</React.Fragment>
-                            &emsp;
-                            <React.Fragment>
-                              {renderTime(
-                                parseInt(
-                                  new Date(task.end) - new Date(task.start)
-                                ) / 1000
-                              )}
-                            </React.Fragment>
-                            {/* </React.Fragment> */}
-                          </option>
-                        );
-                      })}
-                    </select>
+                      <ImListNumbered />
+                    </button>
                   </td>
                   <td>{getTotalTime(userEmail)}</td>
+                  {/* <td>"dfasdfa"</td> */}
                 </tr>
               );
             })}
