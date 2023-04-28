@@ -58,7 +58,7 @@ const CreateTasksPage = () => {
           <input
             type="text"
             className="input input-info input-lg text-center"
-            defaultValue={"enter task details"}
+            placeholder="enter task details"
             onChange={(e) => setDescription(e.target.value)}
           />
           <input type="submit" value="Create Task" className="btn btn-info" />
