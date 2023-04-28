@@ -20,6 +20,8 @@ const Navbar = () => {
     setToggleLogout((previousToggle) => !previousToggle);
   };
 
+  
+
   const handleLogout = () => {
     const token = localStorage.getItem("authToken");
     if (token) {

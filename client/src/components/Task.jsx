@@ -12,6 +12,8 @@ function Task({ description, id, start, end, index }) {
   const accessType = localStorage.getItem('accessType');
   const dispatch = useDispatch();
 
+  console.log(new Date(end));
+
   // Edit the task
   async function editTask() {
     const data = {
