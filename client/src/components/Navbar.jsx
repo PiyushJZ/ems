@@ -1,3 +1,15 @@
+<<<<<<< HEAD
+import React, { useState } from 'react';
+import { BsThreeDotsVertical } from 'react-icons/bs';
+import { useNavigate } from 'react-router-dom';
+import { PATHS } from '../router/paths';
+import { MdOutlineDarkMode } from 'react-icons/md';
+import { CiSun } from 'react-icons/ci';
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleDarkMode } from '../redux/appSlice';
+import { logout } from '../redux/authSlice';
+import { clearList } from '../redux/fetchSlice';
+=======
 import React, { useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
@@ -6,6 +18,7 @@ import { MdOutlineDarkMode } from "react-icons/md";
 import { CiSun } from "react-icons/ci";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleDarkMode } from "../redux/appSlice";
+>>>>>>> 1a92af8c338d6ca12e93ba9c632b15e736c291a9
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -21,8 +34,13 @@ const Navbar = () => {
   const handleLogout = () => {
     const token = localStorage.getItem("authToken");
     if (token) {
+<<<<<<< HEAD
+      dispatch(clearList());
+=======
       localStorage.removeItem("authToken");
+>>>>>>> 1a92af8c338d6ca12e93ba9c632b15e736c291a9
       localStorage.clear();
+      dispatch(logout());
       navigate(PATHS.root);
     }
     setToggleLogout((prevoiusToggleState) => !prevoiusToggleState);
