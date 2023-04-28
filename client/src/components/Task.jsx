@@ -128,10 +128,10 @@ function Task({ description, id, start, end, index }) {
         )}
         {!start && !end ? (
           <div className="flex gap-4">
-            <button className="btn btn-info btn-sm" onClick={startTask}>
+            <button className="btn btn-success btn-sm" onClick={startTask}>
               Start
             </button>
-            <button className="btn btn-error btn-sm" onClick={endTask}>
+            <button className="btn btn-warning btn-sm" onClick={endTask}>
               Stop
             </button>
           </div>

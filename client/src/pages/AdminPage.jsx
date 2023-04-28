@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getTasks } from "../redux/fetchSlice";
@@ -6,9 +6,13 @@ import { getTasks } from "../redux/fetchSlice";
 const AdminPage = () => {
   const { tasks } = useSelector((state) => state.fetch);
   const dispatch = useDispatch();
+  const ref = useRef(null);
+  console.log("TASKS: ", tasks);
 
   useEffect(() => {
-    dispatch(getTasks());
+    if (ref.current) {
+      dispatch(getTasks());
+    }
   }, []);
 
   const renderTime = (time) => {
@@ -34,7 +38,7 @@ const AdminPage = () => {
 
   const renderTable = () => {
     return (
-      <div className="overflow-x-auto">
+      <div ref={ref} className="overflow-x-auto">
         <table className="table table-zebra w-full">
           {/* head */}
           <thead>
