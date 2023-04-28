@@ -85,23 +85,27 @@ function Task({ description, id, start, end, index }) {
   return (
     <tr>
       <th className="w-2">{index + 1}</th>
-      <td className="w-10">
-        {isEdit ? (
-          <>
+      {isEdit ? (
+        <>
+          <td className="w-10">
             <input
-              className="input input-bordered input-sm w-full max-w-xs"
+              className="input relative input-bordered input-sm w-full max-w-xs"
               type="text"
               value={desc}
               onChange={(e) => setDesc(e.target.value)}
             />
-            <button onClick={editTask} className="btn border-2 btn-info btn-sm">
+            <button onClick={editTask} className="btn border-2 btn-info btn-sm absolute">
               Change Description
             </button>
-          </>
-        ) : (
-          <>{desc}</>
-        )}
-      </td>
+          </td>
+        </>
+      ) : (
+        <>
+          <td className="w-10 max-w-[200px] relative overflow-auto whitespace-nowrap">
+            {desc}
+          </td>
+        </>
+      )}
       <td className="w-20">
         {!start && !end ? "Not Yet Started" : ""}
         {start ? <Timer start={start} end={end} /> : ""}
