@@ -3,11 +3,29 @@ import { FETCH_WRAPPER } from '../api';
 
 const initialState = {
   tasks: [],
+  notes: [],
   loading: true,
   success: false,
   error: 'No error',
 };
 
+// fetching notes
+export const getNotes = createAsyncThunk("/getNotes", async () => {
+  try {
+    const token = localStorage.getItem("authToken");
+    const response = await FETCH_WRAPPER.get("notes", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(response);
+    return response.data.tasks;
+  } catch (err) {
+    return err.response.statusText;
+  }
+});
+
+// fetching Tasks
 export const getTasks = createAsyncThunk('/getTasks', async () => {
   try {
     const token = localStorage.getItem('authToken');
@@ -24,6 +42,7 @@ export const getTasks = createAsyncThunk('/getTasks', async () => {
 
 export const clearList = createAction('clearList');
 export const updateList = createAction('updateList');
+export const updateNote = createAction('updateNote');
 
 const fetchSlice = createSlice({
   name: 'fetch',
@@ -57,6 +76,28 @@ const fetchSlice = createSlice({
       state.success = true;
       state.error = 'No error';
       state['tasks'] = action.payload;
+    });
+    builder.addCase(getNotes.pending, (state) => {
+      state.loading = true;
+      state.success = false;
+      state.error = 'No error';
+    });
+    builder.addCase(getNotes.fulfilled, (state, action) => {
+      state.loading = false;
+      state.success = true;
+      state.error = 'No error';
+      state.notes = action.payload;
+    });
+    builder.addCase(getNotes.rejected, (state, action) => {
+      state.loading = false;
+      state.success = false;
+      state.error = action.payload;
+    });
+    builder.addCase("updateNote", (state, action) => {
+      console.log(action.payload);
+      state.loading = false;
+      state.success = true;
+      state.notes = action.payload;
     });
   },
 });
