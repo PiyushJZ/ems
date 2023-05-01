@@ -43,6 +43,7 @@ export const getTasks = createAsyncThunk('/getTasks', async () => {
 export const clearList = createAction('clearList');
 export const updateList = createAction('updateList');
 export const updateNote = createAction('updateNote');
+export const editNote = createAction('editNote');
 
 const fetchSlice = createSlice({
   name: 'fetch',
@@ -93,8 +94,12 @@ const fetchSlice = createSlice({
       state.success = false;
       state.error = action.payload;
     });
+    builder.addCase("editNote", (state, action) => {
+      state.loading = false;
+      state.success = true;
+      state.notes = action.payload;
+    });
     builder.addCase("updateNote", (state, action) => {
-      console.log(action.payload);
       state.loading = false;
       state.success = true;
       state.notes = action.payload;
