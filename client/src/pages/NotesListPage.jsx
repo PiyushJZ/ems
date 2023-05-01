@@ -12,7 +12,6 @@ const NotesListPage = () => {
     dispatch(getNotes());
   }, []);
 
-  console.log(addNote);
 
   return (
     <div className="w-screen h-auto">
