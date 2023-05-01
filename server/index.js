@@ -5,6 +5,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import authRoutes from "./routes/auth.js";
 import taskRoutes from "./routes/tasks.js";
+import notesRoutes from "./routes/notes.js"
 
 // Configuration
 dotenv.config();
@@ -17,6 +18,7 @@ app.use(cors());
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/tasks", taskRoutes);
+app.use("/api/notes", notesRoutes);
 
 // MongoDb Setup
 const PORT = process.env.PORT || 6000;
