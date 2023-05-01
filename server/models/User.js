@@ -1,66 +1,26 @@
-import mongoose from "mongoose";
-import bcrypt from "bcrypt";
+import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, "Please enter your name"],
+    required: [true, 'Please enter your name'],
     trim: true,
   },
   email: {
     type: String,
-    required: [true, "Please enter your email"],
+    required: [true, 'Please enter your email'],
     trim: true,
     unique: true,
   },
   password: {
     type: String,
-    required: [true, "Please enter your password"],
+    required: [true, 'Please enter your password'],
+  },
+  accessType: {
+    type: String, // Currently only accepting "admin" or "employee" as values
+    required: [true],
   },
 });
 
-const User = mongoose.model("User", userSchema);
-async function createUsers() {
-  try {
-    const hashpass = await bcrypt.hash("pass", 10);
-    await User.deleteMany({});
-    const testUsers = await User.create([
-      {
-        name: "test1",
-        email: "test1@abc.com",
-        password: hashpass,
-      },
-      {
-        name: "test2",
-        email: "test2@abc.com",
-        password: hashpass,
-      },
-      {
-        name: "test3",
-        email: "test3@abc.com",
-        password: hashpass,
-      },
-      {
-        name: "test4",
-        email: "test4@abc.com",
-        password: hashpass,
-      },
-      {
-        name: "test5",
-        email: "test5@abc.com",
-        password: hashpass,
-      },
-    ]);
-  } catch (err) {
-    console.log(err);
-  }
-  console.log("Users Created");
-}
-// createUsers();
-// let user = new User({
-//   name: "test1",
-//   email: "test1@abc.com",
-//   password: hashpass,
-// });
-// await user.save();
+const User = mongoose.model('User', userSchema);
 export default User;
