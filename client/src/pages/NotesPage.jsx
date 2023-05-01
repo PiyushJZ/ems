@@ -43,7 +43,7 @@ const NotesPage = () => {
   };
   return (
     <>
-      <div className='max-w-screen h-screen p-8'>
+      <div className='max-w-screen h-[88vh]'>
         <form
           className='w-full h-full flex flex-col gap-4 justify-center items-center'
           onSubmit={handleSubmit(onSubmit)}
