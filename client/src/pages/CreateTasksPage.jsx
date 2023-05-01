@@ -4,6 +4,7 @@ import { FETCH_WRAPPER } from "../api/index";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { PATHS } from "../router/paths";
+
 const CreateTasksPage = () => {
   const [description, setDescription] = useState("");
   const navigate = useNavigate();

@@ -17,7 +17,7 @@ const ErrorPage = () => {
   }, [hoverState]);
 
   return (
-    <div className='w-screen h-screen flex justify-center items-center bg-base-100'>
+    <div className='max-w-screen h-screen flex justify-center items-center bg-base-100'>
       <div
         onMouseLeave={() => handleHover()}
         onMouseEnter={() => handleHover()}
