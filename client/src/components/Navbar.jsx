@@ -41,6 +41,8 @@ const Navbar = () => {
         return navigate(PATHS.createTasks);
       case PATHS.notes:
         return navigate(PATHS.notes);
+      case PATHS.notesList:
+        return navigate(PATHS.notesList);
       /**
        * This path navigation is disabled due to a bug in
        * redux state fetching in the Admin Page Will try to
@@ -61,7 +63,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="relative max-w-screen py-6 bg-base-300 px-4 md:px-6 lg:px-8 border-b-[1px] border-b-info shadow-base-100 transition duration-150">
+    <nav className="relative max-w-screen py-6 bg-base-300 px-4 md:px-6 lg:px-8 border-b-[1px] border-b-info  transition duration-150">
       <div className="max-w-full mx-auto flex justify-between">
         <h1>Tasks Logger</h1>
         <span>Welcome {userEmail}</span>
@@ -111,6 +113,12 @@ const Navbar = () => {
                 className="btn btn-info hover:scale-95 transition duration-200 ease-in-out w-full"
               >
                 Create Notes
+              </button>
+              <button
+                onClick={() => handlePageChange(PATHS.notesList)}
+                className="btn btn-info hover:scale-95 transition duration-200 ease-in-out w-full"
+              >
+                Notes List
               </button>
               <button
                 onClick={() => handleLogout()}
