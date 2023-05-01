@@ -1,16 +1,16 @@
-import React from 'react';
-import { useEffect } from 'react';
-import { ImListNumbered } from 'react-icons/im';
-import { useSelector, useDispatch } from 'react-redux';
-import { getTasks, updateList } from '../redux/fetchSlice';
-import { PATHS } from '../router/paths';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import { useEffect } from "react";
+import { ImListNumbered } from "react-icons/im";
+import { useSelector, useDispatch } from "react-redux";
+import { getTasks, updateList } from "../redux/fetchSlice";
+import { PATHS } from "../router/paths";
+import { useNavigate } from "react-router-dom";
 
 const AdminPage = () => {
   const { tasks } = useSelector((state) => state.fetch);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  console.log('TASKS: ', tasks);
+  console.log("TASKS: ", tasks);
 
   useEffect(() => {
     dispatch(getTasks());
@@ -26,8 +26,8 @@ const AdminPage = () => {
   };
 
   const getTotalTime = (userEmail) => {
-    const userTasks = tasks[userEmail];
     try {
+      const userTasks = tasks[userEmail];
       const totalTime = userTasks.reduce((total, task) => {
         if (task.start && task.end) {
           const timeTaken = (new Date(task.end) - new Date(task.start)) / 1000;
@@ -43,8 +43,8 @@ const AdminPage = () => {
 
   const renderTable = () => {
     return (
-      <div className='overflow-x-auto'>
-        <table className='table table-zebra w-full'>
+      <div className="overflow-x-auto">
+        <table className="table table-zebra w-full">
           {/* head */}
           <thead>
             <tr>
@@ -66,7 +66,7 @@ const AdminPage = () => {
                         dispatch(updateList(tasks[userEmail]));
                         return navigate(PATHS.adminPage + PATHS.taskList);
                       }}
-                      className='btn btn-accent btn-sm'
+                      className="btn btn-accent btn-sm"
                     >
                       <ImListNumbered />
                     </button>
