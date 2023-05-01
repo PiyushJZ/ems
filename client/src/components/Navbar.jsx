@@ -39,8 +39,10 @@ const Navbar = () => {
         return navigate(PATHS.taskList);
       case PATHS.createTasks:
         return navigate(PATHS.createTasks);
-      case PATHS.notes:
-        return navigate(PATHS.notes);
+      case PATHS.createNotes:
+        return navigate(PATHS.createNotes);
+      case PATHS.notesList:
+        return navigate(PATHS.notesList);
       /**
        * This path navigation is disabled due to a bug in
        * redux state fetching in the Admin Page Will try to
@@ -107,10 +109,16 @@ const Navbar = () => {
                 Task List
               </button>
               <button
-                onClick={() => handlePageChange(PATHS.notes)}
+                onClick={() => handlePageChange(PATHS.createNotes)}
                 className="btn btn-info hover:scale-95 transition duration-200 ease-in-out w-full"
               >
                 Create Notes
+              </button>
+              <button
+                onClick={() => handlePageChange(PATHS.notesList)}
+                className="btn btn-info hover:scale-95 transition duration-200 ease-in-out w-full"
+              >
+                Notes List
               </button>
               <button
                 onClick={() => handleLogout()}

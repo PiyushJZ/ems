@@ -9,8 +9,10 @@ import {
   TaskListPage,
   AdminPage,
   NotesPage,
+  NotesListPage,
 } from "../pages";
 import { PATHS } from "../router/paths";
+
 const AppLayout = () => {
   return (
     <>
@@ -41,7 +43,13 @@ const AppLayout = () => {
           />
         </Route>
 
-        <Route path={PATHS.notes} element={<NotesPage />}></Route>
+        <Route element={<ProtectedRoute />}>
+          <Route path={PATHS.createNotes} element={<NotesPage />} />
+        </Route>
+
+        <Route element={<ProtectedRoute />}>
+          <Route path={PATHS.notesList} element={<NotesListPage />} />
+        </Route>
 
         {/* default route */}
         <Route path="/*" element={<ErrorPage />} />
