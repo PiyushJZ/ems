@@ -27,14 +27,18 @@ const AdminPage = () => {
 
   const getTotalTime = (userEmail) => {
     const userTasks = tasks[userEmail];
-    const totalTime = userTasks.reduce((total, task) => {
-      if (task.start && task.end) {
-        const timeTaken = (new Date(task.end) - new Date(task.start)) / 1000;
-        return total + timeTaken;
-      }
-      return total;
-    }, 0);
-    return renderTime(totalTime);
+    try {
+      const totalTime = userTasks.reduce((total, task) => {
+        if (task.start && task.end) {
+          const timeTaken = (new Date(task.end) - new Date(task.start)) / 1000;
+          return total + timeTaken;
+        }
+        return total;
+      }, 0);
+      return renderTime(totalTime);
+    } catch (err) {
+      return '';
+    }
   };
 
   const renderTable = () => {
@@ -68,7 +72,6 @@ const AdminPage = () => {
                     </button>
                   </td>
                   <td>{getTotalTime(userEmail)}</td>
-                  {/* <td>"dfasdfa"</td> */}
                 </tr>
               );
             })}

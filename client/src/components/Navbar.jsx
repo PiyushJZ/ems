@@ -44,9 +44,9 @@ const Navbar = () => {
        * redux state fetching in the Admin Page Will try to
        * enable it after taking a deeper look
        */
-      // case PATHS.adminPage:
-      //   dispatch(getTasks());
-      //   return navigate(PATHS.adminPage);
+      case PATHS.adminPage:
+        dispatch(getTasks());
+        return navigate(PATHS.adminPage);
 
       default:
         setToggleLogout(false);
