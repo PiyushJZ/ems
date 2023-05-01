@@ -26,7 +26,7 @@ const NotesPage = () => {
           onSubmit={handleSubmit(onSubmit)}
         >
           <h1 className="text-xl md:text-3xl lg:text-4xl font-semibold text-info mb-8 text-center">
-            Create tasks
+            Create Notes
           </h1>
           <input
             {...register("title")}
@@ -36,11 +36,11 @@ const NotesPage = () => {
             type="text"
           />
           <p className="text-rose-500">{errors.title?.message}</p>
-          <input
+          <textarea
             {...register("description")}
             name="description"
             placeholder="enter description"
-            className="input input-info w-1/4"
+            className="textarea textarea-info  w-1/4 h-auto"
             type="text"
           />
           <p className="text-rose-500">{errors.description?.message}</p>
