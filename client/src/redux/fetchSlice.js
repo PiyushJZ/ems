@@ -19,7 +19,7 @@ export const getNotes = createAsyncThunk("/getNotes", async () => {
       },
     });
     console.log(response);
-    return response.data.tasks;
+    return response.data.notes;
   } catch (err) {
     return err.response.statusText;
   }
