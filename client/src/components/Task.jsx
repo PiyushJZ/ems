@@ -106,9 +106,9 @@ function Task({ description, id, start, end, index }) {
       <th className="w-2">{index + 1}</th>
       {isEdit ? (
         <>
-          <td className="w-10">
+          <td className="w-10 max-w-[200px] overflow-auto whitespace-nowrap">
             <input
-              className="input relative input-bordered input-sm w-full max-w-xs"
+              className="input max-w-[200px] relative input-bordered input-sm"
               type="text"
               value={desc}
               onChange={(e) => setDesc(e.target.value)}
