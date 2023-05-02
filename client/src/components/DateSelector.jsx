@@ -21,11 +21,9 @@ const DateSelector = ({ selectedDate }) => {
       onChange={(d) => {
         setDate(d);
         selectedDate(
-          `${date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()}/${
-            date.getMonth() + 1 < 10
-              ? `0${date.getMonth() + 1}`
-              : date.getMonth() + 1
-          }/${date.getFullYear()}`
+          `${d.getDate() < 10 ? `0${d.getDate()}` : d.getDate()}/${
+            d.getMonth() + 1 < 10 ? `0${d.getMonth() + 1}` : d.getMonth() + 1
+          }/${d.getFullYear()}`
         );
       }}
       // showIcon

@@ -39,9 +39,11 @@ const AttendancePage = () => {
         return navigate(PATHS.taskList);
       }
     } catch (err) {
+      console.log(err);
       Swal.fire({
         icon: 'error',
         title: 'Attendance Not Marked',
+        text: err.response.data.message,
       });
     }
   };
