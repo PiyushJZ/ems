@@ -9,6 +9,7 @@ import Swal from "sweetalert2";
 function Task({ description, id, start, end, index }) {
   const { tasks } = useSelector((state) => state.fetch);
   const [isEdit, setIsEdit] = useState(false);
+  const [disableStop, setDisableStop] = useState(false);
   const [desc, setDesc] = useState(description);
   const accessType = localStorage.getItem("accessType");
   const dispatch = useDispatch();
@@ -33,14 +34,14 @@ function Task({ description, id, start, end, index }) {
   // delete the task
   async function deleteTask() {
     Swal.fire({
-      title: 'Are you sure?',
+      title: "Are you sure?",
       text: "You won't be able to revert this!",
-      type: 'warning',
+      type: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
-  }).then(async(result) => {
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
       if (result.value) {
         const response = await FETCH_WRAPPER.delete(`tasks/${id}`, {
           headers: {
@@ -66,6 +67,7 @@ function Task({ description, id, start, end, index }) {
 
   // start the task
   async function startTask() {
+    setDisableStop(true)
     const start = Date.now();
     const data = {
       start,
@@ -82,10 +84,7 @@ function Task({ description, id, start, end, index }) {
 
   // End the task
   async function endTask() {
-    if (!start) {
-      alert("NOT ALLOWED");
-      return;
-    }
+  
     const end = Date.now();
     const data = {
       end,
@@ -158,7 +157,7 @@ function Task({ description, id, start, end, index }) {
               <button className="btn btn-success btn-sm" onClick={startTask}>
                 Start
               </button>
-              <button className="btn btn-warning btn-sm" onClick={endTask}>
+              <button className="btn btn-warning btn-sm" disabled={!disableStop} onClick={endTask}>
                 Stop
               </button>
             </div>
