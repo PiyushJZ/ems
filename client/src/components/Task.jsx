@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 function Task({ description, id, start, end, index }) {
   const { tasks } = useSelector((state) => state.fetch);
   const [isEdit, setIsEdit] = useState(false);
+  const [disableStop, setDisableStop] = useState(false);
   const [desc, setDesc] = useState(description);
   const accessType = localStorage.getItem('accessType');
   const dispatch = useDispatch();
@@ -66,6 +67,7 @@ function Task({ description, id, start, end, index }) {
 
   // start the task
   async function startTask() {
+    setDisableStop(true);
     const start = Date.now();
     const data = {
       start,
@@ -176,6 +178,7 @@ function Task({ description, id, start, end, index }) {
               </button>
               <button
                 className='btn btn-warning btn-sm'
+                disabled={!disableStop}
                 onClick={endTask}
               >
                 Stop
