@@ -1,15 +1,16 @@
 import React from 'react';
 import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { getTasks } from '../redux/fetchSlice';
 import Task from '../components/Task';
+import { useDispatch , useSelector } from 'react-redux';
 
 const TaskList = () => {
-  const { tasks } = useSelector((state) => state.fetch);
   const accessType = localStorage.getItem('accessType');
   const dispatch = useDispatch();
   const location = useLocation();
+
+  const { tasks } = useSelector((state) => state.fetch);
 
   useEffect(() => {
     if (location.pathname !== '/admin-page/task-list') {
@@ -39,7 +40,7 @@ const TaskList = () => {
       {/* {renderHeader()} */}
       <div className='overflow-x-auto'>
         {/* if task is not present so we can not show table */}
-        {tasks.length > 0 ? (
+        {tasks?.length > 0 ? (
           <table className='table table-zebra w-full'>
             {/* head */}
             <thead>
