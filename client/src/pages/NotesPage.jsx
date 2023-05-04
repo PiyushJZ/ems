@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -10,6 +10,8 @@ import { useDispatch } from "react-redux";
 
 const NotesPage = () => {
   const dispatch = useDispatch();
+  const [img, setImg] = useState({ status: true, file: "" });
+  const formData = new FormData();
 
   const notesSchema = yup.object({
     title: yup
@@ -26,10 +28,29 @@ const NotesPage = () => {
   } = useForm({
     resolver: yupResolver(notesSchema),
   });
+
+  // submit
   const onSubmit = async (data) => {
+
+    console.log(img.file);
+
+    if(!img.status){
+      alert('please select a img ex-("jpg", "jpeg", "jfif", "pjpeg", "pjp", "png")')
+      return '';
+    }
+
+    const createdUser = localStorage.getItem("email");
+
+    formData.append("title", data.title);
+    formData.append("description", data.description);
+    formData.append("createdUser", createdUser);
+    formData.append("fileUrl", img.file);
+
+    console.log("🚀 ~ file: NotesPage.jsx:31 ~ onSubmit ~ dḁta:", data);
+
     try {
       data["createdUser"] = localStorage.getItem("email");
-      const response = FETCH_WRAPPER.post("/notes", data, {
+      const response = FETCH_WRAPPER.post("/notes", formData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("authToken")}`,
         },
@@ -39,26 +60,28 @@ const NotesPage = () => {
         title: "Note created successfully",
       }).then(() => dispatch(getNotes()));
       reset();
-    } catch (err) {
+    } catch (error) {
       Swal.fire({
         icon: "error",
         title: error.message,
       });
-      console.log(err);
+      console.log(error);
     }
   };
 
   // validate File
   const validateFile = (e) => {
     const val = e.target.value;
+    const value = e.target.files[0];
     const index = val.lastIndexOf(".");
     const extention = val.slice(index + 1, val.length).toLowerCase();
-    console.log(index, val, extention);
-    const bool = ["jpg", "jpeg", "jfif", "pjpeg", "pjp", "png"].includes(
+    const bool = ["jpg", "jpeg", "jfif", "pjpeg", "pjp", "png" , " "].includes(
       extention
     );
-
     if (bool) {
+      setImg({ status: true, file: value });
+    }else{
+      setImg({ status: false, file: "" });
     }
   };
 
@@ -87,17 +110,17 @@ const NotesPage = () => {
             className="input input-info w-1/4"
             type="text"
           />
+
           <label htmlFor="file" className="btn btn-outline">
             <input
               type="file"
               id="file"
-              name="file"
+              name="image"
               placeholder="Choose File"
-              className="input hidden"
+              // className="input hidden"
               accept="image/*"
               onChange={validateFile}
             />
-            Choose File
           </label>
           <p className="text-rose-500">{errors.description?.message}</p>
           <button className="btn btn-info w-1/4">Submit</button>

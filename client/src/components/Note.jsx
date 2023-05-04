@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import Swal from "sweetalert2";
 
 const Note = ({ val }) => {
-  const { title, description, createdAt } = val;
+  const { title, description, createdAt, image } = val;
 
   const [isEdit, setIsEdit] = useState(false);
   const [editVal, seteditVal] = useState({ title, description });
@@ -106,6 +106,7 @@ const Note = ({ val }) => {
         ) : (
           <h2 className="card-title">{title}</h2>
         )}
+
         {isEdit ? (
           <input
             type="text"
@@ -119,7 +120,19 @@ const Note = ({ val }) => {
         ) : (
           <p className="my-2">{description}</p>
         )}
-        <div className="card-actions justify-start">
+
+        {/* image file */}
+        <div className="justify-between flex items-center">
+          {image ? (
+            <div className="badge badge-outline">
+              <a className="overflow-hidden" href={image} target="_blank">
+                Image Added
+              </a>
+            </div>
+          ) : (
+            ""
+          )}
+
           <div className="badge badge-outline">
             {new Date(createdAt).toDateString().slice(4)}
           </div>
