@@ -1,5 +1,12 @@
 import Notes from "../models/Notes.js"
 import { validateObjectId } from "../utils/validation.js";
+import {v2 as cloudinary} from "cloudinary"
+
+cloudinary.config({
+  cloud_name:"dmpm3z3us",
+  api_key:"726228357198369",
+  api_secret:"dlT11EWoYDZiSLA3YOLhmsghwT8"
+})
 
 export const getNotes = async (req, res) => {
     try {
@@ -17,7 +24,22 @@ export const getNotes = async (req, res) => {
 
   export const postNotes = async (req, res) => {
     try {
-      const { title, description, createdUser } = req.body;
+      // File Uploadation
+      const isFile = req.files;
+
+      if(isFile){
+        const file = req.files.image;
+        await cloudinary.uploader.upload(file.tempFilePath, (error, result) => {
+          req.body.fileUrl = result.url
+        })
+      }
+      console.log(req.body)
+
+      // checks for other fields
+
+      const { title, description, createdUser, fileUrl } = req.body;
+
+
       if (!description) {
         return res
           .status(400)
@@ -30,15 +52,24 @@ export const getNotes = async (req, res) => {
           .json({ status: false, message: "Title of task not found" });
       }
 
-      const task = await Notes.create({ createdUser, description, title });
+      if (!createdUser) {
+        return res
+          .status(400)
+          .json({ status: false, message: "Created User ID not found" });
+      }
+
+      if (!validateObjectId(createdUser)) {
+        return res.status(400).json({ status: false, message: "Created User ID is not valid" });
+      }
+
+      const task = await Notes.create({ createdUser, description, title, image:fileUrl });
       res
         .status(200)
         .json({ task, status: true, message: "Task created successfully.." });
     } catch (err) {
-      console.error(err);
       return res
         .status(500)
-        .json({ status: false, message: "Internal Server Error" });
+        .json({ status: false, message: err.message });
     }
   };
 
