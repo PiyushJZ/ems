@@ -7,6 +7,7 @@ import authRoutes from "./routes/auth.js";
 import taskRoutes from "./routes/tasks.js";
 import notesRoutes from "./routes/notes.js"
 import attendenceRoutes from "./routes/attendence.js"
+import fileUpload from "express-fileupload";
 
 // Configuration
 dotenv.config();
@@ -15,6 +16,10 @@ const app = express();
 // Middleware
 app.use(express.json());
 app.use(cors());
+app.use(fileUpload({
+  useTempFiles:true
+}))
+
 
 // Routes
 app.use("/api/auth", authRoutes);

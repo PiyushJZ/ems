@@ -11,12 +11,14 @@ const notesSchema = mongoose.Schema(
       required: true,
     },
     description: {
-      type: String,
-      required: true,
+        type: String,
+        required:true
     },
-  },
-  { timestamps: true }
-);
+    image:{
+        type:String,
+        default:""
+    }
+}, {timestamps: true})
 
 const Notes = mongoose.model('Note', notesSchema);
 

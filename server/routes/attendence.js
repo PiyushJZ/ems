@@ -1,11 +1,13 @@
 import express from 'express'
 import { deleteAttendence, getAllAttendence, markAttendence, singleAttendence, updateAttendence } from '../controllers/attendence.js';
+import { verifyAccessToken } from '../middlewares/index.js';
+
 const router = express.Router();
 
-router.get("/", getAllAttendence)
-router.post("/mark", markAttendence)
-router.get("/:attendenceId", singleAttendence)
-router.put("/:attendenceId", updateAttendence)
-router.delete("/:attendenceId", deleteAttendence)
+router.get("/",verifyAccessToken,getAllAttendence)
+router.post("/mark",verifyAccessToken, markAttendence)
+router.get("/:attendenceId",verifyAccessToken, singleAttendence)
+router.put("/:attendenceId",verifyAccessToken, updateAttendence)
+router.delete("/:attendenceId",verifyAccessToken, deleteAttendence)
 
 export default router;
