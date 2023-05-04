@@ -1,10 +1,11 @@
-import { configureStore } from '@reduxjs/toolkit';
-import authReducer from './authSlice';
-import taskListReducer from './taskListSlice';
-
+import { configureStore } from "@reduxjs/toolkit";
+import authReducer from "./authSlice";
+import fetchReducer from "./fetchSlice";
+import appReducer from "./appSlice";
 export const store = configureStore({
   reducer: {
     auth: authReducer,
-    taskList: taskListReducer,
+    fetch: fetchReducer,
+    app: appReducer,
   },
 });

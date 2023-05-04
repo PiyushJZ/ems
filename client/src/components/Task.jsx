@@ -1,211 +1,207 @@
 import { useState } from "react";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
-import ButtonGroup from "@mui/material/ButtonGroup";
-import Button from "@mui/material/Button";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
-import TextField from "@mui/material/TextField";
-import Tooltip from "@mui/material/Tooltip";
-import { useSelector, useDispatch } from "react-redux";
-import { updateList } from "../redux/taskListSlice";
-import axios from "axios";
-import "./Task.css";
+import { GrEdit, GrTrash } from "react-icons/gr";
+import { useDispatch, useSelector } from "react-redux";
+import { getTasks, updateList } from "../redux/fetchSlice";
+import { FETCH_WRAPPER } from "../api";
+import Timer from "./Timer";
+import Swal from "sweetalert2";
 
-function Task({ description, status, id }) {
+function Task({ description, id, start, end, index }) {
+  const { tasks } = useSelector((state) => state.fetch);
   const [isEdit, setIsEdit] = useState(false);
+  const [disableStop, setDisableStop] = useState(false);
   const [desc, setDesc] = useState(description);
-  const user = useSelector((state) => state.auth.user);
-  const tasks = useSelector((state) => state.taskList.tasks);
+  const [validDes, setValidDes] = useState("");
+  const accessType = localStorage.getItem("accessType");
   const dispatch = useDispatch();
 
+  // Edit the task
   async function editTask() {
+    if (!desc || !/[a-zA-Z0-9]/.test(desc)) {
+      setValidDes("please enter some value");
+      return;
+    }
+
     const data = {
       description: desc,
     };
-    const response = await axios.put(
-      `http://localhost:3001/api/tasks/${id}`,
-      data,
-      {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      }
-    );
+    const response = await FETCH_WRAPPER.put(`tasks/${id}`, data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+      },
+    });
     if (response.data.status === true) {
-      const temp = tasks.filter((task) => {
-        return task.id !== id;
-      });
-      const temp2 = tasks.filter((task) => {
-        return task.id === id;
-      });
-      const updatedTask = {
-        desc,
-        id,
-        status: temp2[0].status,
-      };
-      dispatch(updateList([...temp, updatedTask]));
-      setIsEdit(false);
+      setValidDes("");
+      setIsEdit(!isEdit);
+    } else {
+      alert("Task description not changed");
     }
   }
+
+  // delete the task
   async function deleteTask() {
-    const response = await axios.delete(
-      `http://localhost:3001/api/tasks/${id}`,
-      {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.value) {
+        const response = await FETCH_WRAPPER.delete(`tasks/${id}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+        });
+        if (response.status === 200) {
+          if (accessType === "admin") {
+            dispatch(updateList(tasks.filter((task) => task._id !== id)));
+          } else {
+            dispatch(getTasks());
+          }
+          Swal.fire({
+            icon: "success",
+            title: "task deleted successfully",
+          });
+        }
+      } else {
+        Swal("Task is not deleted");
       }
-    );
-    if (response.status === 200) {
-      const updatedList = tasks.filter((task) => {
-        return task.id !== id;
-      });
-      dispatch(updateList(updatedList));
-    }
+    });
   }
+
+  // start the task
   async function startTask() {
+    setDisableStop(true);
     const start = Date.now();
     const data = {
       start,
     };
-    const response = await axios.put(
-      `http://localhost:3001/api/tasks/${id}`,
-      data,
-      {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      }
-    );
+    const response = await FETCH_WRAPPER.put(`tasks/${id}`, data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+      },
+    });
     if (response.data.status === true) {
-      const updatedTask = {
-        description,
-        id,
-        status: "running",
-      };
-      const temp = tasks.filter((task) => {
-        return task.id !== id;
-      });
-      dispatch(updateList([...temp, updatedTask]));
+      dispatch(getTasks());
     }
   }
+
+  // End the task
   async function endTask() {
+    if (!start) {
+      alert("NOT ALLOWED");
+      return;
+    }
     const end = Date.now();
     const data = {
       end,
     };
-    const response = await axios.put(
-      `http://localhost:3001/api/tasks/${id}`,
-      data,
-      {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      }
-    );
+    const response = await FETCH_WRAPPER.put(`tasks/${id}`, data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+      },
+    });
 
     if (response.data.status === true) {
-      const updatedTask = {
-        description,
-        id,
-        status: "complete",
-      };
-      const temp = tasks.filter((task) => {
-        return task.id !== id;
-      });
-      dispatch(updateList([...temp, updatedTask]));
+      dispatch(getTasks());
     }
   }
 
-  const renderControls = () => {
-    if (status === "pending") {
-      return (
-        <ButtonGroup
-          variant="contained"
-          aria-label="outlined primary button group"
-          sx={{ m: 1 }}
-        >
-          <Tooltip title="Start Task" arrow placement="left">
-            <Button onClick={startTask}>Start</Button>
-          </Tooltip>
-          <Tooltip title="Stop Task" arrow placement="right">
-            <Button onClick={endTask}>Stop</Button>
-          </Tooltip>
-        </ButtonGroup>
-      );
-    } else if (status === "running") {
-      return (
-        <ButtonGroup
-          variant="contained"
-          aria-label="outlined primary button group"
-          sx={{ m: 1 }}
-        >
-          <Tooltip title="Start Task" arrow placement="left">
-            <Button disabled>Start</Button>
-          </Tooltip>
-          <Tooltip title="Stop Task" arrow placement="right">
-            <Button onClick={endTask}>Stop</Button>
-          </Tooltip>
-        </ButtonGroup>
-      );
-    } else {
+   // handle edit button functionlity
+   const handleEdit = () => {
+    if (!desc || !/[a-zA-Z0-9]/.test(desc)) {
+      setValidDes("please enter some value");
       return;
     }
+    setIsEdit(!isEdit);
   };
 
-  function renderDescription() {
-    if (!isEdit) {
-      return (
-        <Typography sx={{ m: 0.5 }}>
-          {desc}
-          {status === "complete" ? ": Complete" : ""}
-        </Typography>
-      );
-    }
-    return (
-      <>
-        <TextField
-          label="Task Description"
-          required
-          value={desc}
-          onChange={(e) => setDesc(e.target.value)}
-          type="search"
-          sx={{ m: 1 }}
-        />
-        <Button variant="contained" onClick={editTask} sx={{ m: 1 }}>
-          <Typography>Edit Task</Typography>
-        </Button>
-      </>
-    );
-  }
-
   return (
-    <>
-      <Box
-        sx={{ bgcolor: "#e4e4f0", m: 2, p: 1, width: "300%" }}
-        className="box"
-      >
-        {renderDescription()}
-        <ButtonGroup
-          variant="contained"
-          aria-label="outlined primary button group"
-          sx={{ m: 1 }}
-        >
-          <Tooltip title="Edit" arrow placement="left">
-            <Button onClick={() => setIsEdit(true)}>
-              <EditIcon />
-            </Button>
-          </Tooltip>
-          <Tooltip title="Delete" arrow placement="right">
-            <Button onClick={deleteTask}>
-              <DeleteIcon />
-            </Button>
-          </Tooltip>
-        </ButtonGroup>
-        {renderControls()}
-      </Box>
-    </>
+    <tr>
+      <th className="w-2">{index + 1}</th>
+      {isEdit ? (
+        <>
+          <td className="w-10 max-w-[200px] overflow-auto whitespace-nowrap">
+            <input
+              className="input max-w-[200px] relative input-bordered input-sm"
+              type="text"
+              value={desc}
+              placeholder={validDes}
+              onChange={(e) => setDesc(e.target.value)}
+            />
+            <button
+              onClick={editTask}
+              className="btn border-2 btn-info btn-sm absolute mx-2"
+            >
+              Change Description
+            </button>
+          </td>
+        </>
+      ) : (
+        <>
+          <td className="w-10 max-w-[200px] relative overflow-auto whitespace-nowrap">
+            {desc}
+          </td>
+        </>
+      )}
+      <td className="w-20">
+        {!start && !end ? "Not Yet Started" : ""}
+        {start ? <Timer start={start} end={end} /> : ""}
+      </td>
+      {/* new Date column added */}
+      <td className="w-20">
+        {!end ? "Task not Completed" : ""}
+        {start ? <Timer end={end} /> : ""}
+      </td>
+      {/* new Date column ended */}
+      {accessType === "employee" ? (
+        <td className="w-10">
+          {start && end ? "Task Completed" : ""}
+          {start && !end ? (
+            <div className="flex gap-4">
+              <button disabled className="btn btn-info btn-sm">
+                Start
+              </button>
+              <button className="btn btn-error btn-sm" onClick={endTask}>
+                Stop
+              </button>
+            </div>
+          ) : (
+            ""
+          )}
+          {!start && !end ? (
+            <div className="flex gap-4">
+              <button className="btn btn-success btn-sm" onClick={startTask}>
+                Start
+              </button>
+              <button
+                className="btn btn-warning btn-sm"
+                disabled={!disableStop}
+                onClick={endTask}
+              >
+                Stop
+              </button>
+            </div>
+          ) : (
+            ""
+          )}
+        </td>
+      ) : (
+        ""
+      )}
+
+      <td className="w-10">
+        <button className="btn btn-info btn-sm" onClick={handleEdit}>
+          <GrEdit />
+        </button>
+        <button className="btn btn-error ml-4 btn-sm" onClick={deleteTask}>
+          <GrTrash />
+        </button>
+      </td>
+    </tr>
   );
 }
 
