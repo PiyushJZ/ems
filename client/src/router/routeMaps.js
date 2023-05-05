@@ -7,6 +7,7 @@ import {
   NotesListPage,
 } from "../pages";
 import { PATHS } from "./paths";
+
 export const routesMap = [
   {
     id: "task-list",
