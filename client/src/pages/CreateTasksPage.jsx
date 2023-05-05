@@ -53,6 +53,8 @@ const CreateTasksPage = () => {
           title: "Task created successfully",
         }).then(() => {
           dispatch(getTasks());
+          navigate(PATHS.adminPage);
+          localStorage.removeItem('assignTask')
         });
       }
     } catch (error) {
