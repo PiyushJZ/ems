@@ -1,73 +1,71 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
-import { ImListNumbered } from "react-icons/im";
-import { MdAssignmentAdd } from "react-icons/md";
-import { BsCalendarDate } from "react-icons/bs";
-import { useSelector, useDispatch } from "react-redux";
-import { getTasks, updateList } from "../redux/fetchSlice";
-import { PATHS } from "../router/paths";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import { useEffect } from 'react';
+import { ImListNumbered } from 'react-icons/im';
+import { MdAssignmentAdd } from 'react-icons/md';
+import { BsCalendarDate } from 'react-icons/bs';
+import { useSelector, useDispatch } from 'react-redux';
+import { getTasks, updateList } from '../redux/fetchSlice';
+import { PATHS } from '../router/paths';
+import { useNavigate } from 'react-router-dom';
+import Table from '../components/Table';
 
 const AdminPage = () => {
   const { tasks } = useSelector((state) => state.fetch);
-  console.log(tasks)
+  console.log(tasks);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [emailSearch, setEmailSearch] = useState("")
-  const [filteredData, setFilteredData] = useState([])
+  const [emailSearch, setEmailSearch] = useState('');
+  const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
     dispatch(getTasks());
   }, []);
 
-  useEffect(()=> {
-    // switch(emailSearch){
-    //   case "":
-    //     return setFilteredData(tasks);
-    //   case ""
-    // }
+  useEffect(() => {
+    if (emailSearch === '') {
+      const filteredKeys = Object.keys(tasks).filter((item) =>
+        item.includes(emailSearch)
+      );
 
-    if(emailSearch === ""){
-      const filteredKeys = Object.keys(tasks).filter(item => item.includes(emailSearch))
+      const array = [];
 
-      const array = []
-
-      for(let i=0;i<filteredKeys.length;i++){
-        const taskDetails = tasks[filteredKeys[i]]
-        console.log(`Task details of ${filteredKeys[i]} >>> `,taskDetails)
+      for (let i = 0; i < filteredKeys.length; i++) {
+        const taskDetails = tasks[filteredKeys[i]];
+        console.log(`Task details of ${filteredKeys[i]} >>> `, taskDetails);
         const name = filteredKeys[i];
         const obj = {
-          email:name,
-          tasks: taskDetails
-        }
-        array.push(obj)
+          email: name,
+          tasks: taskDetails,
+        };
+        array.push(obj);
       }
 
-      setFilteredData(array)
-
+      setFilteredData(array);
     } else {
-      const filteredKeys = Object.keys(tasks).filter(item => item.includes(emailSearch))
-      console.log(filteredKeys)
+      const filteredKeys = Object.keys(tasks).filter((item) =>
+        item.includes(emailSearch)
+      );
+      console.log(filteredKeys);
 
-      const array = []
+      const array = [];
 
-      for(let i=0;i<filteredKeys.length;i++){
-        const taskDetails = tasks[filteredKeys[i]]
-        console.log(`Task details of ${filteredKeys[i]} >>> `,taskDetails)
+      for (let i = 0; i < filteredKeys.length; i++) {
+        const taskDetails = tasks[filteredKeys[i]];
+        console.log(`Task details of ${filteredKeys[i]} >>> `, taskDetails);
         const name = filteredKeys[i];
         const obj = {
-          email:name,
-          tasks: taskDetails
-        }
-        array.push(obj)
+          email: name,
+          tasks: taskDetails,
+        };
+        array.push(obj);
       }
 
-      setFilteredData(array)
+      setFilteredData(array);
     }
-  },[emailSearch,tasks])
+  }, [emailSearch, tasks]);
 
-  console.log(filteredData)
+  console.log('FILTER DATA', filteredData);
 
   const renderTime = (time) => {
     if (isNaN(time)) {
@@ -90,17 +88,23 @@ const AdminPage = () => {
       }, 0);
       return renderTime(totalTime);
     } catch (err) {
-      return "";
+      return '';
     }
   };
 
   const renderTable = () => {
     return (
-      <div className="overflow-x-auto">
-        <div className="float-right ml-2">
-        <input type="text" className="p-2 m-2 rounded-md outline-none" value={emailSearch} onChange={e => setEmailSearch(e.target.value)} placeholder="Search by Email"/>
+      <div className='overflow-x-auto'>
+        <div className='float-right ml-2'>
+          <input
+            type='text'
+            className='p-2 m-2 rounded-md outline-none'
+            value={emailSearch}
+            onChange={(e) => setEmailSearch(e.target.value)}
+            placeholder='Search by Email'
+          />
         </div>
-        <table className="table table-zebra w-full">
+        <table className='table table-zebra w-full'>
           {/* head */}
           <thead>
             <tr>
@@ -114,7 +118,7 @@ const AdminPage = () => {
           </thead>
           <tbody>
             {filteredData?.map((userEmail, index) => {
-              console.log(userEmail)
+              console.log(userEmail);
               return (
                 <tr key={index}>
                   <td>{index + 1}</td>
@@ -125,14 +129,14 @@ const AdminPage = () => {
                         dispatch(updateList(tasks[userEmail.email]));
                         return navigate(PATHS.adminPage + PATHS.taskList);
                       }}
-                      className="btn btn-accent btn-circle"
+                      className='btn btn-accent btn-circle'
                     >
                       <ImListNumbered />
                     </button>
                   </td>
                   <td>
                     <button
-                      className="btn btn-primary btn-square"
+                      className='btn btn-primary btn-square'
                       onClick={() => navigate(PATHS.attendance)}
                     >
                       <BsCalendarDate />
@@ -140,9 +144,9 @@ const AdminPage = () => {
                   </td>
                   <td>
                     <button
-                      className="btn btn-secondary btn-circle"
+                      className='btn btn-secondary btn-circle'
                       onClick={() => (
-                        localStorage.setItem("assignTask", userEmail.email),
+                        localStorage.setItem('assignTask', userEmail.email),
                         navigate(PATHS.createTasks)
                       )}
                     >
@@ -159,7 +163,22 @@ const AdminPage = () => {
     );
   };
 
-  return <>{renderTable()}</>;
+  return (
+    <>
+      {/* {renderTable()} */}
+      <input
+        type='text'
+        className='p-2 m-2 rounded-md outline-none'
+        value={emailSearch}
+        onChange={(e) => setEmailSearch(e.target.value)}
+        placeholder='Search by Email'
+      />
+      <Table
+        type={'admin'}
+        tasks={filteredData}
+      />
+    </>
+  );
 };
 
 export default AdminPage;
