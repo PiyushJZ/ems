@@ -70,19 +70,22 @@ const AdminPage = () => {
                         dispatch(updateList(tasks[userEmail]));
                         return navigate(PATHS.adminPage + PATHS.taskList);
                       }}
-                      className="btn btn-accent btn-sm"
+                      className="btn btn-accent btn-circle"
                     >
                       <ImListNumbered />
                     </button>
                   </td>
                   <td>
-                    <button className="btn btn-accent btn-sm" onClick={()=> navigate(PATHS.attendance)} >
+                    <button
+                      className="btn btn-primary btn-square"
+                      onClick={() => navigate(PATHS.attendance)}
+                    >
                       <BsCalendarDate />
                     </button>
                   </td>
                   <td>
                     <button
-                      className="btn btn-accent btn-sm"
+                      className="btn btn-secondary btn-circle"
                       onClick={() => (
                         localStorage.setItem("assignTask", userEmail),
                         navigate(PATHS.createTasks)
