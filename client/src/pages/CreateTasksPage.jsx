@@ -66,26 +66,23 @@ const CreateTasksPage = () => {
 
   return (
     <>
-      <div className="max-w-screen h-80 ml-10">
-        <form
-          className="w-full h-full flex flex-col gap-2 justify-center items-start"
-          onSubmit={taskCreation}
-        >
+      <div className=" h-auto">
+        <form className="py-8" onSubmit={taskCreation}>
           <h1 className="text-xl md:text-3xl lg:text-4xl font-semibold text-info mb-8 text-center">
             {accessType === "admin" ? "Task Assignmnent" : "Create Task"}
           </h1>
 
-          <div className="flex items-center justify-center">
+          <div className="flex px-5 md:mx-auto items-center justify-center flex-col gap-8">
             <input
               type="text"
-              className="input input-info input-lg text-center"
+              className="input input-info input-lg text-center w-full px-8 md:w-1/3"
               placeholder="enter task details"
               onChange={(e) => setDescription(e.target.value)}
             />
             <input
               type="submit"
               value={accessType === "amdin" ? "Assign a Task" : "Create Task"}
-              className="btn btn-info ml-3"
+              className="btn btn-info btn-lg w-full px-8 md:w-1/3"
             />
           </div>
         </form>
