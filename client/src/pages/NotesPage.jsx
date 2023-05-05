@@ -12,7 +12,6 @@ const NotesPage = () => {
   const dispatch = useDispatch();
   const [img, setImg] = useState({ status: true, file: "" });
   const formData = new FormData();
-
   const notesSchema = yup.object({
     title: yup
       .string()

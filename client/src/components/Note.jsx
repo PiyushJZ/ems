@@ -109,7 +109,7 @@ const Note = ({ val }) => {
           />
         ) : (
           <div>
-            <h2 className="card-title text-secondary">{title}</h2>
+            <h2 className="card-title text-info">{title}</h2>
             <hr className=" mt-5 border-primary border" />
           </div>
         )}
