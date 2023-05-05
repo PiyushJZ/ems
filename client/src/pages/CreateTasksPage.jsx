@@ -6,10 +6,12 @@ import { getTasks } from "../redux/fetchSlice";
 import Swal from "sweetalert2";
 import TaskList from "./TaskListPage";
 import { useDispatch } from "react-redux";
+import { PATHS } from "../router/paths";
 
 const CreateTasksPage = () => {
   const [description, setDescription] = useState("");
   const navigate = useNavigate();
+  const accessType = localStorage.getItem("accessType");
 
   const dispatch = useDispatch();
 
@@ -25,7 +27,9 @@ const CreateTasksPage = () => {
       return;
     }
 
-    const email = localStorage.getItem("email");
+    const email = localStorage.getItem(
+      accessType === "admin" ? "assignTask" : "email"
+    );
 
     const data = {
       email,
@@ -44,6 +48,10 @@ const CreateTasksPage = () => {
           icon: "success",
           title: "Task created successfully",
         }).then(() => {
+          accessType === "admin"
+            ? (dispatch(updateList(tasks[userEmail])) ,
+            navigate(PATHS.adminPage + PATHS.taskList))
+            : " ";
           dispatch(getTasks());
         });
       }
@@ -64,22 +72,26 @@ const CreateTasksPage = () => {
           onSubmit={taskCreation}
         >
           <h1 className="text-xl md:text-3xl lg:text-4xl font-semibold text-info mb-8 text-center">
-            Create Task
+            {accessType === "admin" ? "Task Assignmnent" : "Create Task"}
           </h1>
 
-          <div className="flex items-center justify-center" >
+          <div className="flex items-center justify-center">
             <input
               type="text"
               className="input input-info input-lg text-center"
               placeholder="enter task details"
               onChange={(e) => setDescription(e.target.value)}
             />
-            <input type="submit" value="Create Task" className="btn btn-info ml-3" />
+            <input
+              type="submit"
+              value={accessType === "amdin" ? "Assign a Task" : "Create Task"}
+              className="btn btn-info ml-3"
+            />
           </div>
         </form>
       </div>
 
-      <TaskList />
+      {accessType !== "admin" && <TaskList />}
     </>
   );
 };
