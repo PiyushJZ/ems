@@ -10,7 +10,7 @@ const TaskList = () => {
   const { tasks } = useSelector((state) => state.fetch);
 
   useEffect(() => {
-    if (location.pathname !== '/admin-page/task-list') {
+    if (location.pathname !== '/admin-page/create-task') {
       dispatch(getTasks());
     }
   }, []);

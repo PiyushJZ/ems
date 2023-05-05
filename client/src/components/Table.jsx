@@ -55,9 +55,8 @@ const Table = ({ type, tasks }) => {
             <tr>
               <th>S no.</th>
               <th>employee email</th>
-              <th>tasks</th>
               <th>Attendance</th>
-              <th>Task Assignment</th>
+              <th>Tasks</th>
               <th>time taken</th>
             </tr>
           )}
@@ -90,17 +89,6 @@ const Table = ({ type, tasks }) => {
                       <td>{userEmail}</td>
                       <td>
                         <button
-                          onClick={() => {
-                            dispatch(updateList(tasks[userEmail]));
-                            return navigate(PATHS.adminPage + PATHS.taskList);
-                          }}
-                          className='btn btn-accent btn-sm'
-                        >
-                          <ImListNumbered />
-                        </button>
-                      </td>
-                      <td>
-                        <button
                           className='btn btn-accent btn-sm'
                           onClick={() => navigate(PATHS.attendance)}
                         >
@@ -110,10 +98,11 @@ const Table = ({ type, tasks }) => {
                       <td>
                         <button
                           className='btn btn-accent btn-sm'
-                          onClick={() => (
-                            localStorage.setItem('assignTask', userEmail),
-                            navigate(PATHS.createTasks)
-                          )}
+                          onClick={() => {
+                            localStorage.setItem('assignTask', userEmail);
+                            dispatch(updateList(tasks[userEmail]));
+                            navigate(PATHS.adminPage + PATHS.createTasks);
+                          }}
                         >
                           <MdAssignmentAdd />
                         </button>
