@@ -112,13 +112,16 @@ const NotesPage = () => {
             type="text"
           />
 
-          <label htmlFor="file" className="btn btn-outline w-1/4 mt-3">
+          <label
+            htmlFor="file"
+            className="btn btn-outline rounded-full w-1/4 mt-3"
+          >
             <input
               type="file"
               id="file"
               name="image"
               placeholder="Choose File"
-              className="file"
+              className="file:cursor-pointer file:bg-primary file:px-4 file:py-3 file:border-none rounded-full"
               accept="image/*"
               onChange={validateFile}
             />
