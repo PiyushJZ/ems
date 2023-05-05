@@ -39,6 +39,12 @@ export const routesMap = [
     Element: NotesListPage,
   },
   {
+    id: "notes-list",
+    isProtected: true,
+    path: PATHS.adminPage + PATHS.taskList,
+    Element: TaskListPage,
+  },
+  {
     id: "attendance",
     isProtected: true,
     path: PATHS.attendance,
