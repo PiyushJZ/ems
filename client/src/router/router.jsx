@@ -4,6 +4,7 @@ import { PATHS } from "./paths";
 import { ErrorPage, LoginPage } from "../pages";
 import { Route, Routes, Navigate } from "react-router-dom";
 import ReverseAuthRoute from "./ReverseAuth";
+import ProtectedRoute from "./ProtectedRoute";
 
 const AppRouter = () => {
   return (
