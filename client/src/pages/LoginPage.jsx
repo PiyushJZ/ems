@@ -46,7 +46,7 @@ const [loginerror, setLoginError] = useState("");
       if (userData.accessType === "admin") navigate(PATHS.adminPage);
       else navigate(PATHS.createTasks);
     } catch (err) {
-      setLoginError(err.response.data.msg)
+      setLoginError(err.response?.data.msg)
     }
   };
 
