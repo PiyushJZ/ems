@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useEffect } from "react";
 import { ImListNumbered } from "react-icons/im";
 import { MdAssignmentAdd } from "react-icons/md";
@@ -10,13 +10,64 @@ import { useNavigate } from "react-router-dom";
 
 const AdminPage = () => {
   const { tasks } = useSelector((state) => state.fetch);
+  console.log(tasks)
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  console.log("TASKS: ", tasks);
+
+  const [emailSearch, setEmailSearch] = useState("")
+  const [filteredData, setFilteredData] = useState([])
 
   useEffect(() => {
     dispatch(getTasks());
   }, []);
+
+  useEffect(()=> {
+    // switch(emailSearch){
+    //   case "":
+    //     return setFilteredData(tasks);
+    //   case ""
+    // }
+
+    if(emailSearch === ""){
+      const filteredKeys = Object.keys(tasks).filter(item => item.includes(emailSearch))
+
+      const array = []
+
+      for(let i=0;i<filteredKeys.length;i++){
+        const taskDetails = tasks[filteredKeys[i]]
+        console.log(`Task details of ${filteredKeys[i]} >>> `,taskDetails)
+        const name = filteredKeys[i];
+        const obj = {
+          email:name,
+          tasks: taskDetails
+        }
+        array.push(obj)
+      }
+
+      setFilteredData(array)
+
+    } else {
+      const filteredKeys = Object.keys(tasks).filter(item => item.includes(emailSearch))
+      console.log(filteredKeys)
+
+      const array = []
+
+      for(let i=0;i<filteredKeys.length;i++){
+        const taskDetails = tasks[filteredKeys[i]]
+        console.log(`Task details of ${filteredKeys[i]} >>> `,taskDetails)
+        const name = filteredKeys[i];
+        const obj = {
+          email:name,
+          tasks: taskDetails
+        }
+        array.push(obj)
+      }
+
+      setFilteredData(array)
+    }
+  },[emailSearch,tasks])
+
+  console.log(filteredData)
 
   const renderTime = (time) => {
     if (isNaN(time)) {
@@ -46,6 +97,9 @@ const AdminPage = () => {
   const renderTable = () => {
     return (
       <div className="overflow-x-auto">
+        <div className="float-right ml-2">
+        <input type="text" className="p-2 m-2 rounded-md outline-none" value={emailSearch} onChange={e => setEmailSearch(e.target.value)} placeholder="Search by Email"/>
+        </div>
         <table className="table table-zebra w-full">
           {/* head */}
           <thead>
@@ -59,15 +113,16 @@ const AdminPage = () => {
             </tr>
           </thead>
           <tbody>
-            {Object.keys(tasks).map((userEmail, index) => {
+            {filteredData?.map((userEmail, index) => {
+              console.log(userEmail)
               return (
                 <tr key={index}>
                   <td>{index + 1}</td>
-                  <td>{userEmail}</td>
+                  <td>{userEmail.email}</td>
                   <td>
                     <button
                       onClick={() => {
-                        dispatch(updateList(tasks[userEmail]));
+                        dispatch(updateList(tasks[userEmail.email]));
                         return navigate(PATHS.adminPage + PATHS.taskList);
                       }}
                       className="btn btn-accent btn-sm"
@@ -84,14 +139,14 @@ const AdminPage = () => {
                     <button
                       className="btn btn-accent btn-sm"
                       onClick={() => (
-                        localStorage.setItem("assignTask", userEmail),
+                        localStorage.setItem("assignTask", userEmail.email),
                         navigate(PATHS.createTasks)
                       )}
                     >
                       <MdAssignmentAdd />
                     </button>
                   </td>
-                  <td>{getTotalTime(userEmail)}</td>
+                  <td>{getTotalTime(userEmail.email)}</td>
                 </tr>
               );
             })}
