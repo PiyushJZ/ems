@@ -7,6 +7,6 @@ export const FETCH_WRAPPER = axios.create({
     Accept: 'application/json',
     // The value of "Authorization" is null at the start of the application and stays null
     // throughout the whole workflow until first refresh
-    Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+    Authorization: `Bearer ${localStorage?.getItem('authToken')}`,
   },
 });

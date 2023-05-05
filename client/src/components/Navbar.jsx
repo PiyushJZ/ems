@@ -66,9 +66,27 @@ const Navbar = () => {
         <span>Welcome {userEmail}</span>
         <div className="flex justify-between items-center gap-4 cursor-pointer">
           {!darkMode ? (
-            <MdOutlineDarkMode onClick={() => handleDarkMode()} size={24} />
+            <div
+              className="tooltip tooltip-left tooltip-primary"
+              data-tip="dark mode"
+            >
+              <MdOutlineDarkMode
+                className="animate-spin"
+                onClick={() => handleDarkMode()}
+                size={24}
+              />
+            </div>
           ) : (
-            <CiSun onClick={() => handleDarkMode()} size={24} />
+            <div
+              className="tooltip tooltip-left tooltip-primary"
+              data-tip="light mode"
+            >
+              <CiSun
+                className="animate-spin"
+                onClick={() => handleDarkMode()}
+                size={24}
+              />
+            </div>
           )}
           {localStorage.getItem("authToken") && (
             <div
