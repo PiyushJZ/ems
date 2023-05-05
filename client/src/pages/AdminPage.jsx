@@ -76,7 +76,7 @@ const AdminPage = () => {
                     </button>
                   </td>
                   <td>
-                    <button className="btn btn-accent btn-sm">
+                    <button className="btn btn-accent btn-sm" onClick={} >
                       <BsCalendarDate />
                     </button>
                   </td>
