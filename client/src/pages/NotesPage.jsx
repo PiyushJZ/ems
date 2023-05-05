@@ -56,7 +56,7 @@ const NotesPage = () => {
       Swal.fire({
         icon: "success",
         title: "Note created successfully",
-      }).then(() => dispatch(getNotes()));
+      }).then(() => {return dispatch(getNotes())});
       reset();
     } catch (error) {
       Swal.fire({
