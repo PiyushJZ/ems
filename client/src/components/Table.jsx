@@ -100,7 +100,10 @@ const Table = ({ type, tasks }) => {
                         </button>
                       </td>
                       <td>
-                        <button className='btn btn-accent btn-sm'>
+                        <button
+                          className='btn btn-accent btn-sm'
+                          onClick={() => navigate(PATHS.attendance)}
+                        >
                           <BsCalendarDate />
                         </button>
                       </td>
