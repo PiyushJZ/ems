@@ -47,8 +47,6 @@ const NotesPage = () => {
     formData.append("createdUser", createdUser);
     formData.append("fileUrl", img.file);
 
-    console.log("🚀 ~ file: NotesPage.jsx:31 ~ onSubmit ~ dḁta:", data);
-
     try {
       data["createdUser"] = localStorage.getItem("email");
       const response = FETCH_WRAPPER.post("/notes", formData, {

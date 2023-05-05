@@ -2,16 +2,20 @@ import React from "react";
 import { useState } from "react";
 import { FETCH_WRAPPER } from "../api/index";
 import { useNavigate } from "react-router-dom";
-import { getTasks } from "../redux/fetchSlice";
+import { getTasks , updateList } from "../redux/fetchSlice";
 import Swal from "sweetalert2";
 import TaskList from "./TaskListPage";
-import { useDispatch } from "react-redux";
+import { useDispatch , useSelector } from "react-redux";
 import { PATHS } from "../router/paths";
 
+
 const CreateTasksPage = () => {
+  const { tasks } = useSelector((state) => state.fetch);
+  console.log(tasks);
   const [description, setDescription] = useState("");
   const navigate = useNavigate();
   const accessType = localStorage.getItem("accessType");
+  const assignTask = localStorage.getItem("assignTask");
 
   const dispatch = useDispatch();
 
@@ -48,10 +52,6 @@ const CreateTasksPage = () => {
           icon: "success",
           title: "Task created successfully",
         }).then(() => {
-          accessType === "admin"
-            ? (dispatch(updateList(tasks[userEmail])) ,
-            navigate(PATHS.adminPage + PATHS.taskList))
-            : " ";
           dispatch(getTasks());
         });
       }
