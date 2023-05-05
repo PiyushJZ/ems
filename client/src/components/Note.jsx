@@ -3,6 +3,10 @@ import { FETCH_WRAPPER } from "../api";
 import { editNote, getNotes, updateNote } from "../redux/fetchSlice";
 import { useSelector, useDispatch } from "react-redux";
 import Swal from "sweetalert2";
+import { MdOutlineDelete } from "react-icons/md";
+import { FiEdit3 } from "react-icons/fi";
+import { IoCheckmarkDoneCircleSharp } from "react-icons/io5";
+import { IoIosCloseCircle } from "react-icons/io";
 
 const Note = ({ val }) => {
   const { title, description, createdAt, image } = val;
@@ -53,8 +57,8 @@ const Note = ({ val }) => {
       text: "You won't be able to revert this!",
       type: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
+      confirmButtonColor: "red",
+      cancelButtonColor: "teal",
       confirmButtonText: "Yes, delete it!",
     }).then(async (result) => {
       if (result.value) {
@@ -97,21 +101,24 @@ const Note = ({ val }) => {
           <input
             type="text"
             name="title"
-            className="pl-1"
+            className=" p-4 input input-sm"
             onChange={handleChange}
             value={editVal.title}
             id="title"
             placeholder="title"
           />
         ) : (
-          <h2 className="card-title">{title}</h2>
+          <div>
+            <h2 className="card-title text-secondary">{title}</h2>
+            <hr className=" mt-5 border-primary border" />
+          </div>
         )}
 
         {isEdit ? (
           <input
             type="text"
             name="description"
-            className="pl-1"
+            className="p-4 input input-sm"
             onChange={handleChange}
             value={editVal.description}
             id="description"
@@ -132,42 +139,57 @@ const Note = ({ val }) => {
           ) : (
             ""
           )}
+        </div>
+        <div className="w-full flex justify-start py-2">
+          <div className=" w-auto transition ease-in-out duration-300 card-actions justify-between px-4 py-4 rounded-full bg-base-100 ">
+            {isEdit ? (
+              <>
+                <div
+                  className="tooltip tooltip-left tooltip-primary"
+                  data-tip="save changes"
+                >
+                  <button
+                    className="btn flex-1 btn-info btn-circle hover:shadow-lg hover:shadow-info"
+                    onClick={() => editNotes(val._id)}
+                  >
+                    <IoCheckmarkDoneCircleSharp size={20} />
+                  </button>
+                </div>
+                <div
+                  className="tooltip tooltip-bottom tooltip-primary"
+                  data-tip="close edit mode"
+                >
+                  <button
+                    className="btn flex-1 btn-primary btn-circle hover:shadow-lg hover:shadow-primary"
+                    onClick={() => (setIsEdit(!isEdit), setCardAlert(""))}
+                  >
+                    <IoIosCloseCircle size={20} />
+                  </button>
+                </div>
+              </>
+            ) : (
+              <div className="tooltip tooltip-left" data-tip="edit">
+                <button
+                  className="btn btn-warning btn-circle hover:shadow-lg hover:shadow-warning "
+                  onClick={() => setIsEdit(!isEdit)}
+                >
+                  <FiEdit3 size={20} />
+                </button>
+              </div>
+            )}
 
-          <div className="badge badge-outline">
-            {new Date(createdAt).toDateString().slice(4)}
+            <div className="tooltip tooltip-right" data-tip="delete">
+              <button
+                className="btn btn-error btn-circle hover:shadow-lg hover:shadow-error"
+                onClick={() => handleDelete(val._id)}
+              >
+                <MdOutlineDelete size={20} />
+              </button>
+            </div>
           </div>
         </div>
-        <div className="card-actions justify-center">
-          {isEdit ? (
-            <>
-              <button
-                className="btn flex-1 btn-info"
-                onClick={() => editNotes(val._id)}
-              >
-                Done
-              </button>
-              <button
-                className="btn flex-1 btn-error"
-                onClick={() => (setIsEdit(!isEdit), setCardAlert(""))}
-              >
-                Cancel
-              </button>
-            </>
-          ) : (
-            <button
-              className="btn flex-1 btn-info"
-              onClick={() => setIsEdit(!isEdit)}
-            >
-              Edit
-            </button>
-          )}
-
-          <button
-            className="btn flex-1 btn-error"
-            onClick={() => handleDelete(val._id)}
-          >
-            Delete
-          </button>
+        <div className="badge badge-secondary badge-outline ml-4">
+          {new Date(createdAt).toDateString().slice(4)}
         </div>
       </div>
     </div>
