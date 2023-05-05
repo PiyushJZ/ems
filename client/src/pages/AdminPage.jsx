@@ -76,7 +76,7 @@ const AdminPage = () => {
                     </button>
                   </td>
                   <td>
-                    <button className="btn btn-accent btn-sm" onClick={} >
+                    <button className="btn btn-accent btn-sm" onClick={()=> navigate(PATHS.attendance)} >
                       <BsCalendarDate />
                     </button>
                   </td>
