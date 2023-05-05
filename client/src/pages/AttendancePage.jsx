@@ -26,7 +26,11 @@ const AttendancePage = () => {
     };
 
     try {
-      const response = await FETCH_WRAPPER.post('attendence/mark', data);
+      const response = await FETCH_WRAPPER.post('attendence/mark', data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       console.log(response);
 
