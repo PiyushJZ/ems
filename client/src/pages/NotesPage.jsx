@@ -31,12 +31,13 @@ const NotesPage = () => {
 
   // submit
   const onSubmit = async (data) => {
-
     console.log(img.file);
 
-    if(!img.status){
-      alert('please select a img ex-("jpg", "jpeg", "jfif", "pjpeg", "pjp", "png")')
-      return '';
+    if (!img.status) {
+      alert(
+        'please select a img ex-("jpg", "jpeg", "jfif", "pjpeg", "pjp", "png")'
+      );
+      return "";
     }
 
     const createdUser = localStorage.getItem("email");
@@ -75,12 +76,12 @@ const NotesPage = () => {
     const value = e.target.files[0];
     const index = val.lastIndexOf(".");
     const extention = val.slice(index + 1, val.length).toLowerCase();
-    const bool = ["jpg", "jpeg", "jfif", "pjpeg", "pjp", "png" , " "].includes(
+    const bool = ["jpg", "jpeg", "jfif", "pjpeg", "pjp", "png", " "].includes(
       extention
     );
     if (bool) {
       setImg({ status: true, file: value });
-    }else{
+    } else {
       setImg({ status: false, file: "" });
     }
   };
@@ -111,19 +112,19 @@ const NotesPage = () => {
             type="text"
           />
 
-          <label htmlFor="file" className="btn btn-outline">
+          <label htmlFor="file" className="btn btn-outline w-1/4 mt-3">
             <input
               type="file"
               id="file"
               name="image"
               placeholder="Choose File"
-              // className="input hidden"
+              className="file"
               accept="image/*"
               onChange={validateFile}
             />
           </label>
           <p className="text-rose-500">{errors.description?.message}</p>
-          <button className="btn btn-info w-1/4">Submit</button>
+          <button className="btn btn-secondary w-1/4">Submit</button>
         </form>
       </div>
 

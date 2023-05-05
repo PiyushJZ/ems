@@ -108,7 +108,10 @@ const Note = ({ val }) => {
             placeholder="title"
           />
         ) : (
-          <h2 className="card-title">{title}</h2>
+          <div>
+            <h2 className="card-title text-secondary">{title}</h2>
+            <hr className=" mt-5 border-primary border" />
+          </div>
         )}
 
         {isEdit ? (
@@ -136,44 +139,57 @@ const Note = ({ val }) => {
           ) : (
             ""
           )}
-
-          <div className="badge badge-secondary badge-outline">
-            {new Date(createdAt).toDateString().slice(4)}
-          </div>
         </div>
         <div className="w-full flex justify-start py-2">
           <div className=" w-auto transition ease-in-out duration-300 card-actions justify-between px-4 py-4 rounded-full bg-base-100 ">
             {isEdit ? (
               <>
-                <button
-                  className="btn  flex-1 btn-info btn-circle"
-                  onClick={() => editNotes(val._id)}
+                <div
+                  className="tooltip tooltip-left tooltip-primary"
+                  data-tip="save changes"
                 >
-                  <IoCheckmarkDoneCircleSharp size={20} />
-                </button>
-                <button
-                  className="btn flex-1 btn-primary btn-circle"
-                  onClick={() => (setIsEdit(!isEdit), setCardAlert(""))}
+                  <button
+                    className="btn flex-1 btn-info btn-circle hover:shadow-lg hover:shadow-info"
+                    onClick={() => editNotes(val._id)}
+                  >
+                    <IoCheckmarkDoneCircleSharp size={20} />
+                  </button>
+                </div>
+                <div
+                  className="tooltip tooltip-bottom tooltip-primary"
+                  data-tip="close edit mode"
                 >
-                  <IoIosCloseCircle size={20} />
-                </button>
+                  <button
+                    className="btn flex-1 btn-primary btn-circle hover:shadow-lg hover:shadow-primary"
+                    onClick={() => (setIsEdit(!isEdit), setCardAlert(""))}
+                  >
+                    <IoIosCloseCircle size={20} />
+                  </button>
+                </div>
               </>
             ) : (
-              <button
-                className="btn btn-warning btn-circle "
-                onClick={() => setIsEdit(!isEdit)}
-              >
-                <FiEdit3 size={20} />
-              </button>
+              <div className="tooltip tooltip-left" data-tip="edit">
+                <button
+                  className="btn btn-warning btn-circle hover:shadow-lg hover:shadow-warning "
+                  onClick={() => setIsEdit(!isEdit)}
+                >
+                  <FiEdit3 size={20} />
+                </button>
+              </div>
             )}
 
-            <button
-              className="btn btn-error btn-circle"
-              onClick={() => handleDelete(val._id)}
-            >
-              <MdOutlineDelete size={20} />
-            </button>
+            <div className="tooltip tooltip-right" data-tip="delete">
+              <button
+                className="btn btn-error btn-circle hover:shadow-lg hover:shadow-error"
+                onClick={() => handleDelete(val._id)}
+              >
+                <MdOutlineDelete size={20} />
+              </button>
+            </div>
           </div>
+        </div>
+        <div className="badge badge-secondary badge-outline ml-4">
+          {new Date(createdAt).toDateString().slice(4)}
         </div>
       </div>
     </div>
