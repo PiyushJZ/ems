@@ -1,6 +1,8 @@
 import React from "react";
 import { useEffect } from "react";
 import { ImListNumbered } from "react-icons/im";
+import { MdAssignmentAdd } from "react-icons/md";
+import { BsCalendarDate } from "react-icons/bs";
 import { useSelector, useDispatch } from "react-redux";
 import { getTasks, updateList } from "../redux/fetchSlice";
 import { PATHS } from "../router/paths";
@@ -48,9 +50,11 @@ const AdminPage = () => {
           {/* head */}
           <thead>
             <tr>
-              <th></th>
+              <th>S no.</th>
               <th>employee email</th>
               <th>tasks</th>
+              <th>Attendance</th>
+              <th>Task Assignment</th>
               <th>time taken</th>
             </tr>
           </thead>
@@ -69,6 +73,22 @@ const AdminPage = () => {
                       className="btn btn-accent btn-sm"
                     >
                       <ImListNumbered />
+                    </button>
+                  </td>
+                  <td>
+                    <button className="btn btn-accent btn-sm" onClick={()=> navigate(PATHS.attendance)} >
+                      <BsCalendarDate />
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      className="btn btn-accent btn-sm"
+                      onClick={() => (
+                        localStorage.setItem("assignTask", userEmail),
+                        navigate(PATHS.createTasks)
+                      )}
+                    >
+                      <MdAssignmentAdd />
                     </button>
                   </td>
                   <td>{getTotalTime(userEmail)}</td>

@@ -2,14 +2,20 @@ import React from "react";
 import { useState } from "react";
 import { FETCH_WRAPPER } from "../api/index";
 import { useNavigate } from "react-router-dom";
-import { getTasks } from "../redux/fetchSlice";
+import { getTasks , updateList } from "../redux/fetchSlice";
 import Swal from "sweetalert2";
 import TaskList from "./TaskListPage";
-import { useDispatch } from "react-redux";
+import { useDispatch , useSelector } from "react-redux";
+import { PATHS } from "../router/paths";
+
 
 const CreateTasksPage = () => {
+  const { tasks } = useSelector((state) => state.fetch);
+  console.log(tasks);
   const [description, setDescription] = useState("");
   const navigate = useNavigate();
+  const accessType = localStorage.getItem("accessType");
+  const assignTask = localStorage.getItem("assignTask");
 
   const dispatch = useDispatch();
 
@@ -25,7 +31,9 @@ const CreateTasksPage = () => {
       return;
     }
 
-    const email = localStorage.getItem("email");
+    const email = localStorage.getItem(
+      accessType === "admin" ? "assignTask" : "email"
+    );
 
     const data = {
       email,
@@ -45,6 +53,8 @@ const CreateTasksPage = () => {
           title: "Task created successfully",
         }).then(() => {
           dispatch(getTasks());
+          navigate(PATHS.adminPage);
+          localStorage.removeItem('assignTask')
         });
       }
     } catch (error) {
@@ -61,7 +71,7 @@ const CreateTasksPage = () => {
       <div className=" h-auto">
         <form className="py-8" onSubmit={taskCreation}>
           <h1 className="text-xl md:text-3xl lg:text-4xl font-semibold text-info mb-8 text-center">
-            Create Task
+            {accessType === "admin" ? "Task Assignmnent" : "Create Task"}
           </h1>
 
           <div className="flex px-5 md:mx-auto items-center justify-center flex-col gap-8">
@@ -73,14 +83,14 @@ const CreateTasksPage = () => {
             />
             <input
               type="submit"
-              value="Create Task"
+              value={accessType === "amdin" ? "Assign a Task" : "Create Task"}
               className="btn btn-info btn-lg w-full px-8 md:w-1/3"
             />
           </div>
         </form>
       </div>
 
-      <TaskList />
+      {accessType !== "admin" && <TaskList />}
     </>
   );
 };
