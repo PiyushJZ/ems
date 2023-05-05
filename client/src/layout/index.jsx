@@ -1,89 +1,31 @@
-import React from 'react';
-import ReverseAuthRoute from '../router/ReverseAuth';
-import ProtectedRoute from '../router/ProtectedRoute';
-import { Navigate, Route, Routes } from 'react-router-dom';
-import {
-  CreateTasksPage,
-  ErrorPage,
-  LoginPage,
-  TaskListPage,
-  AdminPage,
-  NotesPage,
-  AttendancePage,
-} from '../pages';
-import { PATHS } from '../router/paths';
-import NotesListPage from '../pages/NotesListPage';
+import React from "react";
+import ReverseAuthRoute from "../router/ReverseAuth";
+import ProtectedRoute from "../router/ProtectedRoute";
+import { Navigate, Route, Routes } from "react-router-dom";
+import { ErrorPage, LoginPage } from "../pages";
+import { PATHS } from "../router/paths";
+import { routesMap } from "../router/routeMaps";
+
 const AppLayout = () => {
   return (
     <>
       <Routes>
-        {/* login route */}
         <Route element={<ReverseAuthRoute />}>
-          <Route
-            path={PATHS.login}
-            element={<LoginPage />}
-          />
+          <Route path={PATHS.login} element={<LoginPage />} />
         </Route>
-        <Route
-          path={PATHS.root}
-          element={<Navigate to={PATHS.login} />}
-        />
+        <Route path={PATHS.root} element={<Navigate to={PATHS.login} />} />
+        {/* protected routes mapping */}
         {/* ____________________________________________________*/}
+        {routesMap.map(({ id, isProtected, path, Element }) => {
+          return (
+            <Route key={id} element={isProtected && <ProtectedRoute />}>
+              <Route path={path} element={<Element />} />
+            </Route>
+          );
+        })}
 
-        <Route element={<ProtectedRoute />}>
-          <Route
-            path={PATHS.taskList}
-            element={<TaskListPage />}
-          />
-        </Route>
-
-        <Route element={<ProtectedRoute />}>
-          <Route
-            path={PATHS.createTasks}
-            element={<CreateTasksPage />}
-          />
-        </Route>
-
-        <Route element={<ProtectedRoute />}>
-          <Route
-            path={PATHS.adminPage}
-            element={<AdminPage />}
-          />
-        </Route>
-
-        <Route element={<ProtectedRoute />}>
-          <Route
-            path={PATHS.adminPage + PATHS.taskList}
-            element={<TaskListPage />}
-          />
-        </Route>
-
-        <Route element={<ProtectedRoute />}>
-          <Route
-            path={PATHS.notes}
-            element={<NotesPage />}
-          />
-        </Route>
-
-        <Route element={<ProtectedRoute />}>
-          <Route
-            path={PATHS.notesList}
-            element={<NotesListPage />}
-          />
-        </Route>
-
-        <Route element={<ProtectedRoute />}>
-          <Route
-            path={PATHS.attendance}
-            element={<AttendancePage />}
-          />
-        </Route>
-
-        {/* default route */}
-        <Route
-          path='/*'
-          element={<ErrorPage />}
-        />
+        {/* default error route */}
+        <Route path="/*" element={<ErrorPage />} />
       </Routes>
     </>
   );

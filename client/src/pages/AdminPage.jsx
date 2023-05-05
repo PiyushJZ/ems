@@ -37,7 +37,7 @@ const AdminPage = () => {
       }, 0);
       return renderTime(totalTime);
     } catch (err) {
-      return '';
+      return "";
     }
   };
 
