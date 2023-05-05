@@ -1,40 +1,48 @@
-import React from "react";
+import Task from './Task';
 
-const Table = (props) => {
+const Table = ({ type, tasks }) => {
+  const accessType = localStorage.getItem('accessType');
+
   return (
-    <div className="overflow-x-auto">
-      <table className="table table-zebra w-full">
-        {/* head */}
+    <div className='overflow-x-auto'>
+      <table className='table table-zebra w-full'>
+        {/* Table Headers */}
         <thead>
-          <tr>
-            <th></th>
-            <th>Name</th>
-            <th>Job</th>
-            <th>Favorite Color</th>
-          </tr>
+          {type === 'employee' ? (
+            <tr>
+              <th>Sr. No.</th>
+              <th>Task Description</th>
+              <th>Status</th>
+              <th>Date</th>
+              {accessType === 'employee' ? <th>controls</th> : ''}
+              <th>Options</th>
+            </tr>
+          ) : (
+            <tr>
+              <th></th>
+              <th>employee email</th>
+              <th>tasks</th>
+              <th>time taken</th>
+            </tr>
+          )}
         </thead>
+        {/* Table Body */}
         <tbody>
-          {/* row 1 */}
-          <tr>
-            <th>1</th>
-            <td>Cy Ganderton</td>
-            <td>Quality Control Specialist</td>
-            <td>Blue</td>
-          </tr>
-          {/* row 2 */}
-          <tr>
-            <th>2</th>
-            <td>Hart Hagerty</td>
-            <td>Desktop Support Technician</td>
-            <td>Purple</td>
-          </tr>
-          {/* row 3 */}
-          <tr>
-            <th>3</th>
-            <td>Brice Swyre</td>
-            <td>Tax Accountant</td>
-            <td>Red</td>
-          </tr>
+          {type === 'employee'
+            ? tasks.map((task, index) => {
+                return (
+                  <Task
+                    key={task._id}
+                    index={index}
+                    description={task.description}
+                    status={task.status}
+                    id={task._id}
+                    start={task?.start}
+                    end={task?.end}
+                  />
+                );
+              })
+            : ''}
         </tbody>
       </table>
     </div>
