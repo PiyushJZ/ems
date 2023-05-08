@@ -2,6 +2,7 @@ import Notes from "../models/Notes.js";
 import { validateObjectId } from "../utils/validation.js";
 import { v2 as cloudinary } from "cloudinary";
 
+// Cloduinary config
 cloudinary.config({
   cloud_name: "dmpm3z3us",
   api_key: "726228357198369",
@@ -15,10 +16,9 @@ export const getNotes = async (req, res) => {
       .status(200)
       .json({ notes, status: true, message: "Notes found successfully..." });
   } catch (err) {
-    console.error(err);
     return res
-      .status(500)
-      .json({ status: false, message: "Internal Server Error" });
+      .status(400)
+      .json({ status: false, message: err.message });
   }
 };
 
@@ -31,10 +31,11 @@ export const postNotes = async (req, res) => {
     const isFile = req.files;
 
     if (isFile) {
-      const file = req.files.fileUrl;
+      const file = req.files.image;
       // console.log(file);
       await cloudinary.uploader.upload(file.tempFilePath, (error, result) => {
         req.body.fileUrl = result?.url;
+        req.body.cloudinaryId = result?.public_id
       });
     }
 
@@ -66,11 +67,14 @@ export const postNotes = async (req, res) => {
     //     .json({ status: false, message: "Created User ID is not valid" });
     // }
 
+    const cloudinaryId = req.body.cloudinaryId;
+
     const task = await Notes.create({
       createdUser,
       description,
       title,
       image: fileUrl,
+      cloudinaryId
     });
 
     res
@@ -116,7 +120,10 @@ export const updateNote = async (req, res) => {
       .status(200)
       .json({ note, status: true, message: "Note updated successfully.." });
   } catch (error) {
-    console.log("Error >> ", error);
+    res.status(400).json({
+      status:false,
+      message:error.message
+    })
   }
 };
 
@@ -127,11 +134,32 @@ export const deleteNote = async (req, res) => {
       .json({ status: false, message: "Note Id not valid" });
   }
 
+  // Does the note exists?
   let note = await Notes.findById(req.params.noteId);
   if (!note) {
     return res
       .status(400)
       .json({ status: false, message: "Note with given Id not found" });
+  }
+
+  const {cloudinaryId,image} = note;
+
+  // Deleting image if present from cloudinary
+  if(cloudinaryId !== "" || image !== ""){
+    cloudinary.uploader
+  .destroy(cloudinaryId)
+  .then((result) => {
+    response.status(200).send({
+      message: "success",
+      result,
+    });
+  })
+  .catch((error) => {
+    response.status(500).send({
+      message: "Failure",
+      error,
+    });
+  });
   }
 
   await Notes.findByIdAndDelete(req.params.noteId);
