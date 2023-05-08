@@ -42,8 +42,6 @@ const Navbar = () => {
         return navigate(PATHS.createTasks);
       case PATHS.notes:
         return navigate(PATHS.notes);
-      case PATHS.notesList:
-        return navigate(PATHS.notesList);
       case PATHS.adminPage:
         dispatch(getTasks());
         return navigate(PATHS.adminPage);
@@ -122,7 +120,7 @@ const Navbar = () => {
                   className='btn btn-info hover:scale-95 transition duration-200 ease-in-out w-full'
                   onClick={() => handlePageChange(PATHS.createTasks)}
                 >
-                  Create Tasks
+                  Tasks
                 </button>
               )}
 
@@ -149,19 +147,8 @@ const Navbar = () => {
                   onClick={() => handlePageChange(PATHS.notes)}
                   className='btn btn-info hover:scale-95 transition duration-200 ease-in-out w-full'
                 >
-                  Create Notes
+                  Notes
                 </button>
-              )}
-
-              {accessType === 'admin' ? (
-                <button
-                  onClick={() => handlePageChange(PATHS.notesList)}
-                  className='btn btn-info hover:scale-95 transition duration-200 ease-in-out w-full'
-                >
-                  Notes List
-                </button>
-              ) : (
-                ''
               )}
               <button
                 onClick={() => handleLogout()}
