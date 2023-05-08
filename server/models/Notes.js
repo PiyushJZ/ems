@@ -17,6 +17,10 @@ const notesSchema = mongoose.Schema(
     image:{
         type:String,
         default:""
+    },
+    cloudinaryId:{
+      type:String,
+      default:""
     }
 }, {timestamps: true})
 
