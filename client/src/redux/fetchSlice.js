@@ -4,6 +4,7 @@ import { FETCH_WRAPPER } from '../api';
 const initialState = {
   tasks: [],
   notes: [],
+  attendance: [],
   loading: true,
   success: false,
   error: 'No error',
@@ -37,6 +38,22 @@ export const getTasks = createAsyncThunk('/getTasks', async () => {
     return response.data.tasks;
   } catch (err) {
     return err.response.statusText;
+  }
+});
+
+export const getAttendance = createAsyncThunk('/getAttendance', async () => {
+  try {
+    const token = localStorage.getItem('authToken');
+    const response = await FETCH_WRAPPER.get('attendence', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (response) {
+      return response.data.data;
+    }
+  } catch (err) {
+    return err;
   }
 });
 
@@ -103,6 +120,23 @@ const fetchSlice = createSlice({
       state.loading = false;
       state.success = true;
       state.notes = action.payload;
+    });
+    builder.addCase(getAttendance.pending, (state) => {
+      state.loading = true;
+      state.success = false;
+      state.error = 'No error';
+    });
+    builder.addCase(getAttendance.fulfilled, (state, action) => {
+      state.loading = false;
+      state.success = true;
+      state.error = 'No error';
+      state.attendance = action.payload;
+    });
+    builder.addCase(getAttendance.rejected, (state, action) => {
+      state.loading = false;
+      state.success = false;
+      state.error = action.payload;
+      state.getAttendance = [];
     });
   },
 });
