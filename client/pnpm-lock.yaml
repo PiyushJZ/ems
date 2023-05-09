@@ -52,6 +52,9 @@ dependencies:
   react-jwt:
     specifier: ^1.1.8
     version: 1.1.8(react@18.2.0)
+  react-multi-date-picker:
+    specifier: ^4.0.0
+    version: 4.0.0(react-dom@18.2.0)(react@18.2.0)
   react-redux:
     specifier: ^8.0.5
     version: 8.0.5(@types/react-dom@18.0.11)(@types/react@18.0.35)(react-dom@18.2.0)(react@18.2.0)(redux@4.2.1)
@@ -1766,6 +1769,10 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
+  /react-date-object@2.1.7:
+    resolution: {integrity: sha512-810eaGk/xvQBJNncPvhwXaKcSwPRKX48jtY/5U5T1bSUnGFqmBdMvl4EVl76cyzQ8U3KX6hpF6xZ1c0eY9vvJA==}
+    dev: false
+
   /react-datepicker@4.11.0(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-50n93o7mQwBEhg05tbopjFKgs8qgi8VBCAOMC4VqrKut72eAjESc/wXS/k5hRtnP0oe2FCGw7MJuIwh37wuXOw==}
     peerDependencies:
@@ -1790,6 +1797,16 @@ packages:
       loose-envify: 1.4.0
       react: 18.2.0
       scheduler: 0.23.0
+    dev: false
+
+  /react-element-popper@2.1.6(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-8va7mUmrKIkUnaM2t5Dyctd8cjgVgVcrv5vVD0FRay0sN6EPBCKa0bDi1/KmVDAjfgSIn7zQnjtc4VojcGrkgQ==}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
     dev: false
 
   /react-fast-compare@3.2.1:
@@ -1830,6 +1847,18 @@ packages:
       react: 18.2.0
     optionalDependencies:
       fsevents: 2.3.2
+    dev: false
+
+  /react-multi-date-picker@4.0.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-ZN5ZC/D57GkG6m9eijQXvpXFlJjM5sjJoNAmj7oPHZBxnvJuGD4YAZ9jB+7MtC1qg62Vo4xisnIWjUBbzr7fSQ==}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      react: 18.2.0
+      react-date-object: 2.1.7
+      react-dom: 18.2.0(react@18.2.0)
+      react-element-popper: 2.1.6(react-dom@18.2.0)(react@18.2.0)
     dev: false
 
   /react-onclickoutside@6.13.0(react-dom@18.2.0)(react@18.2.0):
