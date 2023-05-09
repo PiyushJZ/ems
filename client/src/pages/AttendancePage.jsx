@@ -63,7 +63,7 @@ const AttendancePage = () => {
 
   return (
     <div className='max-w-full h-[88vh] flex gap-20 justify-center items-center'>
-      <div className='w-64'>
+      <div className='w-64 h-[400px]'>
         <h1 className='text-xl md:text-3xl lg:text-4xl font-semibold text-info mb-8 text-center'>
           Attendance
         </h1>
