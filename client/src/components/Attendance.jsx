@@ -1,58 +1,66 @@
-import React, { useState , useEffect } from "react";
-import Calendar from "react-calendar";
-import { FETCH_WRAPPER } from "../api";
-import "react-calendar/dist/Calendar.css";
+import React, { useEffect, useState } from "react";
+import { Calendar, DateObject } from "react-multi-date-picker";
+import "react-multi-date-picker/styles/layouts/mobile.css";
+import DatePanel from "react-multi-date-picker/plugins/date_panel";
 
-const Attendance = () => {
-  const [value, onChange] = useState(new Date());
-  const [allAttendance, setAllAttendance] = useState([]);
-
-  //   get the attendance data
-  const fetchAttendance = async () => {
-    const token = localStorage.getItem("authToken");
-
-    try {
-      const response = await FETCH_WRAPPER.get("attendence", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      //   console.log(response.data.data);
-      setAllAttendance(response.data.data);
-      if (response.status === 200) {
-        // Swal.fire({
-        //   icon: "success",
-        //   title: "Attendance Marked",
-        // });
-        // return navigate(PATHS.taskList);
-        console.log("true");
-      }
-    } catch (err) {
-      console.log(err);
-      //   Swal.fire({
-      //     icon: "error",
-      //     title: "Attendance Not Marked",
-      //     text: err.response.data.message,
-      //   });
-    }
-  };
+const Attendance = ({ attendance }) => {
+  const [dates, setDates] = useState(new DateObject());
+  const [showDesc, setShowDesc] = useState(false);
+  const [desc, setDesc] = useState("");
 
   useEffect(() => {
-    fetchAttendance();
+    const temp = [];
+    attendance.map((item) => {
+      temp.push(new DateObject(item.date, "DD-MM-YYYY"));
+    });
+    setDates(temp);
   }, []);
-
-  console.log(allAttendance);
-
-  
-
 
   return (
     <>
-      <div>
+      <div className="h-[400px]">
         <Calendar
-          value={value}
-          onChange={onChange}
+          value={dates}
+          showOtherDays={true}
+          months={new DateObject().months.map((month) => month.shortName)}
+          onChange={() => {
+            const temp = [];
+            attendance.map((item) => {
+              temp.push(new DateObject(item.date));
+            });
+            setDates(temp);
+          }}
+          monthYearSeparator={"|"}
+          highlightToday={false}
+          maxDate={new DateObject()}
+          className="rmdp-mobile"
+          plugins={[
+            <DatePanel
+              sort={"date"}
+              removeButton={false}
+              header="Attendances"
+              markFocused={true}
+              focusedClassName="bg-green"
+              onClickDate={(day) => {
+                const selected = attendance.filter((item) => {
+                  return day.format("YYYY-MM-DD") === item.date;
+                })[0];
+                selected.description
+                  ? (setShowDesc(true), setDesc(selected.description))
+                  : setShowDesc(false);
+                return { style: { backgroundColor: "green" } };
+              }}
+            />,
+          ]}
         />
+        {showDesc ? (
+          <div className="bg-blue-200 rounded mt-1">
+            <span className="font-bold m-2" >Description:</span>
+            <span>{desc}</span>
+          </div>
+        ) : (
+          ""
+        )}
       </div>
     </>
   );

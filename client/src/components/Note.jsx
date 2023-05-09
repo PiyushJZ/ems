@@ -58,7 +58,7 @@ const Note = ({ val }) => {
       type: "warning",
       showCancelButton: true,
       confirmButtonColor: "red",
-      cancelButtonColor: "teal",
+      cancelButtonColor: "purple",
       confirmButtonText: "Yes, delete it!",
     }).then(async (result) => {
       if (result.value) {
@@ -89,7 +89,6 @@ const Note = ({ val }) => {
 
   return (
     // edit modal
-
     <div className="card min-w-[20vw] max-w-[20vw] h-auto rounded-xl bg-base-300 shadow-xl hover:shadow-2xl transition ease-in duration-200 cursor-pointer hover:scale-105">
       {cardAlert && (
         <p className="text-rose-600 font-semibold px-2 pt-2 text-center">
