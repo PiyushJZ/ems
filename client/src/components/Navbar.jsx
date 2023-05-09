@@ -7,7 +7,12 @@ import { CiSun } from 'react-icons/ci';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleDarkMode } from '../redux/appSlice';
 import { logout } from '../redux/authSlice';
-import { clearList, getTasks } from '../redux/fetchSlice';
+import {
+  clearAttendance,
+  clearList,
+  getTasks,
+  updateNote,
+} from '../redux/fetchSlice';
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -16,23 +21,25 @@ const Navbar = () => {
   const userEmail = localStorage?.getItem('email');
   const accessType = localStorage.getItem('accessType');
 
-  const darkMode = useSelector((x) => x.app.darkMode);
+  const darkMode = useSelector(x => x.app.darkMode);
   const handleToggle = () => {
-    setToggleLogout((previousToggle) => !previousToggle);
+    setToggleLogout(previousToggle => !previousToggle);
   };
 
   const handleLogout = () => {
     const token = localStorage.getItem('authToken');
     if (token) {
       dispatch(clearList());
+      dispatch(clearAttendance());
+      dispatch(updateNote([]));
       localStorage.clear();
       dispatch(logout());
       navigate(PATHS.root);
     }
-    setToggleLogout((prevoiusToggleState) => !prevoiusToggleState);
+    setToggleLogout(prevoiusToggleState => !prevoiusToggleState);
   };
 
-  const handlePageChange = (path) => {
+  const handlePageChange = path => {
     setToggleLogout(false);
     // other routes will be added incrementally
     switch (path) {

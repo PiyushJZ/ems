@@ -6,19 +6,15 @@ const DateSelector = ({ selectedDate }) => {
   const [date, setDate] = useState(new Date());
 
   useEffect(() => {
-    selectedDate(
-      date.toISOString().slice(0,10).split("-").reverse().join('/')
-    );
+    selectedDate(date.toISOString().slice(0, 10));
   }, []);
 
   return (
     <DatePicker
       selected={date}
-      onChange={(d) => {
+      onChange={d => {
         setDate(d);
-        selectedDate(
-          d.toISOString().slice(0,10).split("-").reverse().join('/')
-        );
+        selectedDate(d.toISOString().slice(0, 10));
       }}
       // showIcon
       required

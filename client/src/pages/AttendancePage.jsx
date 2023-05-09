@@ -14,23 +14,22 @@ const AttendancePage = () => {
   const [desc, setDesc] = useState('');
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const attendance = useSelector((state) => state.fetch.attendance);
-  // console.log(attendance);
+  const attendance = useSelector(state => state.fetch.attendance);
 
   useEffect(() => {
     dispatch(getAttendance());
   }, []);
 
-  const selectedDate = (d) => {
+  const selectedDate = d => {
     setDate(d);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     const token = localStorage.getItem('authToken');
     const data = {
       date,
-      desc,
+      description: desc,
       markedBy: localStorage.getItem('email'),
       userId: decodeToken(token).id,
     };
@@ -49,8 +48,8 @@ const AttendancePage = () => {
           icon: 'success',
           title: 'Attendance Marked',
         });
-
-        return navigate(PATHS.taskList);
+        dispatch(getAttendance());
+        return navigate(PATHS.createTasks);
       }
     } catch (err) {
       console.log(err);
@@ -63,7 +62,7 @@ const AttendancePage = () => {
   };
 
   return (
-    <div className='max-w-full h-[88vh] flex gap-4 justify-center items-center'>
+    <div className='max-w-full h-[88vh] flex gap-20 justify-center items-center'>
       <div className='w-64'>
         <h1 className='text-xl md:text-3xl lg:text-4xl font-semibold text-info mb-8 text-center'>
           Attendance
@@ -81,7 +80,7 @@ const AttendancePage = () => {
           <input
             className='input input-info w-full'
             value={desc}
-            onChange={(e) => setDesc(e.target.value)}
+            onChange={e => setDesc(e.target.value)}
           />
           <button
             onClick={handleSubmit}
@@ -91,7 +90,9 @@ const AttendancePage = () => {
           </button>
         </form>
       </div>
-      <Attendance attendance={attendance} />
+      <div>
+        {attendance.length > 0 ? <Attendance attendance={attendance} /> : ''}
+      </div>
     </div>
   );
 };

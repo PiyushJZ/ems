@@ -61,13 +61,14 @@ export const clearList = createAction('clearList');
 export const updateList = createAction('updateList');
 export const updateNote = createAction('updateNote');
 export const editNote = createAction('editNote');
+export const clearAttendance = createAction('clearAttendance');
 
 const fetchSlice = createSlice({
   name: 'fetch',
   initialState,
   reducers: {},
-  extraReducers: (builder) => {
-    builder.addCase(getTasks.pending, (state) => {
+  extraReducers: builder => {
+    builder.addCase(getTasks.pending, state => {
       state.loading = true;
       state.success = false;
       state.error = 'No error';
@@ -83,7 +84,7 @@ const fetchSlice = createSlice({
       state.success = false;
       state.error = action.payload;
     });
-    builder.addCase(clearList, (state) => {
+    builder.addCase(clearList, state => {
       state.loading = true;
       state.success = false;
       state.error = 'No error';
@@ -95,7 +96,7 @@ const fetchSlice = createSlice({
       state.error = 'No error';
       state['tasks'] = action.payload;
     });
-    builder.addCase(getNotes.pending, (state) => {
+    builder.addCase(getNotes.pending, state => {
       state.loading = true;
       state.success = false;
       state.error = 'No error';
@@ -121,7 +122,7 @@ const fetchSlice = createSlice({
       state.success = true;
       state.notes = action.payload;
     });
-    builder.addCase(getAttendance.pending, (state) => {
+    builder.addCase(getAttendance.pending, state => {
       state.loading = true;
       state.success = false;
       state.error = 'No error';
@@ -136,7 +137,13 @@ const fetchSlice = createSlice({
       state.loading = false;
       state.success = false;
       state.error = action.payload;
-      state.getAttendance = [];
+      state.attendance = [];
+    });
+    builder.addCase(clearAttendance, state => {
+      state.loading = false;
+      state.success = true;
+      state.error = 'No error';
+      state.attendance = [];
     });
   },
 });
