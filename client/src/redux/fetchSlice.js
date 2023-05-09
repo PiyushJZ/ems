@@ -44,7 +44,9 @@ export const getTasks = createAsyncThunk('/getTasks', async () => {
 export const getAttendance = createAsyncThunk('/getAttendance', async () => {
   try {
     const token = localStorage.getItem('authToken');
-    const response = await FETCH_WRAPPER.get('attendence', {
+    console.log(localStorage.getItem('assignTask'));
+    const data = { email: localStorage.getItem('assignTask') };
+    const response = await FETCH_WRAPPER.post('attendence', data, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

@@ -2,7 +2,7 @@ import { ImListNumbered } from 'react-icons/im';
 import { BsCalendarDate } from 'react-icons/bs';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { updateList } from '../redux/fetchSlice';
+import { getAttendance, updateList } from '../redux/fetchSlice';
 import { PATHS } from '../router/paths';
 import Task from './Task';
 
@@ -11,7 +11,7 @@ const Table = ({ type, tasks }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const renderTime = (time) => {
+  const renderTime = time => {
     if (isNaN(time)) {
       return;
     }
@@ -20,7 +20,7 @@ const Table = ({ type, tasks }) => {
     }`;
   };
 
-  const getTotalTime = (task) => {
+  const getTotalTime = task => {
     try {
       const totalTime = task.tasks.reduce((total, task) => {
         if (task.start && task.end) {
@@ -88,7 +88,11 @@ const Table = ({ type, tasks }) => {
                       <td>
                         <button
                           className='btn btn-primary btn-square'
-                          onClick={() => navigate(PATHS.attendance)}
+                          onClick={() => {
+                            localStorage.setItem('assignTask', task.email);
+                            dispatch(getAttendance());
+                            navigate(PATHS.attendance);
+                          }}
                         >
                           <BsCalendarDate />
                         </button>
