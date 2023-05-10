@@ -34,7 +34,7 @@ const Note = ({ val }) => {
         setCardAlert("Please fill all the fields");
         return "";
       }
-      const token = localStorage.getItem("authToken");
+      const token = sessionStorage.getItem("authToken");
       const response = await FETCH_WRAPPER.put(`notes/${id}`, editVal, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -63,7 +63,7 @@ const Note = ({ val }) => {
     }).then(async (result) => {
       if (result.value) {
         try {
-          const token = localStorage.getItem("authToken");
+          const token = sessionStorage.getItem("authToken");
           const response = await FETCH_WRAPPER.delete(`notes/${id}`, editVal, {
             headers: {
               Authorization: `Bearer ${token}`,

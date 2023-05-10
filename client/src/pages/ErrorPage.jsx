@@ -34,7 +34,7 @@ const ErrorPage = () => {
           <Link
             className='btn w-[18rem] btn-primary hover:bg-primary-focus btn-circle outline-none px-4 py-2 flex  gap-4 '
             to={
-              localStorage.getItem('accessType') === 'employee'
+              sessionStorage.getItem('accessType') === 'employee'
                 ? PATHS.createTasks
                 : PATHS.adminPage
             }

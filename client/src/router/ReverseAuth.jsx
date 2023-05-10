@@ -3,7 +3,7 @@ import { PATHS } from "./paths";
 
 const ReverseAuthRoute = () => {
   const location = useLocation();
-  const token = localStorage.getItem("authToken");
+  const token = sessionStorage.getItem("authToken");
   if (location.pathname === "/login" && token) {
     return <Navigate to={PATHS.createTasks} />;
   }

@@ -18,8 +18,8 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [toggleLogout, setToggleLogout] = useState(false);
   const dispatch = useDispatch();
-  const userEmail = localStorage?.getItem('email');
-  const accessType = localStorage.getItem('accessType');
+  const userEmail = sessionStorage?.getItem('email');
+  const accessType = sessionStorage.getItem('accessType');
 
   const darkMode = useSelector(x => x.app.darkMode);
   const handleToggle = () => {
@@ -27,12 +27,12 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
-    const token = localStorage.getItem('authToken');
+    const token = sessionStorage.getItem('authToken');
     if (token) {
       dispatch(clearList());
       dispatch(clearAttendance());
       dispatch(updateNote([]));
-      localStorage.clear();
+      sessionStorage.clear();
       dispatch(logout());
       navigate(PATHS.root);
     }
@@ -94,7 +94,7 @@ const Navbar = () => {
               />
             </div>
           )}
-          {localStorage.getItem('authToken') && (
+          {sessionStorage.getItem('authToken') && (
             <div
               onClick={() => handleToggle()}
               className='cursor-pointer flex justify-center items-center'

@@ -146,7 +146,7 @@ const AdminPage = () => {
                     <button
                       className='btn btn-secondary btn-circle'
                       onClick={() => (
-                        localStorage.setItem('assignTask', userEmail.email),
+                        sessionStorage.setItem('assignTask', userEmail.email),
                         navigate(PATHS.createTasks)
                       )}
                     >

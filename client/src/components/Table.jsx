@@ -1,15 +1,48 @@
-import { ImListNumbered } from 'react-icons/im';
-import { BsCalendarDate } from 'react-icons/bs';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { updateList } from '../redux/fetchSlice';
-import { PATHS } from '../router/paths';
-import Task from './Task';
+import { ImListNumbered } from "react-icons/im";
+import { BsCalendarDate, BsFillArrowUpCircleFill } from "react-icons/bs";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { updateList } from "../redux/fetchSlice";
+import { PATHS } from "../router/paths";
+import Task from "./Task";
+import React, { useEffect, useState } from "react";
 
 const Table = ({ type, tasks }) => {
-  const accessType = localStorage.getItem('accessType');
+  const [height, setHeight] = useState(0);
+  const [checkboxVal, setCheckboxVal] = useState([]);
+  const [allTask, setAllTask] = useState(tasks);
+
+  const handleChange = (e) => {
+    if (checkboxVal.includes(e.target.value)) {
+      const update = checkboxVal.filter((val, index) => val !== e.target.value);
+      setCheckboxVal([...update]);
+      return;
+    }
+    setCheckboxVal([...checkboxVal, e.target.value]);
+  };
+
+  const accessType = sessionStorage.getItem("accessType");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  // =========
+  useEffect(() => {
+    if(checkboxVal.includes("notcompleted") && checkboxVal.includes("completed") || checkboxVal.length===0){
+      dispatch(updateList(allTask));
+      return;
+    }
+    if (checkboxVal.includes("completed")) {
+      const updated = tasks.filter((v) => (v.end ? v : ""));
+      dispatch(updateList(updated));
+      return;
+    }
+    if (checkboxVal.includes("notcompleted")) {
+      const updated = tasks.filter((v) => (v.end ? "" : v));
+      dispatch(updateList(updated));
+      return;
+    }
+  }, [checkboxVal]);
+  // ==========
 
   const renderTime = (time) => {
     if (isNaN(time)) {
@@ -19,6 +52,8 @@ const Table = ({ type, tasks }) => {
       parseInt(time) % 60
     }`;
   };
+
+  console.log(height);
 
   const getTotalTime = (task) => {
     try {
@@ -31,22 +66,56 @@ const Table = ({ type, tasks }) => {
       }, 0);
       return renderTime(totalTime);
     } catch (err) {
-      return '';
+      return "";
     }
   };
 
   return (
-    <div className='overflow-x-auto'>
-      <table className='table table-zebra w-full'>
+    <div className="overflow-x-auto">
+      <table className="table table-zebra w-full">
         {/* Table Headers */}
         <thead>
-          {type === 'employee' ? (
+          {type === "employee" ? (
             <tr>
               <th>Sr. No.</th>
               <th>Task Description</th>
               <th>Status</th>
-              <th>Date</th>
-              {accessType === 'employee' ? <th>controls</th> : ''}
+              <th className="flex relative">
+                Date
+                <BsFillArrowUpCircleFill
+                  className="text-lg mx-2"
+                  onClick={() => setHeight(20)}
+                />
+                <div
+                  className={`absolute top-12  w-40 h-${height} transition-opacity rounded-lg overflow-hidden bg-red-400`}
+                >
+                  <form className="flex flex-col items-start justify-between w-40 h-10">
+                    <label htmlFor="completed" className="p-2">
+                      <input
+                        type="checkbox"
+                        name="completed"
+                        id="completed"
+                        value="completed"
+                        className="mx-2"
+                        onChange={handleChange}
+                      />
+                      Completed
+                    </label>
+                    <label htmlFor="notcompleted" className="p-2">
+                      <input
+                        type="checkbox"
+                        name="notcompleted"
+                        value="notcompleted"
+                        id="notcompleted"
+                        className="mx-2"
+                        onChange={handleChange}
+                      />
+                      Not Completed
+                    </label>
+                  </form>
+                </div>
+              </th>
+              {accessType === "employee" ? <th>controls</th> : ""}
               <th>Options</th>
             </tr>
           ) : (
@@ -62,7 +131,7 @@ const Table = ({ type, tasks }) => {
         {/* Table Body */}
         <tbody>
           <>
-            {type === 'employee'
+            {type === "employee"
               ? tasks.map((task, index) => {
                   return (
                     <Task
@@ -76,10 +145,10 @@ const Table = ({ type, tasks }) => {
                     />
                   );
                 })
-              : ''}
+              : ""}
           </>
           <>
-            {type === 'admin'
+            {type === "admin"
               ? tasks.map((task, index) => {
                   return (
                     <tr key={index}>
@@ -87,7 +156,7 @@ const Table = ({ type, tasks }) => {
                       <td>{task.email}</td>
                       <td>
                         <button
-                          className='btn btn-primary btn-square'
+                          className="btn btn-primary btn-square"
                           onClick={() => navigate(PATHS.attendance)}
                         >
                           <BsCalendarDate />
@@ -96,11 +165,11 @@ const Table = ({ type, tasks }) => {
                       <td>
                         <button
                           onClick={() => {
-                            localStorage.setItem('assignTask', task.email);
+                            sessionStorage.setItem("assignTask", task.email);
                             dispatch(updateList(task.tasks));
                             navigate(PATHS.adminPage + PATHS.createTasks);
                           }}
-                          className='btn btn-accent btn-circle'
+                          className="btn btn-accent btn-circle"
                         >
                           <ImListNumbered />
                         </button>
@@ -109,7 +178,7 @@ const Table = ({ type, tasks }) => {
                     </tr>
                   );
                 })
-              : ''}
+              : ""}
           </>
         </tbody>
       </table>

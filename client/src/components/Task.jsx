@@ -12,7 +12,7 @@ function Task({ description, id, start, end, index }) {
   const [disableStop, setDisableStop] = useState(false);
   const [desc, setDesc] = useState(description);
   const [validDes, setValidDes] = useState("");
-  const accessType = localStorage.getItem("accessType");
+  const accessType = sessionStorage.getItem("accessType");
   const dispatch = useDispatch();
 
   // Edit the task
@@ -27,7 +27,7 @@ function Task({ description, id, start, end, index }) {
     };
     const response = await FETCH_WRAPPER.put(`tasks/${id}`, data, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
       },
     });
     if (response.data.status === true) {
@@ -52,7 +52,7 @@ function Task({ description, id, start, end, index }) {
       if (result.value) {
         const response = await FETCH_WRAPPER.delete(`tasks/${id}`, {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+            Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
           },
         });
         if (response.status === 200) {
@@ -81,7 +81,7 @@ function Task({ description, id, start, end, index }) {
     };
     const response = await FETCH_WRAPPER.put(`tasks/${id}`, data, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
       },
     });
     if (response.data.status === true) {
@@ -101,7 +101,7 @@ function Task({ description, id, start, end, index }) {
     };
     const response = await FETCH_WRAPPER.put(`tasks/${id}`, data, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
       },
     });
 

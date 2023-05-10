@@ -26,11 +26,11 @@ const AttendancePage = () => {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    const token = localStorage.getItem('authToken');
+    const token = sessionStorage.getItem('authToken');
     const data = {
       date,
       description: desc,
-      markedBy: localStorage.getItem('email'),
+      markedBy: sessionStorage.getItem('email'),
       userId: decodeToken(token).id,
     };
 

@@ -13,7 +13,7 @@ const initialState = {
 // fetching notes
 export const getNotes = createAsyncThunk('/getNotes', async () => {
   try {
-    const token = localStorage.getItem('authToken');
+    const token = sessionStorage.getItem('authToken');
     const response = await FETCH_WRAPPER.get('notes', {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -29,7 +29,7 @@ export const getNotes = createAsyncThunk('/getNotes', async () => {
 // fetching Tasks
 export const getTasks = createAsyncThunk('/getTasks', async () => {
   try {
-    const token = localStorage.getItem('authToken');
+    const token = sessionStorage.getItem('authToken');
     const response = await FETCH_WRAPPER.get('tasks', {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -43,7 +43,7 @@ export const getTasks = createAsyncThunk('/getTasks', async () => {
 
 export const getAttendance = createAsyncThunk('/getAttendance', async () => {
   try {
-    const token = localStorage.getItem('authToken');
+    const token = sessionStorage.getItem('authToken');
     const response = await FETCH_WRAPPER.get('attendence', {
       headers: {
         Authorization: `Bearer ${token}`,

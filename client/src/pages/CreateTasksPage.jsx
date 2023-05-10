@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 const CreateTasksPage = () => {
   const { tasks } = useSelector((state) => state.fetch);
   const [description, setDescription] = useState('');
-  const accessType = localStorage.getItem('accessType');
+  const accessType = sessionStorage.getItem('accessType');
 
   const dispatch = useDispatch();
 
@@ -25,7 +25,7 @@ const CreateTasksPage = () => {
       return;
     }
 
-    const email = localStorage.getItem(
+    const email = sessionStorage.getItem(
       accessType === 'admin' ? 'assignTask' : 'email'
     );
 
@@ -37,7 +37,7 @@ const CreateTasksPage = () => {
     try {
       const response = await FETCH_WRAPPER.post('tasks', data, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+          Authorization: `Bearer ${sessionStorage.getItem('authToken')}`,
         },
       });
       console.log(response);

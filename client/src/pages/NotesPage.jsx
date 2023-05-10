@@ -39,7 +39,7 @@ const NotesPage = () => {
       return "";
     }
 
-    const createdUser = localStorage.getItem("email");
+    const createdUser = sessionStorage.getItem("email");
 
     formData.append("title", data.title);
     formData.append("description", data.description);
@@ -47,10 +47,10 @@ const NotesPage = () => {
     formData.append("fileUrl", img.file);
 
     try {
-      data["createdUser"] = localStorage.getItem("email");
+      data["createdUser"] = sessionStorage.getItem("email");
       const response = FETCH_WRAPPER.post("/notes", formData, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
         },
       });
       Swal.fire({
