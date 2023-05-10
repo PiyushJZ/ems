@@ -73,6 +73,8 @@ const Table = ({ type, tasks }) => {
                       id={task._id}
                       start={task?.start}
                       end={task?.end}
+                      pause={task?.pause}
+                      breaks={task?.braks}
                     />
                   );
                 })
