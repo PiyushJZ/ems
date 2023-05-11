@@ -1,15 +1,15 @@
-import Task from '../models/Task.js';
-import { validateObjectId } from '../utils/validation.js';
+import Task from "../models/Task.js";
+import { validateObjectId } from "../utils/validation.js";
 
 export const getTasks = async (req, res) => {
   try {
-    if (req.accessType === 'employee') {
+    if (req.accessType === "employee") {
       const tasks = await Task.find({ email: req.user.email });
       res
         .status(200)
-        .json({ tasks, status: true, msg: 'Tasks found successfully...' });
+        .json({ tasks, status: true, msg: "Tasks found successfully..." });
     }
-    if (req.accessType === 'admin') {
+    if (req.accessType === "admin") {
       const tasks = await Task.find();
       const tasksByUserEmail = {};
       tasks.forEach((task) => {
@@ -22,14 +22,14 @@ export const getTasks = async (req, res) => {
       res.status(200).json({
         tasks: tasksByUserEmail,
         status: true,
-        msg: 'Tasks of all users found...',
+        msg: "Tasks of all users found...",
       });
     }
   } catch (err) {
     console.error(err);
     return res
       .status(500)
-      .json({ status: false, msg: 'Internal Server Error' });
+      .json({ status: false, msg: "Internal Server Error" });
   }
 };
 
@@ -39,17 +39,17 @@ export const postTask = async (req, res) => {
     if (!description) {
       return res
         .status(400)
-        .json({ status: false, msg: 'Description of task not found' });
+        .json({ status: false, msg: "Description of task not found" });
     }
     const task = await Task.create({ email, description });
     res
       .status(200)
-      .json({ task, status: true, msg: 'Task created successfully..' });
+      .json({ task, status: true, msg: "Task created successfully.." });
   } catch (err) {
     console.error(err);
     return res
       .status(500)
-      .json({ status: false, msg: 'Internal Server Error', errBody: err });
+      .json({ status: false, msg: "Internal Server Error", errBody: err });
   }
 };
 
@@ -57,31 +57,42 @@ export const putTask = async (req, res) => {
   console.log(req.user);
   try {
     if (
-      !Object.hasOwn(req.body, 'start') &&
-      !Object.hasOwn(req.body, 'end') &&
-      !Object.hasOwn(req.body, 'description')
+      !Object.hasOwn(req.body, "start") &&
+      !Object.hasOwn(req.body, "end") &&
+      !Object.hasOwn(req.body, "pause") &&
+      !Object.hasOwn(req.body, "description")
     ) {
-      return res.status(400).json({ status: false, msg: 'No Update Found' });
+      return res.status(400).json({ status: false, msg: "No Update Found" });
     }
 
     if (!validateObjectId(req.params.taskId)) {
-      return res.status(400).json({ status: false, msg: 'Task id not valid' });
+      return res.status(400).json({ status: false, msg: "Task id not valid" });
     }
 
     let task = await Task.findById(req.params.taskId);
     if (!task) {
       return res
         .status(400)
-        .json({ status: false, msg: 'Task with given id not found' });
+        .json({ status: false, msg: "Task with given id not found" });
     }
 
     if (task.email != req.user.email) {
-      if (req.user.accessType !== 'admin') {
+      if (req.user.accessType !== "admin") {
         return res.status(403).json({
           status: false,
           msg: "You can't update task of another user",
         });
       }
+    }
+
+    if (task.resume) {
+      // breaks
+      const resumeTime = task.resume;
+      const pauseTime = task.pause;
+      const timeTaken = (new Date(resumeTime) - new Date(pauseTime)) / 1000;
+
+      task = await Task.findById(req.params.taskId);
+      task.breaks.push(timeTaken);
     }
 
     task = await Task.findByIdAndUpdate(
@@ -91,45 +102,43 @@ export const putTask = async (req, res) => {
     );
     res
       .status(200)
-      .json({ task, status: true, msg: 'Task updated successfully..' });
+      .json({ task, status: true, msg: "Task updated successfully.." });
   } catch (err) {
     console.error(err);
     return res
       .status(500)
-      .json({ status: false, msg: 'Internal Server Error' });
+      .json({ status: false, msg: "Internal Server Error" });
   }
 };
 
 export const deleteTask = async (req, res) => {
   try {
     if (!validateObjectId(req.params.taskId)) {
-      return res.status(400).json({ status: false, msg: 'Task id not valid' });
+      return res.status(400).json({ status: false, msg: "Task id not valid" });
     }
 
     let task = await Task.findById(req.params.taskId);
     if (!task) {
       return res
         .status(400)
-        .json({ status: false, msg: 'Task with given id not found' });
+        .json({ status: false, msg: "Task with given id not found" });
     }
 
     if (task.email != req.user.email) {
-      if (req.user.accessType !== 'admin') {
-        return res
-          .status(403)
-          .json({
-            status: false,
-            msg: "You can't delete task of another user",
-          });
+      if (req.user.accessType !== "admin") {
+        return res.status(403).json({
+          status: false,
+          msg: "You can't delete task of another user",
+        });
       }
     }
 
     await Task.findByIdAndDelete(req.params.taskId);
-    res.status(200).json({ status: true, msg: 'Task deleted successfully..' });
+    res.status(200).json({ status: true, msg: "Task deleted successfully.." });
   } catch (err) {
     console.error(err);
     return res
       .status(500)
-      .json({ status: false, msg: 'Internal Server Error' });
+      .json({ status: false, msg: "Internal Server Error" });
   }
 };

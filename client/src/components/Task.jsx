@@ -6,13 +6,14 @@ import { FETCH_WRAPPER } from "../api";
 import Timer from "./Timer";
 import Swal from "sweetalert2";
 
-function Task({ description, id, start, end, index }) {
+function Task({ description, id, start, end, pause = false, breaks, index , resume }) {
   const { tasks } = useSelector((state) => state.fetch);
   const [isEdit, setIsEdit] = useState(false);
   const [disableStop, setDisableStop] = useState(false);
   const [desc, setDesc] = useState(description);
   const [validDes, setValidDes] = useState("");
   const accessType = sessionStorage.getItem("accessType");
+  const token = sessionStorage.getItem("authToken");
   const dispatch = useDispatch();
 
   // Edit the task
@@ -27,7 +28,7 @@ function Task({ description, id, start, end, index }) {
     };
     const response = await FETCH_WRAPPER.put(`tasks/${id}`, data, {
       headers: {
-        Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
+        Authorization: `Bearer ${token}`,
       },
     });
     if (response.data.status === true) {
@@ -52,7 +53,7 @@ function Task({ description, id, start, end, index }) {
       if (result.value) {
         const response = await FETCH_WRAPPER.delete(`tasks/${id}`, {
           headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
+            Authorization: `Bearer ${token}`,
           },
         });
         if (response.status === 200) {
@@ -81,7 +82,7 @@ function Task({ description, id, start, end, index }) {
     };
     const response = await FETCH_WRAPPER.put(`tasks/${id}`, data, {
       headers: {
-        Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
+        Authorization: `Bearer ${token}`,
       },
     });
     if (response.data.status === true) {
@@ -91,17 +92,13 @@ function Task({ description, id, start, end, index }) {
 
   // End the task
   async function endTask() {
-    if (!start) {
-      alert("NOT ALLOWED");
-      return;
-    }
     const end = Date.now();
     const data = {
       end,
     };
     const response = await FETCH_WRAPPER.put(`tasks/${id}`, data, {
       headers: {
-        Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
+        Authorization: `Bearer ${token}`,
       },
     });
 
@@ -110,14 +107,43 @@ function Task({ description, id, start, end, index }) {
     }
   }
 
-   // handle edit button functionlity
-   const handleEdit = () => {
+  //Pause or Resume the task
+  async function pauseOrResumeTask() {
+    const NOW = new Date();
+    const pauseTime = pause ? null : NOW;
+    const resumeTime = pause ? NOW : null;
+
+    try {
+      const response = await FETCH_WRAPPER.put(
+        `tasks/${id}`,
+        { pause: pauseTime, resume: resumeTime },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (!response) {
+        alert("pause not working");
+      }
+
+      dispatch(getTasks());
+      return;
+    } catch (err) {
+      console.log("PAUSE ERROR", err);
+    }
+  }
+
+  // handle edit button functionlity
+  const handleEdit = () => {
     if (!desc || !/[a-zA-Z0-9]/.test(desc)) {
       setValidDes("please enter some value");
       return;
     }
     setIsEdit(!isEdit);
   };
+
+  console.log(tasks);
 
   return (
     <tr>
@@ -148,8 +174,8 @@ function Task({ description, id, start, end, index }) {
         </>
       )}
       <td className="w-[200px] max-w-xs ">
-        {!start && !end ? "Not Yet Started" : ""} 
-        {start ? <Timer start={start} end={end} /> : ""}
+        {!start && !end ? "Not Yet Started" : ""}
+        {start ? <Timer start={start} end={end} pause={pause} resume={resume} /> : ""}
       </td>
       {/* new Date column added */}
       <td className="w-20">
@@ -159,34 +185,32 @@ function Task({ description, id, start, end, index }) {
       {/* new Date column ended */}
       {accessType === "employee" ? (
         <td className="w-10">
-          {start && end ? "Task Completed" : ""}
-          {start && !end ? (
-            <div className="flex gap-4">
-              <button disabled className="btn btn-info btn-sm">
-                Start
-              </button>
-              <button className="btn btn-error btn-sm" onClick={endTask}>
-                Stop
-              </button>
-            </div>
+          {start && end ? (
+            "Task Completed"
           ) : (
-            ""
-          )}
-          {!start && !end ? (
             <div className="flex gap-4">
-              <button className="btn btn-success btn-sm" onClick={startTask}>
+              <button
+                disabled={start}
+                className="btn btn-success btn-sm"
+                onClick={startTask}
+              >
                 Start
               </button>
               <button
-                className="btn btn-warning btn-sm"
-                disabled={!disableStop}
+                disabled={!start}
+                className={`btn btn-sm ${pause ? "btn-info" : "btn-warning"}`}
+                onClick={pauseOrResumeTask}
+              >
+                {pause ? "Resume" : "Pause"}
+              </button>
+              <button
+                disabled={!start}
+                className="btn btn-error btn-sm"
                 onClick={endTask}
               >
                 Stop
               </button>
             </div>
-          ) : (
-            ""
           )}
         </td>
       ) : (

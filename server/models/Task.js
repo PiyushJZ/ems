@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const taskSchema = new mongoose.Schema({
   email: {
@@ -11,7 +11,10 @@ const taskSchema = new mongoose.Schema({
   },
   start: Date,
   end: Date,
+  pause: Date,
+  resume: Date,
+  breaks: [Number],
 });
 
-const Task = mongoose.model("Task", taskSchema);
+const Task = mongoose.model('Task', taskSchema);
 export default Task;

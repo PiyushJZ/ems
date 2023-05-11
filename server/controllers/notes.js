@@ -16,9 +16,7 @@ export const getNotes = async (req, res) => {
       .status(200)
       .json({ notes, status: true, message: "Notes found successfully..." });
   } catch (err) {
-    return res
-      .status(400)
-      .json({ status: false, message: err.message });
+    return res.status(400).json({ status: false, message: err.message });
   }
 };
 
@@ -33,15 +31,14 @@ export const postNotes = async (req, res) => {
     if (isFile) {
       const file = req.files.image;
       // console.log(file);
-      await cloudinary.uploader.upload(file.tempFilePath, (error, result) => {
+      await cloudinary.uploader.upload(file?.tempFilePath, (error, result) => {
         req.body.fileUrl = result?.url;
-        req.body.cloudinaryId = result?.public_id
+        req.body.cloudinaryId = result?.public_id;
       });
     }
 
     // checks for other fields
     const { title, description, createdUser, fileUrl } = req.body;
-
 
     if (!description) {
       return res
@@ -74,7 +71,7 @@ export const postNotes = async (req, res) => {
       description,
       title,
       image: fileUrl,
-      cloudinaryId
+      cloudinaryId,
     });
 
     res
@@ -121,9 +118,9 @@ export const updateNote = async (req, res) => {
       .json({ note, status: true, message: "Note updated successfully.." });
   } catch (error) {
     res.status(400).json({
-      status:false,
-      message:error.message
-    })
+      status: false,
+      message: error.message,
+    });
   }
 };
 
@@ -142,24 +139,24 @@ export const deleteNote = async (req, res) => {
       .json({ status: false, message: "Note with given Id not found" });
   }
 
-  const {cloudinaryId,image} = note;
+  const { cloudinaryId, image } = note;
 
   // Deleting image if present from cloudinary
-  if(cloudinaryId !== "" || image !== ""){
+  if (cloudinaryId !== "" || image !== "") {
     cloudinary.uploader
-  .destroy(cloudinaryId)
-  .then((result) => {
-    response.status(200).send({
-      message: "success",
-      result,
-    });
-  })
-  .catch((error) => {
-    response.status(500).send({
-      message: "Failure",
-      error,
-    });
-  });
+      .destroy(cloudinaryId)
+      .then((result) => {
+        response.status(200).send({
+          message: "success",
+          result,
+        });
+      })
+      .catch((error) => {
+        response.status(500).send({
+          message: "Failure",
+          error,
+        });
+      });
   }
 
   await Notes.findByIdAndDelete(req.params.noteId);

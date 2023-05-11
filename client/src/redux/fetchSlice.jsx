@@ -3,6 +3,7 @@ import { FETCH_WRAPPER } from '../api';
 
 const initialState = {
   tasks: [],
+  allTasks:[],
   notes: [],
   attendance: [],
   loading: true,
@@ -44,7 +45,9 @@ export const getTasks = createAsyncThunk('/getTasks', async () => {
 export const getAttendance = createAsyncThunk('/getAttendance', async () => {
   try {
     const token = sessionStorage.getItem('authToken');
-    const response = await FETCH_WRAPPER.get('attendence', {
+    console.log(sessionStorage.getItem('assignTask'));
+    const data = { email: sessionStorage.getItem('assignTask') };
+    const response = await FETCH_WRAPPER.post('attendence', data, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -78,6 +81,7 @@ const fetchSlice = createSlice({
       state.success = true;
       state.error = 'No error';
       state.tasks = action.payload;
+      state.allTasks = action.payload;
     });
     builder.addCase(getTasks.rejected, (state, action) => {
       state.loading = false;

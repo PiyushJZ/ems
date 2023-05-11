@@ -1,16 +1,16 @@
 import { ImListNumbered } from "react-icons/im";
 import { BsCalendarDate, BsFillArrowDownCircleFill } from "react-icons/bs";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { updateList } from "../redux/fetchSlice";
+import { getAttendance, updateList } from "../redux/fetchSlice";
 import { PATHS } from "../router/paths";
 import Task from "./Task";
 import React, { useEffect, useState } from "react";
 
-const Table = ({ type, tasks }) => {
-  const [height, setHeight] = useState({h:0 , r:0});
+const Table = ({ type, tasks, allTasks }) => {
+  const [height, setHeight] = useState({ h: 0, r: 0 });
   const [checkboxVal, setCheckboxVal] = useState([]);
-  const [allTask, setAllTask] = useState(tasks);
+  const [descriptionSearch, setDescriptionSearch] = useState("");
 
   const handleChange = (e) => {
     if (checkboxVal.includes(e.target.value)) {
@@ -25,25 +25,54 @@ const Table = ({ type, tasks }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // search by description
+
+  useEffect(() => {
+    // console.log("descriptionSearch");
+
+    // if (checkboxVal.length === 0) {
+    //   setAllTask(allTask);
+    //   return;
+    // }
+
+    if (
+      !/[A-Za-z0-9]/.test(descriptionSearch) ||
+      descriptionSearch.length === 0
+    ) {
+      // setAllTask(tasks);
+      dispatch(updateList(allTasks));
+      return;
+    }
+
+    const updated = allTasks.filter((v) => {
+      if (v.description.includes(descriptionSearch)) return v;
+    });
+
+    dispatch(updateList(updated));
+  }, [descriptionSearch]);
+
   // =========
   useEffect(() => {
+    setDescriptionSearch('');
     if (
       (checkboxVal.includes("notcompleted") &&
         checkboxVal.includes("completed")) ||
       checkboxVal.length === 0
     ) {
-      dispatch(updateList(allTask));
+      console.log(tasks);
+      dispatch(updateList(allTasks));
       return;
     }
+
     if (checkboxVal.includes("completed")) {
-      const updated = tasks.filter((v) => (v.end ? v : ""));
-      
-     updated.length===0 ? '' :dispatch(updateList(updated));
+      const updated = allTasks.filter((v) => (v.end ? v : ""));
+      updated.length === 0 ? "" : dispatch(updateList(updated));
       return;
     }
+
     if (checkboxVal.includes("notcompleted")) {
-      const updated = tasks.filter((v) => (v.end ? "" : v));
-      updated.length===0 ? '' :dispatch(updateList(updated));
+      const updated = allTasks.filter((v) => (v.end ? "" : v));
+      updated.length === 0 ? "" : dispatch(updateList(updated));
       return;
     }
   }, [checkboxVal]);
@@ -57,8 +86,6 @@ const Table = ({ type, tasks }) => {
       parseInt(time) % 60
     }`;
   };
-
-  console.log(height);
 
   const getTotalTime = (task) => {
     try {
@@ -77,6 +104,19 @@ const Table = ({ type, tasks }) => {
 
   return (
     <div className="overflow-x-auto">
+      {type === "admin" ? (
+        ""
+      ) : (
+        <div className="float-left ml-2">
+          <input
+            type="text"
+            className="p-2 m-2 rounded-md outline-none"
+            value={descriptionSearch}
+            onChange={(e) => setDescriptionSearch(e.target.value)}
+            placeholder="Search by Email"
+          />
+        </div>
+      )}
       <table className="table table-zebra w-full">
         {/* Table Headers */}
         <thead>
@@ -90,7 +130,9 @@ const Table = ({ type, tasks }) => {
                 <BsFillArrowDownCircleFill
                   className={`text-lg mx-2 rotate-${height.r} transition-all `}
                   onClick={() => {
-                    height.h === 0 ? setHeight({h:20 , r:180}) : setHeight({h:0 , r:0});
+                    height.h === 0
+                      ? setHeight({ h: 20, r: 180 })
+                      : setHeight({ h: 0, r: 0 });
                   }}
                 />
                 <div
@@ -138,10 +180,11 @@ const Table = ({ type, tasks }) => {
           )}
         </thead>
         {/* Table Body */}
+
         <tbody>
           <>
             {type === "employee"
-              ? tasks.map((task, index) => {
+              ? tasks?.map((task, index) => {
                   return (
                     <Task
                       key={task._id}
@@ -151,6 +194,9 @@ const Table = ({ type, tasks }) => {
                       id={task._id}
                       start={task?.start}
                       end={task?.end}
+                      pause={task?.pause}
+                      breaks={task?.braks}
+                      resume={task?.resume}
                     />
                   );
                 })
@@ -158,7 +204,7 @@ const Table = ({ type, tasks }) => {
           </>
           <>
             {type === "admin"
-              ? tasks.map((task, index) => {
+              ? tasks?.map((task, index) => {
                   return (
                     <tr key={index}>
                       <td>{index + 1}</td>
@@ -166,7 +212,11 @@ const Table = ({ type, tasks }) => {
                       <td>
                         <button
                           className="btn btn-primary btn-square"
-                          onClick={() => navigate(PATHS.attendance)}
+                          onClick={() => {
+                            sessionStorage.setItem("assignTask", task.email);
+                            dispatch(getAttendance());
+                            navigate(PATHS.attendance);
+                          }}
                         >
                           <BsCalendarDate />
                         </button>

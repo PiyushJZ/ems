@@ -10,7 +10,7 @@ import { verifyAccessToken, verifyAccessType } from '../middlewares/index.js';
 
 const router = express.Router();
 
-router.get('/', verifyAccessToken, verifyAccessType, getAllAttendence);
+router.post('/', verifyAccessToken, verifyAccessType, getAllAttendence);
 router.post('/mark', verifyAccessToken, markAttendence);
 router.get('/:attendenceId', verifyAccessToken, singleAttendence);
 router.put('/:attendenceId', verifyAccessToken, updateAttendence);
