@@ -1,5 +1,5 @@
 import { ImListNumbered } from "react-icons/im";
-import { BsCalendarDate, BsFillArrowUpCircleFill } from "react-icons/bs";
+import { BsCalendarDate, BsFillArrowDownCircleFill } from "react-icons/bs";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { updateList } from "../redux/fetchSlice";
@@ -8,7 +8,7 @@ import Task from "./Task";
 import React, { useEffect, useState } from "react";
 
 const Table = ({ type, tasks }) => {
-  const [height, setHeight] = useState(0);
+  const [height, setHeight] = useState({h:0 , r:0});
   const [checkboxVal, setCheckboxVal] = useState([]);
   const [allTask, setAllTask] = useState(tasks);
 
@@ -27,18 +27,23 @@ const Table = ({ type, tasks }) => {
 
   // =========
   useEffect(() => {
-    if(checkboxVal.includes("notcompleted") && checkboxVal.includes("completed") || checkboxVal.length===0){
+    if (
+      (checkboxVal.includes("notcompleted") &&
+        checkboxVal.includes("completed")) ||
+      checkboxVal.length === 0
+    ) {
       dispatch(updateList(allTask));
       return;
     }
     if (checkboxVal.includes("completed")) {
       const updated = tasks.filter((v) => (v.end ? v : ""));
-      dispatch(updateList(updated));
+      
+     updated.length===0 ? '' :dispatch(updateList(updated));
       return;
     }
     if (checkboxVal.includes("notcompleted")) {
       const updated = tasks.filter((v) => (v.end ? "" : v));
-      dispatch(updateList(updated));
+      updated.length===0 ? '' :dispatch(updateList(updated));
       return;
     }
   }, [checkboxVal]);
@@ -79,17 +84,19 @@ const Table = ({ type, tasks }) => {
             <tr>
               <th>Sr. No.</th>
               <th>Task Description</th>
-              <th>Status</th>
               <th className="flex relative">
-                Date
-                <BsFillArrowUpCircleFill
-                  className="text-lg mx-2"
-                  onClick={() => setHeight(20)}
+                Status
+                {/* DropDown */}
+                <BsFillArrowDownCircleFill
+                  className={`text-lg mx-2 rotate-${height.r} transition-all `}
+                  onClick={() => {
+                    height.h === 0 ? setHeight({h:20 , r:180}) : setHeight({h:0 , r:0});
+                  }}
                 />
                 <div
-                  className={`absolute top-12  w-40 h-${height} transition-opacity rounded-lg overflow-hidden bg-red-400`}
+                  className={`absolute transition-all top-12 w-40 h-${height.h} overflow-hidden rounded-lg bg-[#3ABFF8]`}
                 >
-                  <form className="flex flex-col items-start justify-between w-40 h-10">
+                  <form className="flex flex-col items-start justify-between w-40 my-2 h-10">
                     <label htmlFor="completed" className="p-2">
                       <input
                         type="checkbox"
@@ -114,7 +121,9 @@ const Table = ({ type, tasks }) => {
                     </label>
                   </form>
                 </div>
+                {/* DropDown */}
               </th>
+              <th>Date</th>
               {accessType === "employee" ? <th>controls</th> : ""}
               <th>Options</th>
             </tr>

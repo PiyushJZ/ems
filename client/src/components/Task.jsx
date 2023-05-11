@@ -147,8 +147,8 @@ function Task({ description, id, start, end, index }) {
           </td>
         </>
       )}
-      <td className="w-20">
-        {!start && !end ? "Not Yet Started" : ""}
+      <td className="w-[200px] max-w-xs ">
+        {!start && !end ? "Not Yet Started" : ""} 
         {start ? <Timer start={start} end={end} /> : ""}
       </td>
       {/* new Date column added */}
